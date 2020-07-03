@@ -1,12 +1,13 @@
-// Model loading demo
-//
-// This demo loads a custom model format and creates passthrough shaders
-// to render it.
+/* This demo shows how to load a custom model (created based on the .obj format
+using a converstion script). It uses WAD textures rather than BMP textures 
+unlike most of the other demos. The model is not transformed in any way and 
+is rendered directly, so scaling the window will also scale the resulting 
+render. */
 
 Cd(__DIR__);;
 #include "../../Math"
-#include "../../WAD"
 #include "../../Texture"
+#include "../../TextureImport"
 #include "../../Shader"
 #include "../../Rasterize"
 

@@ -89,7 +89,7 @@ U0 Tex2DDebugDisp(CTex2D *tex, I64 x, I64 y)
 			switch (tex->type)
 			{
 				case TEX2D_RAW:
-					text.fb_alias[(x + i) + (y + j) * GR_WIDTH] 
+					text.fb_alias[(x + i) + (y + j) * GR_WIDTH] 
 						= tex->rawBuf[i + j * tex->w];
 				break;
 
@@ -108,52 +108,6 @@ U0 Tex2DDebugDisp(CTex2D *tex, I64 x, I64 y)
 						= tex->paletteBuf[tex->wadBuf[i + j * tex->w]];
 				break;
 			}
-		}
-	}
-}
-
-U0 Tex2DLoadWAD(CTex2D *tex, CWAD *wad, U8 *texName)
-{
-	I64 texIndex = -1;	// Will be positive if texture is found
-	I64 i;
-	for (i = 0; i < wad->header[0].nDir; i++)
-	{
-		if (StrMatch(texName, wad->entries[i].szName) != 0)
-		{
-			texIndex = i;
-			break;
-		}
-	}
-	if (i == -1)
-	{
-		"[ERROR] TEXTURE %s COULDN'T BE FOUND", texName;
-	}
-	else
-	{
-		// Map texture class to WAD file buffer
-		CWADTex *wadTex = wad->fileBuf + 
-			wad->entries[texIndex].nFilePos;
-		// Debug
-		// "TEX: %s, W: %d, H: %d", wadTex->szName,
-			wadTex->nWidth, wadTex->nHeight;
-		// Initialize with WAD format
-		Tex2DInit(tex, TEX2D_WAD, wadTex->nWidth, 
-			wadTex->nHeight);
-		// Copy image bytes (each byte references a palette)
-		MemCopy(tex->wadBuf, wad->fileBuf +
-			wad->entries[texIndex].nFilePos + wadTex->nOffsets[0], 
-			wadTex->nWidth * wadTex->nHeight);
-		// After the last byte of the fourth mipmap, there
-		// Are two padding bytes, then the palette of triples
-		// of bytes (R,G,B)
-		U8 *palette = wad->fileBuf +
-			wad->entries[texIndex].nFilePos + wadTex->nOffsets[3] + 
-			((wadTex->nWidth * wadTex->nHeight) / 64) + 2;
-		for (i = 0; i < 256; i++)
-		{
-			tex->paletteBuf[i].r = palette[i * 3];
-			tex->paletteBuf[i].g = palette[(i * 3) + 1];
-			tex->paletteBuf[i].b = palette[(i * 3) + 2];
 		}
 	}
 }
@@ -192,7 +146,7 @@ U0 Tex2DSampleCoord(CBGR24 *col, CTex2D *tex, I64 u, I64 v)
 			MemCopy(col, &tex->rawBuf[u + v * tex->w], sizeof(CBGR24));
 		break;
 
-		case TEX2D_WAD:
+		case TEX2D_WAD:
 			MemCopy(col, &tex->paletteBuf[tex->wadBuf[u + v * tex->w]], sizeof(CBGR24));
 		break;
 	}
