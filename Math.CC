@@ -1,3 +1,7 @@
+/* Legacy math library. Is being replaced by Math/, however it will remain 
+until Rasterize.CC is ported over to the new math library. */
+
+
 class CVec4
 {
 	F64 x;
