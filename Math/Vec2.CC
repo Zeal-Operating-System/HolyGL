@@ -111,8 +111,7 @@ U0 ScaleUnit2(CVec2 *a, F64 b, CVec2 *o)
 	if (norm == 0.0)
 	{
 		// Zero2(a)
-		a->x = 0.0;
-		a->y = 0.0;
+		a->x = a->y = 0.0;
 		return;
 	}
 
@@ -214,8 +213,7 @@ U0 NormalizeTo2(CVec2 *a, CVec2 *o)
 	if (norm == 0.0)
 	{
 		// Zero2(o)
-		o->x = 0.0;
-		o->y = 0.0;
+		o->x = o->y = 0.0;
 		return;
 	}
 
@@ -234,8 +232,7 @@ U0 Normalize2(CVec2 *v)
 	if (norm == 0.0)
 	{
 		// Zero2(v)
-		v->x = 0.0;
-		v->y = 0.0;
+		v->x = v->y = 0.0;
 		return;
 	}
 
