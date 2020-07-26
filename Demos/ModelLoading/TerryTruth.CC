@@ -5,11 +5,8 @@ is rendered directly, so scaling the window will also scale the resulting
 render. */
 
 Cd(__DIR__);;
-#include "../../Math"
-#include "../../Texture"
-#include "../../TextureImport"
-#include "../../Shader"
-#include "../../Rasterize"
+#include "../../Gr2.CC"
+Cd(__DIR__);;
 
 I64 wWC = 158;  		// Window width in columns (Drop to under 80 for 640x480 displays)
 I64 wHC = 88; 		// Window height in rows (Drop to under 60 for 640x480 displays)

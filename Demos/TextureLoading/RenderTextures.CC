@@ -1,8 +1,8 @@
 /* This demo shows how to initialize, import, and render textures. */
 
 Cd(__DIR__);;
-#include "../../Texture"
-#include "../../TextureImport"
+#include "../../Gr2.CC"
+Cd(__DIR__);;
 
 I64 wWC = 32;	// Window width in columns (256px)
 I64 wHC = 32;	// Window height in rows (256px)

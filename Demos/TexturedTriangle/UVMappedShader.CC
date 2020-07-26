@@ -2,11 +2,8 @@
 program a shader to render a triangle. */
 
 Cd(__DIR__);;
-#include "../../Math"
-#include "../../Texture"
-#include "../../TextureImport"
-#include "../../Shader"
-#include "../../Rasterize"
+#include "../../Gr2.CC"
+Cd(__DIR__);;
 
 I64 wWC = 32;  		// Window width in columns (512px)
 I64 wHC = 32; 		// Window height in rows (512px)
