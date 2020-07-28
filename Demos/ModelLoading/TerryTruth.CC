@@ -40,7 +40,7 @@ Tex2DColorFill(&frameBuf, cBlack);
 CWAD wad;
 WADLoad(&wad, "KingTerry.wad");
 
-CTex2D TexRevelation;
+CTex2D TexRevelation;
 Tex2DLoadWAD(&TexRevelation, &wad, "Revelation");
 
 CTex2D TexKingTerrySkin;

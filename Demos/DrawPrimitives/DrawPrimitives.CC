@@ -24,11 +24,18 @@ Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
 Tex2DColorFill(&frameBuf, gr_palette[WHITE]);
 
 // Draw rectangles
-DrawRectFill(&frameBuf, 32, 32, 128, 96, gr_palette[CYAN]);
+//DrawRectFill(&frameBuf, 32, 32, 128, 96, gr_palette[CYAN]);
 
-DrawRectVertGradient(&frameBuf, 32, 128, 128, 144, gr_palette[WHITE], gr_palette[LTGRAY], 0.5, 1.0);
 
-DrawRectSoftOutline(&frameBuf, 32, 128, 128, 144, gr_palette[LTGRAY]);
+// Example button
+I64 row = 1;
+DrawButton(&frameBuf, 1, row, "Vertex", 6, NULL, &row);
+DrawButton(&frameBuf, 1, row, " Edge", 6, NULL, &row);
+DrawButton(&frameBuf, 1, row, " Face", 6, NULL, &row);
+DrawButton(&frameBuf, 1, row, "Extrude", 0, NULL, &row);
+DrawButton(&frameBuf, 1, row, "Bridge Edge Loops", 0, NULL, &row);
+
+//DrawChar(&frameBuf, 32, 256, 'a', gr_palette[BROWN]);
 
 while (CharScan() == 0)
 {

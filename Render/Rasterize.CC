@@ -55,7 +55,7 @@ U0 DrawLine(CTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
 	{
 		if (steep == TRUE)
 		{
-			tex->rawBuf[y + x * tex->w] = color;
+			tex->rawBuf[y + x * tex->w] = color;
 		}
 		else
 		{
@@ -255,7 +255,7 @@ U0 RenderTris(CShader *shd, CTex2D *frameBuf, CTex2D *depthBuf, U8 *mdl, U8 *uni
 	CTri cTri;			// Current Triangle in NDC
 	CIVec2 cTriPx[3];	// Current Triangle in pixels
 	I64 tri;			// Current Triangle Index
-	I64 VI[3];			// Vertex Indices
+	I64 VI[3];			// Vertex Indices
 
 	for (tri = 0; tri < nTris; tri++)
 	{

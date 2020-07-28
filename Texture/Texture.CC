@@ -90,7 +90,7 @@ U0 Tex2DDebugDisp(CTex2D *tex, I64 x, I64 y)
 			{
 				case TEX2D_RAW:
 					text.fb_alias[(x + i) + (y + j) * GR_WIDTH] 
-						= tex->rawBuf[i + j * tex->w];
+						= tex->rawBuf[i + j * tex->w];
 				break;
 
 				case TEX2D_DEPTH:
@@ -146,7 +146,7 @@ U0 Tex2DSampleCoord(CBGR24 *col, CTex2D *tex, I64 u, I64 v)
 			MemCopy(col, &tex->rawBuf[u + v * tex->w], sizeof(CBGR24));
 		break;
 
-		case TEX2D_WAD:
+		case TEX2D_WAD:
 			MemCopy(col, &tex->paletteBuf[tex->wadBuf[u + v * tex->w]], sizeof(CBGR24));
 		break;
 	}

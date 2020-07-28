@@ -49,7 +49,7 @@ U0 DrawRectSoftOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	}
 }
 
-/* Draw two color fast non-transformed vertical gradient rectangle. */
+/* Draw two color fast non-transformed vertical gradient rectangle. */
 U0 DrawRectVertGradient(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	CBGR24 colorTop, CBGR24 colorBottom, F64 tStart = 0.0, F64 tEnd = 1.0)
 {
@@ -74,9 +74,9 @@ U0 DrawRectVertGradient(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	
 	I64 y;
 	CBGR24 color;
-	for (y = yMin + 1; y < yMax; y++)
+	for (y = yMin; y < yMax; y++)
 	{
-		t = Clamp((y - yMinReal) / yHeight, tStart, tEnd);
+		t = Clamp((y - yMinReal) / yHeight, tStart, tEnd);
 		//"T: %f\n", t;
 		r = t * rDiff;
 		g = t * gDiff;
