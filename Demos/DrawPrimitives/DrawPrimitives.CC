@@ -23,19 +23,26 @@ CTex2D frameBuf;
 Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
 Tex2DColorFill(&frameBuf, gr_palette[WHITE]);
 
-// Draw rectangles
-//DrawRectFill(&frameBuf, 32, 32, 128, 96, gr_palette[CYAN]);
+// Draw Rectangles
+DrawRectFill(&frameBuf, 32, 32, 128, 96, gr_palette[CYAN]);
 
+DrawRectVertGradient(&frameBuf, 64, 128, 96, 256, gr_palette[CYAN],
+	gr_palette[BLUE]);
 
-// Example button
-I64 row = 1;
-DrawButton(&frameBuf, 1, row, "Vertex", 6, NULL, &row);
-DrawButton(&frameBuf, 1, row, " Edge", 6, NULL, &row);
-DrawButton(&frameBuf, 1, row, " Face", 6, NULL, &row);
-DrawButton(&frameBuf, 1, row, "Extrude", 0, NULL, &row);
-DrawButton(&frameBuf, 1, row, "Bridge Edge Loops", 0, NULL, &row);
+// Gradient's starting transition points can also be modified:
+DrawRectVertGradient(&frameBuf, 160, 32, 224, 96, gr_palette[BLACK],
+	gr_palette[WHITE], 0.65, 0.7);
 
-//DrawChar(&frameBuf, 32, 256, 'a', gr_palette[BROWN]);
+DrawRectOutline(&frameBuf, 55, 300, 75, 310, gr_palette[LTGRAY]);
+
+// You can also define a second color for adding button-like shading
+DrawRectSoftOutline(&frameBuf, 100, 200, 130, 210, gr_palette[LTGRAY],
+	gr_palette[DKGRAY]);
+
+// Drawing text
+DrawChar(&frameBuf, 48, 48, '!', gr_palette[WHITE]);
+DrawString(&frameBuf, 16, 104, "When I wrote this, God said: 
+calls singing moist days excellence.", gr_palette[GREEN]);
 
 while (CharScan() == 0)
 {

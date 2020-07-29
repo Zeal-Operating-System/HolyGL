@@ -1,7 +1,8 @@
-#define TEX2D_RAW 1
-#define TEX2D_DEPTH 2
-#define TEX2D_WAD 3
-#define TEX2D_DXT 4
+#define TEX2D_RAW	1
+#define TEX2D_DEPTH	2
+#define TEX2D_WAD	3
+#define TEX2D_MASK	4
+#define TEX2D_DXT	5
 
 #define FOURCC_DXT1 0x31545844
 
@@ -14,6 +15,7 @@ class CTex2D
 	I64 mipmaps;
 	CBGR24 *rawBuf;		// Raw color buffer
 	U8 *wadBuf;			// Buffer for WAD textures
+	U8 *maskBuf;		// TODO - make generic buffer names that can be reused
 	F64 *depthBuf;		// Depth buffer
 	CBGR24 *paletteBuf;	// Palette if compressed format like WAD is used
 };
@@ -39,6 +41,9 @@ U0 Tex2DInit(CTex2D *tex, I64 type, I64 w, I64 h)
 			tex->wadBuf = MAlloc(tex->w * tex->h);
 			tex->paletteBuf = MAlloc(4 * 256);
 		break;
+
+		case (TEX2D_MASK):
+			tex->wadBuf = CAlloc((tex->w * tex->h) / 8);
 	}
 }
 
@@ -90,7 +95,7 @@ U0 Tex2DDebugDisp(CTex2D *tex, I64 x, I64 y)
 			{
 				case TEX2D_RAW:
 					text.fb_alias[(x + i) + (y + j) * GR_WIDTH] 
-						= tex->rawBuf[i + j * tex->w];
+						= tex->rawBuf[i + j * tex->w];
 				break;
 
 				case TEX2D_DEPTH:

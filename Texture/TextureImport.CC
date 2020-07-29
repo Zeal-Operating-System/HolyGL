@@ -142,7 +142,8 @@ class CBMPHeader
 	U32 nImptColors;	// Number of important colors (=0 for all) 
 };
 
-U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname)
+U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname, Bool mask = FALSE, 
+	Bool invert = TRUE)
 {
 	U8 *bmp = FileRead(fname);
 
@@ -162,21 +163,48 @@ U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname)
 		return;
 	}
 	
-	// Initialize with RAW format for 24-bit non-compressed color
-	Tex2DInit(tex, TEX2D_RAW, info->nWidth, info->nHeight);
-	
 	// Each pixel is 3 bytes in 24-bit BMP, however CTex2D uses CBGR24
 	// which contains a final padding bit (32-bits per pixel). The rows
 	// also increment in the opposite direction.
 	I64 imgPointer = bmp + info->nOffset;
-	I64 xPx, yPx;
+	I64 xPx, yPx;
+	
+	// For checking if a color channel is greater than 0 for masks
+	U8 channel;
 
-	for (yPx = 0; yPx < info->nHeight; yPx++)
+	if (mask)
 	{
-		for (xPx = 0; xPx < info->nWidth; xPx++)
+		// Initialize with MASK format for 1-bit non-compressed color
+		Tex2DInit(tex, TEX2D_MASK, info->nWidth, info->nHeight);
+
+		for (yPx = 0; yPx < info->nHeight; yPx++)
 		{
-			MemCopy(&tex->rawBuf[xPx + info->nWidth * yPx], 
-				imgPointer + (xPx + info->nWidth * (info->nHeight - yPx)) * 3, 3);
+			for (xPx = 0; xPx < info->nWidth; xPx++)
+			{
+				channel = *(imgPointer + (xPx + info->nWidth * 
+					(info->nHeight - yPx)) * 3);
+
+				if ((channel == 0 && invert = TRUE) ||
+					(channel > 0 && invert = FALSE))
+				{
+					tex->maskBuf[(xPx + info->nWidth * yPx) / 8] | (1 << (xPx % 8));
+				}
+			}
+		}
+	}
+	else
+	{
+		// Initialize with RAW format for 24-bit non-compressed color
+		Tex2DInit(tex, TEX2D_RAW, info->nWidth, info->nHeight);
+	
+		for (yPx = 0; yPx < info->nHeight; yPx++)
+		{
+			for (xPx = 0; xPx < info->nWidth; xPx++)
+			{
+				MemCopy(&tex->rawBuf[xPx + info->nWidth * yPx], 
+					imgPointer + (xPx + info->nWidth * (info->nHeight - yPx)) 
+					* 3, 3);
+			}
 		}
 	}
 }

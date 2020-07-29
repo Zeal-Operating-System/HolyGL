@@ -14,7 +14,7 @@ U0 DrawChar(CTex2D *tex, I64 x, I64 y, U8 char, CBGR24 color,
 			if (font[char].u8[j] & (1 << i))
 				tex->rawBuf[x + i + (y + j) * tex->w] = color;
 		}
-	}
+	}
 }
 
 /* Draw single color string. */
@@ -57,7 +57,7 @@ U0 DrawString(CTex2D *tex, I64 x, I64 y, U8 *str, CBGR24 color,
 
 			case ' ':
 				cur++;
-				xCur += FONT_WIDTH;
+				xCur += FONT_WIDTH;
 				break;
 
 			default:

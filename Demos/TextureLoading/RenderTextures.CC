@@ -27,6 +27,6 @@ while (CharScan() == 0)
 	Sleep(1);
 }
 
-Tex2DFree(&texture);
+Tex2DFree(&texture);
 SettingsPop;
 Exit;

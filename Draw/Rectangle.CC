@@ -49,7 +49,39 @@ U0 DrawRectSoftOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	}
 }
 
-/* Draw two color fast non-transformed vertical gradient rectangle. */
+/* Draw 1px rectangle outline. */
+U0 DrawRectOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
+	CBGR24 color, CBGR24 shadeColor = 0x7FFFFFFF)
+{
+	/** shadeColor can be set to have a different bottom right color. **/
+
+	if (shadeColor == 0x7FFFFFFF)
+		shadeColor = color;
+
+	I64 xMaxIndex = tex->w - 1;
+	I64 yMaxIndex = tex->w - 1;
+	I64 xMin = Clamp(Min(x1, x2), 0, xMaxIndex);
+	I64 xMax = Clamp(Max(x1, x2), 0, xMaxIndex);
+	I64 yMin = Clamp(Min(y1, y2), 0, yMaxIndex);
+	I64 yMax = Clamp(Max(y1, y2), 0, yMaxIndex);
+	I64 xLen = xMax - xMin + 1;
+
+	// Top border
+	MemSetU32(&tex->rawBuf[xMin + yMin * tex->w], color, xLen);
+
+	// Bottom border
+	MemSetU32(&tex->rawBuf[xMin + yMax * tex->w], shadeColor, xLen);
+
+	// Left/Right border
+	I64 y;
+	for (y = yMin + 1; y < yMax; y++)
+	{
+		tex->rawBuf[xMin + y * tex->w] = color;
+		tex->rawBuf[xMax + y * tex->w] = shadeColor;
+	}
+}
+
+/* Draw two color fast non-transformed vertical gradient rectangle. */
 U0 DrawRectVertGradient(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	CBGR24 colorTop, CBGR24 colorBottom, F64 tStart = 0.0, F64 tEnd = 1.0)
 {

@@ -6,6 +6,7 @@ Cd(__DIR__);;
 #include "Texture/TextureImport"
 #include "Draw/Rectangle"
 #include "Draw/Text"
-#include "UI/Component"
+#include "Draw/UISmooth"
+#include "UI/Component"
 #include "Render/Shader"
 #include "Render/Rasterize"
