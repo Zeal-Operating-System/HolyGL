@@ -8,8 +8,8 @@ Cd(__DIR__);;
 #include "../../Gr2.CC"
 Cd(__DIR__);;
 
-I64 wWC = 158;  		// Window width in columns (Drop to under 80 for 640x480 displays)
-I64 wHC = 88; 		// Window height in rows (Drop to under 60 for 640x480 displays)
+I64 wWC = 80;  		// Window width in columns (Drop to under 80 for 640x480 displays)
+I64 wHC = 60; 		// Window height in rows (Drop to under 60 for 640x480 displays)
 I64 wW = wWC * 8;
 I64 wH = wHC * 8; 
 I64 wXC = 1;       		// Window x in columns
@@ -26,7 +26,7 @@ DocClear;
 CTex2D frameBuf;
 CTex2D depthBuf;
 
-Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
+Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
 Tex2DInit(&depthBuf, TEX2D_DEPTH, wW, wH);
 
 // Colors
@@ -40,7 +40,7 @@ Tex2DColorFill(&frameBuf, cBlack);
 CWAD wad;
 WADLoad(&wad, "KingTerry.wad");
 
-CTex2D TexRevelation;
+CTex2D TexRevelation;
 Tex2DLoadWAD(&TexRevelation, &wad, "Revelation");
 
 CTex2D TexKingTerrySkin;

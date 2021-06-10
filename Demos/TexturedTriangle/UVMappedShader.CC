@@ -15,7 +15,7 @@ I64 wX = wXC * 8;
 I64 wY = (wYC + 4) * 8;
 
 SettingsPush;
-WinHorz(wXC, wXC + wWC - 1);
+WinHorz(wXC, wXC + wWC - 1);
 WinVert(wYC, wYC + wHC + 3);
 DocClear;
 
@@ -51,7 +51,7 @@ model.tri[0].p[0].x = 0.0;
 model.tri[0].p[0].y = 0.8;
 model.tri[0].p[0].z = 0.0;
 model.tri[0].p[1].x = -0.8;
-model.tri[0].p[1].y = -0.4;
+model.tri[0].p[1].y = -0.4;
 model.tri[0].p[1].z = 0.0;
 model.tri[0].p[2].x = 0.8;
 model.tri[0].p[2].y = -0.4;

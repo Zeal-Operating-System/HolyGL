@@ -43,7 +43,7 @@ U0 Tex2DInit(CTex2D *tex, I64 type, I64 w, I64 h)
 		break;
 
 		case (TEX2D_MASK):
-			tex->wadBuf = CAlloc((tex->w * tex->h) / 8);
+			tex->wadBuf = CAlloc((tex->w * tex->h) / 8);
 	}
 }
 
@@ -61,7 +61,7 @@ U0 Tex2DFree(CTex2D *tex)
 		break;
 
 		case TEX2D_WAD:
-			Free(tex->wadBuf);
+			Free(tex->wadBuf);
 			Free(tex->paletteBuf);
 		break;
 	}

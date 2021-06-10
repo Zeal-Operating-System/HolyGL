@@ -38,7 +38,7 @@ class CWADTex
 // then it is closed.
 class CWAD
 {
-	U8 *fileBuf;		// Temporary loaded file
+	U8 *fileBuf;		// Temporary loaded file
 	CWADHeader *header;
 	CWADEntry *entries;	// Entry array
 	CWADTex *textures;	// Texture array
@@ -142,7 +142,7 @@ class CBMPHeader
 	U32 nImptColors;	// Number of important colors (=0 for all) 
 };
 
-U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname, Bool mask = FALSE, 
+U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname, Bool mask = FALSE, 
 	Bool invert = TRUE)
 {
 	U8 *bmp = FileRead(fname);
