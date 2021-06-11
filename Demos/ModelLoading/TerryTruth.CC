@@ -26,7 +26,7 @@ DocClear;
 CTex2D frameBuf;
 CTex2D depthBuf;
 
-Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
+Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
 Tex2DInit(&depthBuf, TEX2D_DEPTH, wW, wH);
 
 // Colors
@@ -72,7 +72,7 @@ class CZMHeader
 
 class CZMTri
 {
-	U32 iV1;	// Vertices
+	U32 iV1;	// Vertices
 	U32 iV2;
 	U32 iV3;
 	U32 iN1;	// Normals

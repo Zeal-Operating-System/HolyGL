@@ -3,10 +3,12 @@
 Cd(__DIR__);;
 #include "Math/Math"
 #include "Texture/Texture"
-#include "Texture/TextureImport"
 #include "Draw/Rectangle"
 #include "Draw/Text"
-#include "Draw/UISmooth"
+#include "Draw/UISmooth"
 #include "UI/Component"
 #include "Render/Shader"
 #include "Render/Rasterize"
+#include "WAD/WADTypes.CC"
+#include "WAD/WAD.CC"
+#include "Texture/TextureImport"

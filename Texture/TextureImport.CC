@@ -1,111 +1,47 @@
-/* WAD Format Header */
 
-
-#define WAD_MAXTEXTURENAME 16
-#define WAD_MIPLEVELS 4
-
-
-class CWADHeader
-{
-	U8 szVersion[4];// Should be WAD2/WAD3
-	I32 nDir;		// Number of directory entries
-	I32 nDirOffset;	// Offset into directory
-};
-
-
-class CWADEntry
-{
-	I32 nFilePos;					// Relative offset
-	I32 nDiskSize;					// Size of file
-	I32 nSize;						// Uncompressed size
-	I8 nType;						// Type of entry
-	I8 bCompression;				// 0 if none
-	I16 pad;
-	U8 szName[WAD_MAXTEXTURENAME];
-};
-
-
-class CWADTex
-{
-	U8 szName[WAD_MAXTEXTURENAME];
-	U32 nWidth, nHeight;
-	U32 nOffsets[WAD_MIPLEVELS];	// Relative offset
-};
-
-
-// CWAD is used as a handle for the texture loading
-// functions while the necessary textures are copied, 
-// then it is closed.
-class CWAD
-{
-	U8 *fileBuf;		// Temporary loaded file
-	CWADHeader *header;
-	CWADEntry *entries;	// Entry array
-	CWADTex *textures;	// Texture array
-};
-
-
-// Load WAD file  
-U0 WADLoad(CWAD *wad, U8 *fname)
-{
-	wad->fileBuf = FileRead(fname);
-
-	// Map locations in buffer
-	wad->header = wad->fileBuf;
-	wad->entries = wad->fileBuf + 
-		wad->header[0].nDirOffset;
-}
-
-
-// Free WAD file from memory
-U0 WADFree(CWAD *wad)
-{
-	Free(wad->fileBuf);
-}
 
 U0 Tex2DLoadWAD(CTex2D *tex, CWAD *wad, U8 *texName)
 {
-	I64 texIndex = -1;	// Will be positive if texture is found
+	if (wad->type != WAD_TYPE_HL)
+	{
+		"[ERROR] CAN NOT YET LOAD TEXTURES FROM NON-HALFLIFE WADS\n";
+		return;
+	}
+
+	CWADFileLumpHL *lump;
+	I64 texIndex = WADFindLump(wad, texName, &lump);
+	
+	if (texIndex < 0)
+	{
+		"[ERROR] CAN NOT FIND %s TEXTURE IN WAD\n", texName;
+		return;
+	}
+	
+	// Map texture class to WAD file buffer
+	CWADTex *wadTex = wad->fileBuf + lump->filePos;
+	
+	// Initialize with WAD format
+	Tex2DInit(tex, TEX2D_WAD, wadTex->width, 
+		wadTex->height);
+
+	// Copy image bytes (each byte references a palette)
+	MemCopy(tex->wadBuf, wad->fileBuf +
+		lump->filePos + wadTex->offsets[0], 
+		wadTex->width * wadTex->height);
+
+	// After the last byte of the fourth mipmap, there
+	// Are two padding bytes, then the palette of triples
+	// of bytes (R,G,B)
+	U8 *palette = wad->fileBuf +
+		lump->filePos + wadTex->offsets[3] + 
+		((wadTex->width * wadTex->height) / 64) + 2;
+
 	I64 i;
-	for (i = 0; i < wad->header[0].nDir; i++)
+	for (i = 0; i < 256; i++)
 	{
-		if (StrMatch(texName, wad->entries[i].szName) != 0)
-		{
-			texIndex = i;
-			break;
-		}
-	}
-	if (i == -1)
-	{
-		"[ERROR] TEXTURE %s COULDN'T BE FOUND", texName;
-	}
-	else
-	{
-		// Map texture class to WAD file buffer
-		CWADTex *wadTex = wad->fileBuf + 
-			wad->entries[texIndex].nFilePos;
-		// Debug
-		// "TEX: %s, W: %d, H: %d", wadTex->szName,
-			wadTex->nWidth, wadTex->nHeight;
-		// Initialize with WAD format
-		Tex2DInit(tex, TEX2D_WAD, wadTex->nWidth, 
-			wadTex->nHeight);
-		// Copy image bytes (each byte references a palette)
-		MemCopy(tex->wadBuf, wad->fileBuf +
-			wad->entries[texIndex].nFilePos + wadTex->nOffsets[0], 
-			wadTex->nWidth * wadTex->nHeight);
-		// After the last byte of the fourth mipmap, there
-		// Are two padding bytes, then the palette of triples
-		// of bytes (R,G,B)
-		U8 *palette = wad->fileBuf +
-			wad->entries[texIndex].nFilePos + wadTex->nOffsets[3] + 
-			((wadTex->nWidth * wadTex->nHeight) / 64) + 2;
-		for (i = 0; i < 256; i++)
-		{
-			tex->paletteBuf[i].r = palette[i * 3];
-			tex->paletteBuf[i].g = palette[(i * 3) + 1];
-			tex->paletteBuf[i].b = palette[(i * 3) + 2];
-		}
+		tex->paletteBuf[i].r = palette[i * 3];
+		tex->paletteBuf[i].g = palette[(i * 3) + 1];
+		tex->paletteBuf[i].b = palette[(i * 3) + 2];
 	}
 }
 
@@ -131,7 +67,7 @@ class CBMPHeader
 						// 8-bit:	256-color palette
 						// 16-bit:	65565 colors
 						// 24-bit:	16M colors
-	U32 nCompression;	// Type of compression:
+	U32 nCompression;	// Type of compression:
 						// 0: BI_RGB	no-compression
 						// 1: BI_RLE8	8-bit RLE encoding
 						// 2: BI_RLE4 	4-bit RLE encoding

@@ -47,7 +47,7 @@ U0 Tex2DInit(CTex2D *tex, I64 type, I64 w, I64 h)
 	}
 }
 
-// Free texture from memory
+// Free texture from memory
 U0 Tex2DFree(CTex2D *tex)
 {
 	switch (tex->type)
@@ -61,7 +61,7 @@ U0 Tex2DFree(CTex2D *tex)
 		break;
 
 		case TEX2D_WAD:
-			Free(tex->wadBuf);
+			Free(tex->wadBuf);
 			Free(tex->paletteBuf);
 		break;
 	}

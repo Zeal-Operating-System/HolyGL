@@ -1,97 +1,138 @@
 
-/* WAD File Format */
+#define WAD_TYPE_HL		1
+#define WAD_TYPE_DOOM	2
+#define HTT_LUMP		69	// Hash Table Type for lump hash
 
-class CWADInfo
+// Hash for quick access of lump by name
+class CHashLump : CHash
 {
-	U8 type[4];		// Type of WAD, like IWAD/PWAD/WAD3
-	I32 nLumps;		// Number of lumps
-	I32 lumpOffset;	// Offset to lump
+	CWADFileLump *lump;		// Pointer to lump
+							// Access with lump->doom/lump->hl
+	I64 lumpIndex;			// Index of lump in WAD
 };
 
-class CWADFileLumpDoom
+class CWAD
 {
-	I32 filePos;		// Relative offset
-	I32 size;
-	U8 name[8];
+	U8 *fileBuf;
+	CWADInfo *info;				// Type, size, pointer to lumps
+	CWADFileLumpDoom *doomLumps;// Quick access doom lumps
+	CWADFileLumpHL	*hlLumps;	// Quick access half life lumps
+	I64 type;					// WAD type
+	CHashTable *lumpTable;		// Hash table for quick access of
+								// lumps by name.
+	CHashLump *hashLumps;		// Hashes for lumpTable.
 };
 
-class CWADFileLumpHalfLife
+// Load WAD file
+U0 WADLoad(CWAD *wad, U8 *fname)
 {
-	I32 filePos;		// Relative offset
-	I32 diskSize;		// Size of lump (compressed)
-	I32 size;			// Uncompressed lump size
-	I8 type;
-	I8 compression;		// 0 if none
-	I16 pad;
-	U8 name[16];
-};
+	wad->fileBuf = FileRead(fname);
 
-/* DOOM BSP */
+	// Map locations in buffer
+	wad->info = wad->fileBuf;
+	
+	// Allocate hash table
+	wad->lumpTable = HashTableNew(wad->info->nLumps);	// Table
+	wad->hashLumps = CAlloc(wad->info->nLumps *			// Hashes
+		sizeof(CHashLump));
 
+	I64 i;
 
-class CWADThing
+	// Check version and proceed accordingly
+	U32 *type = wad->info->type;	// Cast to U32
+
+	//           'WAD3': Half Life      'WAD2': Quake
+	if (*type == 0x33444157 || *type == 0x32444157)
+	{
+		wad->type = WAD_TYPE_HL;
+
+		// Map lumps to buffer
+		wad->hlLumps = wad->fileBuf + wad->info->lumpOffset;
+			
+		for (i = 0; i < wad->info->nLumps; i++)
+		{
+			// Copy name to hash
+			wad->hashLumps[i].str = CAlloc(17); // 16 + NULL
+			MemCopy(wad->hashLumps[i].str, 
+				wad->hlLumps[i].name, 16);
+
+			// Set hash type
+			wad->hashLumps[i].type = HTT_LUMP;
+
+			// Link lump to hash
+			wad->hashLumps[i].lump = &wad->hlLumps[i];
+
+			// Set lump index in hash to this index
+			wad->hashLumps[i].lumpIndex = i;
+
+			// Add hash to table
+			HashAdd(&wad->hashLumps[i], wad->lumpTable);
+		}
+		return;
+	}
+	
+	//           'IWAD': Doom Internal  'PWAD': Doom Patch
+	if (*type == 0x44415749 || *type == 0x44415750)
+	{
+		wad->type = WAD_TYPE_DOOM;
+
+		// Map lumps to buffer
+		wad->doomLumps = wad->fileBuf + wad->info->lumpOffset;
+
+		for (i = 0; i < wad->info->nLumps - 10; i++)
+		{
+			// Copy name to hash
+			wad->hashLumps[i].str = CAlloc(9); // 8 + NULL
+			MemCopy(wad->hashLumps[i].str, 
+				wad->doomLumps[i].name, 8);
+
+			// Set hash type
+			wad->hashLumps[i].type = HTT_LUMP;
+
+			// Link lump to hash
+			wad->hashLumps[i].lump = &wad->doomLumps[i];
+
+			// Set lump index in hash to this index
+			wad->hashLumps[i].lumpIndex = i;
+
+			// Add hash to table
+			HashAdd(&wad->hashLumps[i], wad->lumpTable);
+		}
+		return;
+	}
+
+	// Type not recognized
+	U64 typeStr = 0;
+	MemCopy(&typeStr, wad->type, 4);
+	"[ERROR] %s WAD TYPE NOT RECOGNIZED: %s\n", typeStr;
+}
+
+// Finds lump with name and points **lump at it.
+// Returns index of lump, or -1 if lump not found.
+I64 WADFindLump(CWAD *wad, U8 *name, CWADFileLump **lump = NULL)
 {
-	I16 x;
-	I64 y;
-	I16 angle;
-	I16 type;
-	I16 flags;
-};
+	CHashLump *lumpHash;
+	lumpHash = HashFind(name, wad->lumpTable, HTT_LUMP);
 
-// Linedefs make up the shape of the map.
-class CWADLinedef
+	if (lumpHash != NULL)
+	{
+		if (lump != NULL)
+			*lump = lumpHash->lump;
+
+		return lumpHash->lumpIndex;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+// Free WAD file from memory
+U0 WADFree(CWAD *wad)
 {
-	I16 startVertex;
-	I16 endVertex;
-	I16 flags;
-	I16 type;
-	I16 sectorTag;
-	I16 frontSidedef;
-	I16 backSidedef;
-};
+	Free(wad->hashLumps);
+	Free(wad->lumpTable->body);
+	Free(wad->lumpTable);
+	Free(wad->fileBuf);
+}
 
-// Textures for one side of a wall (linedef).
-class CWADSidedef
-{
-	I16 xOffset;
-	I16 yOffset;
-	U8 upperTex[8];
-	U8 lowerTex[8];
-	U8 middleTex[8];
-	I16 sectorFaces;	// Sector this sidedef faces
-};
-
-class CWADVertex
-{
-	I32 x;
-	I32 y;
-};
-
-class CWADSegs
-{
-	I16 startVertex;
-	I16 endVertex;
-	I16 angle;
-	I16 linedef;
-	I16 direction;
-	I16 offset;
-};
-
-// A subsector is a range of linedefs, and forms part or all
-// of a single sector. Subsectors are always convex.
-class CWADSubSector
-{
-	I16 nLinedefs;
-	I16 firstLinedef;
-};
-
-class CWADNode
-{
-	I16 x;
-	I16 y;
-};
-
-
-/* DOOM Flats, Sprites, and Patches */
-
-/* Half Life Texture */
