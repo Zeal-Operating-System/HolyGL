@@ -9,6 +9,8 @@ Cd(__DIR__);;
 #include "UI/Component"
 #include "Render/Shader"
 #include "Render/Rasterize"
-#include "WAD/WADTypes.CC"
-#include "WAD/WAD.CC"
-#include "Texture/TextureImport"
+#include "WAD/WADTypes"
+#include "WAD/WAD"
+#include "Texture/TextureImport"
+#include "WAD/DoomTypes"
+#include "WAD/DoomMap"

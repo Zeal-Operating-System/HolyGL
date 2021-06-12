@@ -47,7 +47,7 @@ CTex2D TexKingTerrySkin;
 Tex2DLoadWAD(&TexKingTerrySkin, &wad, "KingTerry_Skin");
 
 CTex2D TexKingTerryBody;
-Tex2DLoadWAD(&TexKingTerryBody, &wad, "KingTerry_Body");
+Tex2DLoadWAD(&TexKingTerryBody, &wad, "KingTerry_Body");
 
 CTex2D TexNebula;
 Tex2DLoadWAD(&TexNebula, &wad, "Nebula");
@@ -72,7 +72,7 @@ class CZMHeader
 
 class CZMTri
 {
-	U32 iV1;	// Vertices
+	U32 iV1;	// Vertices
 	U32 iV2;
 	U32 iV3;
 	U32 iN1;	// Normals

@@ -47,7 +47,7 @@ class CWADThing
 	I16 flags;
 };
 
-// Linedefs make up the shape of the map.
+// Linedefs make up the shape of the map.
 class CWADLinedef
 {
 	I16 startVertex;
@@ -72,8 +72,8 @@ class CWADSidedef
 
 class CWADVertex
 {
-	I32 x;
-	I32 y;
+	I16 x;
+	I16 y;
 };
 
 class CWADSegs
@@ -86,7 +86,7 @@ class CWADSegs
 	I16 offset;
 };
 
-// A subsector is a range of linedefs, and forms part or all
+// A subsector is a range of linedefs, and forms part or all
 // of a single sector. Subsectors are always convex.
 class CWADSubSector
 {
@@ -102,6 +102,18 @@ class CWADNode
 
 
 /* DOOM Flats, Sprites, and Patches */
+
+// This is variable length, do not allocate but instead map to loaded buffer
+class CWADPatch
+{
+	U16 w;
+	U16 h;
+	I16 l;				// Offsets to shift origin point when drawing.
+	I16 t;
+	U32 columnOffsets[320];	// Array of offsets (relative to header) of size
+							// width. If columns are identical they may point 
+							// to the same column in the file.
+};
 
 /* Half Life Texture */
 

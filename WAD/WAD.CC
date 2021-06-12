@@ -21,12 +21,38 @@ class CWAD
 	CHashTable *lumpTable;		// Hash table for quick access of
 								// lumps by name.
 	CHashLump *hashLumps;		// Hashes for lumpTable.
+	CBGR24 *paletteBuf;			// Color palette 0 for texture loading if doom
 };
+
+
+// Finds lump with name and points **lump at it.
+// Returns index of lump, or -1 if lump not found.
+I64 WADFindLump(CWAD *wad, U8 *name, CWADFileLump **lump = NULL)
+{
+	CHashLump *lumpHash;
+	lumpHash = HashFind(name, wad->lumpTable, HTT_LUMP);
+
+	if (lumpHash != NULL)
+	{
+		if (lump != NULL)
+			*lump = lumpHash->lump;
+
+		return lumpHash->lumpIndex;
+	}
+	else
+	{
+		return -1;
+	}
+}
 
 // Load WAD file
 U0 WADLoad(CWAD *wad, U8 *fname)
 {
 	wad->fileBuf = FileRead(fname);
+
+	// For palette loading if doom WAD
+	CWADFileLumpDoom *paletteLump;
+	U8 *paletteColor;
 
 	// Map locations in buffer
 	wad->info = wad->fileBuf;
@@ -57,12 +83,12 @@ U0 WADLoad(CWAD *wad, U8 *fname)
 				wad->hlLumps[i].name, 16);
 
 			// Set hash type
-			wad->hashLumps[i].type = HTT_LUMP;
+			wad->hashLumps[i].type = HTT_LUMP;
 
 			// Link lump to hash
 			wad->hashLumps[i].lump = &wad->hlLumps[i];
 
-			// Set lump index in hash to this index
+			// Set lump index in hash to this index
 			wad->hashLumps[i].lumpIndex = i;
 
 			// Add hash to table
@@ -98,6 +124,22 @@ U0 WADLoad(CWAD *wad, U8 *fname)
 			// Add hash to table
 			HashAdd(&wad->hashLumps[i], wad->lumpTable);
 		}
+
+		// Load palette 0 for texture loading later if it exists
+		if (WADFindLump(wad, "PLAYPAL", &paletteLump) != -1)
+		{
+			wad->paletteBuf = MAlloc(sizeof(CBGR24) * 256);
+			paletteColor = wad->fileBuf + paletteLump->filePos;
+			
+			// Load each 3-byte RGB color into 4 byte BGRA palette
+			for (i = 0; i < 256; i++)
+			{
+				wad->paletteBuf[i].r = paletteColor[i * 3];
+				wad->paletteBuf[i].g = paletteColor[i * 3 + 1];
+				wad->paletteBuf[i].b = paletteColor[i * 3 + 2];
+			}
+		}
+ 
 		return;
 	}
 
@@ -105,26 +147,6 @@ U0 WADLoad(CWAD *wad, U8 *fname)
 	U64 typeStr = 0;
 	MemCopy(&typeStr, wad->type, 4);
 	"[ERROR] %s WAD TYPE NOT RECOGNIZED: %s\n", typeStr;
-}
-
-// Finds lump with name and points **lump at it.
-// Returns index of lump, or -1 if lump not found.
-I64 WADFindLump(CWAD *wad, U8 *name, CWADFileLump **lump = NULL)
-{
-	CHashLump *lumpHash;
-	lumpHash = HashFind(name, wad->lumpTable, HTT_LUMP);
-
-	if (lumpHash != NULL)
-	{
-		if (lump != NULL)
-			*lump = lumpHash->lump;
-
-		return lumpHash->lumpIndex;
-	}
-	else
-	{
-		return -1;
-	}
 }
 
 // Free WAD file from memory
