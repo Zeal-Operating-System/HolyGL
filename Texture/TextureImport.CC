@@ -1,102 +1,158 @@
+/**
+	Loads Half-Life texture from WAD file.
 
-
-U0 Tex2DLoadWAD(CTex2D *tex, CWAD *wad, U8 *texName, U8 *paletteBuf=NULL)
+	@param CTex2D *tex	Unitialized texture to load into.
+	@param CWAD *wad	WAD file to load from.
+	@param U8 *texName	Name of texture lump in WAD file to load.
+*/
+U0 Tex2DLoadWAD(CTex2D *tex, CWAD *wad, U8 *texName)
 {
-	I64 i;
-	U8 *palette;
-	CWADTex *wadTex;
+	if (wad->type != WAD_TYPE_HL)
+	{
+		"[ERROR] CAN NOT LOAD %s TEXTURE FROM NON-HALF-LIFE WAD %s. USE LOAD
+		SPRITE/FLAT/WALL FOR DOOM WADS.\n", texName, wad->name;
+		return;
+	}
 
 	// Get lump handle
-	CWADFileLump *lump;
+	CWADFileLumpHL *lump;
 	I64 texIndex = WADFindLump(wad, texName, &lump);
 	
 	if (texIndex < 0)
 	{
-		"[ERROR] CAN NOT FIND %s TEXTURE IN WAD\n", texName;
+		"[ERROR] CAN NOT FIND %s TEXTURE IN WAD %s\n", texName, wad->name;
 		return;
 	}
 
-	// Half-Life/Quake Texture
-	if (wad->type == WAD_TYPE_HL)
-	{		
-		// Map texture class to WAD file buffer
-		wadTex = wad->fileBuf + lump->hl.filePos;
+	// Map texture class to WAD file buffer
+	CWADTexHL *wadTex = wad->fileBuf + lump->filePos;
+
+	Tex2DInit(tex, TEX2D_RAW, wadTex->w, wadTex->h);
+
+	// Map pixel array
+	U8 *pixel = wad->fileBuf + lump->filePos + wadTex->offsets[0];
 	
-		// Initialize texture with WAD format
-		Tex2DInit(tex, TEX2D_WAD, wadTex->width, 
-			wadTex->height);
+	// After the last byte of the fourth mipmap, there are two padding bytes,
+	// then a palette of 24-bit color (R, G, B).
+	U8 *palette = wad->fileBuf + lump->filePos + wadTex->offsets[3] +
+		((wadTex->w * wadTex->h) / 64) + 2;	
+		// 1/64 here is the relative size of 4th mip map
 
-		// Copy image bytes (each byte references the palette)
-		MemCopy(tex->wadBuf, wad->fileBuf +
-			lump->hl.filePos + wadTex->offsets[0], 
-			wadTex->width * wadTex->height);
+	I64 i;
+	CBGR24 color;
+	color.pad = 255;	// Alpha
 
-		// After the last byte of the fourth mipmap, there
-		// Are two padding bytes, then the palette of triples
-		// of bytes (R,G,B)
-		palette = wad->fileBuf +
-			lump->hl.filePos + wadTex->offsets[3] + 
-			((wadTex->width * wadTex->height) / 64) + 2;
-
-		for (i = 0; i < 256; i++)
-		{
-			tex->paletteBuf[i].r = palette[i * 3];
-			tex->paletteBuf[i].g = palette[(i * 3) + 1];
-			tex->paletteBuf[i].b = palette[(i * 3) + 2];
-		}
-
-		return;
-	}
-
-	CWADPatch *wadPatch;
-	U32 *columnOffsets;
-	U8 *column;
-	U8 columnOffset;
-	U8 columnHeight;
-
-	// DOOM Patch
-	if (wad->type == WAD_TYPE_DOOM)
+	for (i = 0; i < wadTex->w * wadTex->h; i++)
 	{
-		// Map patch class to WAD file buffer
-		wadPatch = wad->fileBuf + lump->doom.filePos;
+		color.r = palette[pixel[i] * 3];
+		color.g = palette[(pixel[i] * 3) + 1];
+		color.b = palette[(pixel[i] * 3) + 2];
+		
+		tex->rawBuf[i] = color;
 
-		// Initialize texture with patch format
-		Tex2DInit(tex, TEX2D_PATCH, wadPatch->w, wadPatch->h, 
-			wadPatch->l, wadPatch->t);
+		// Full blue pixels are transparent
+		if (color == 0xFF0000FF)
+			tex->rawBuf[i].pad = 0;
+	}
+}
 
-		// Patches usually share palettes
-		if (paletteBuf != NULL)
+/**
+	@internal
+	Loads DOOM patch at memory location into position on texture.
+
+	Relevant locations on texture should be initialized with a transparent
+	alpha byte.
+
+	@param CTex2D *tex		Initialized texture to load into.
+	@param CWADPatch *patch	Memory location of patch to load from.
+	@param CBGR24* palette	Array of 256 colors.
+	@param I64 l			Left (x) offset.
+	@param I64 t			Top (y) offset.
+*/
+U0 Tex2DLoadWADPatch(CTex2D *tex, CWADPatch *patch, CBGR24 *palette, 
+	I64 l, I64 t)
+{
+	I64 x, y;
+	CWADPost *post;			// Current post being parsed.
+
+	// Direct pointer addition gives wierd results so these are
+	// intermediate pointers:
+	I64 patchAddr = patch;
+	I64 cursor;
+
+	// Iterate through every column in patch
+	for (x = 0; x < patch->w; x++)
+	{
+		// Point post to first post in current column
+		cursor = patchAddr + patch->columnOffsets[x];
+		post = cursor;
+
+		// Post with offset 255 is last post in column and is empty
+		while (post->yOffset != 255)
 		{
-			tex->paletteBuf = paletteBuf;
-		}
-		else
-		{
-			tex->paletteBuf = wad->paletteBuf;
-
-			// Make up a test palette
-			/*tex->paletteBuf = MAlloc(4 * 256);
-			for (i = 0; i < 256; i++)
+			// Draw every pixel in post to texture buffer
+			for (y = 0; y < post->length; y++)
 			{
-				tex->paletteBuf[i].r = i;
-				tex->paletteBuf[i].g = i;
-				tex->paletteBuf[i].b = i;
-			}*/
-		}
+				tex->rawBuf[(x + l) + (y + t + post->yOffset) * tex->w]
+					= palette[post->pixels[y]];
+			}
 
-		// Point columnOffsets in texture to column locations in memory
-		// In future these will point to addresses in a buffer the texture holds
-		for (i = 0; i < wadPatch->w; i++)
-		{
-			tex->columnOffsets[i] = wad->fileBuf + lump->doom.filePos + wadPatch->columnOffsets[i];
-				//&wadPatch[0] + wadPatch->columnOffsets[i];
+			// Point post to next post in column
+			cursor += post->length + 4;	// 3 starting bytes + last pad byte
+			post = cursor;
 		}
 	}
 }
 
+/**
+	Loads DOOM sprite from WAD file.
 
+	@param CTex2D *tex	Unitialized texture to load into.
+	@param CWAD *wad	WAD file to load from.
+	@param U8 *sprName	Name of sprite in WAD file to load.
+*/
+U0 Tex2DLoadWADSprite(CTex2D *tex, CWAD *wad, U8 *sprName)
+{
+	if (wad->type != WAD_TYPE_DOOM)
+	{
+		"[ERROR] CAN NOT LOAD %s SPRITE FROM NON-DOOM %s\n", sprName, wad->name;
+		return;
+	}
 
-/* BMP Format Header */
+	// Get lump handle
+	CWADFileLumpDoom *lump;
+	I64 sprIndex = WADFindLump(wad, sprName, &lump);
 
+	if (sprIndex < 0)
+	{
+		"[ERROR] CAN NOT FIND %s SPRITE IN %s\n", sprName, wad->name;
+		return;
+	} 
+
+	// Map patch class to sprite lump (which is in patch format)
+	CWADPatch *patch = wad->fileBuf + lump->filePos;
+
+	Tex2DInit(tex, TEX2D_RAW, patch->w, patch->h, patch->l, patch->t);
+	Tex2DColorFill(tex, 0);	// To set alpha to 0 since patch's don't draw
+							// the transparent pixels, only opaque ones.
+	Tex2DLoadWADPatch(tex, patch, wad->paletteBuf, 0, 0);
+}
+
+/** 
+	Loads DOOM wall texture from WAD file.
+
+	@param CTex2D *tex	Uninitialized texture to load into.
+	@param CWAD *wad	WAD file to load from.
+	@param U8 *wallName	Name of wall in WAD file to load.
+*/
+U0 Tex2DLoadWADWall(CTex2D *tex, CWAD *wad, U8 *wallName)
+{
+
+}
+
+/**
+	BMP file header.
+*/
 class CBMPHeader
 {
 	U8 szVersion[2];	// Should have 'BM' signature
@@ -126,6 +182,14 @@ class CBMPHeader
 	U32 nImptColors;	// Number of important colors (=0 for all) 
 };
 
+/**
+	Loads BMP image.
+
+	Supports standard uncompressed 24-bit color BMP images.
+
+	@param CTex2D *tex	Uninitialized texture to load into.
+	@param U8 *fname	File name of BMP.
+*/
 U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname, Bool mask = FALSE, 
 	Bool invert = TRUE)
 {
@@ -158,6 +222,7 @@ U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname, Bool mask = FALSE,
 
 	if (mask)
 	{
+		/*
 		// Initialize with MASK format for 1-bit non-compressed color
 		Tex2DInit(tex, TEX2D_MASK, info->nWidth, info->nHeight);
 
@@ -175,6 +240,7 @@ U0 Tex2DLoadBMP(CTex2D *tex, U8 *fname, Bool mask = FALSE,
 				}
 			}
 		}
+		*/
 	}
 	else
 	{

@@ -15,7 +15,7 @@ I64 wX = wXC * 8;
 I64 wY = (wYC + 4) * 8;
 
 SettingsPush;
-WinHorz(wXC, wXC + wWC - 1);
+WinHorz(wXC, wXC + wWC - 1);
 WinVert(wYC, wYC + wHC + 3);
 DocClear;
 
@@ -86,7 +86,7 @@ shd.nVertValues = 1;
 U0 vShader(CTri *tri, F64 *vertOutBuf, U8 *mdlPtr, U8 *uniforms, I64 iTri, I64 nTris)
 {
 	MDL *mdl = mdlPtr;
-	MemCopy(tri, &mdl->tri[iTri], sizeof(CTri));
+	MemCopy(tri, &mdl->tri[iTri], sizeof(CTri));
 	MemCopy(vertOutBuf, &mdl->uv[iTri*3], sizeof(CVec2)*3);
 }
 

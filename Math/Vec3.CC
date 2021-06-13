@@ -92,7 +92,7 @@ U0 Sub3(CVec3 *a, CVec3 *b, CVec3 *o)
 	o->z = a->z - b->z;
 }
 
-/* Sub CVec3 from F64. */
+/* Sub CVec3 from F64. */
 U0 Sub3S(CVec3 *a, F64 b, CVec3 *o)
 {
 	o->x = a->x - b;

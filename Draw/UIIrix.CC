@@ -12,7 +12,7 @@ U0 DrawTextButton(CTex2D *tex, I64 col, I64 row, U8 *str, I64 size = 0,
 	DrawRectSoftOutline(tex, x - 3, y - 3, x + 1 + size * FONT_WIDTH,
 		y + FONT_HEIGHT + 1, gr_palette[DKGRAY]);
 
-	DrawRectVertGradient(tex, x - 2, y - 2, x + 1 + size * FONT_WIDTH,
+	DrawRectVertGradient(tex, x - 2, y - 2, x + 1 + size * FONT_WIDTH,
 		y + FONT_HEIGHT + 1, gr_palette[DKGRAY], gr_palette[WHITE]);
 
 	DrawString(tex, x, y, str, gr_palette[BLACK ]);
@@ -21,5 +21,5 @@ U0 DrawTextButton(CTex2D *tex, I64 col, I64 row, U8 *str, I64 size = 0,
 		*nCol += size + 1;
 
 	if (nRow != NULL)
-		*nRow += 2;
+		*nRow += 2;
 }

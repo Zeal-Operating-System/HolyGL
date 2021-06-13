@@ -1,41 +1,8 @@
+/** Raw format is a CBGR24 rawBuf array of size w * h in row-major order. */
 #define TEX2D_RAW	1
-/* This format is a CBGR24 rawBuf array of size w * h in row-major order. */
 
+/** Depth format is a F64 depthBuf array of size w * h in row-major order. */
 #define TEX2D_DEPTH	2
-/* This format is a F64 depthBuf array of size w * h in row-major order. */
-
-#define TEX2D_WAD	3
-/* This format is a U8 wadBuf array of size w * h in row-major order. Each byte
-points to a color in the CBGR24 paletteBuf array which has a max size of 255. */
-
-#define TEX2D_MASK	4
-/* This format is a U8 array of size w * h in row-major order. Each byte
-corresponds to one pixel, and is either true or false. Mask textures can also
-be used for stencils buffers. */
-
-#define TEX2D_DXT	5
-/* This format is not yet implemented. */
-
-#define TEX2D_PATCH	6
-/* This format is optimized for column rendering. */
-
-#define TEX2D_COLUMN_MAJOR_TYPES 6 	// Column major types >= this, row major <
-
-#define FOURCC_DXT1 0x31545844
-
-/* Posts are a vertical segment of opaque pixels in a column. There may be
-multiple posts in a column, one after the other. The end of a column
-is signified by a post with an offset of 255. This class is variable
-length, and is meant to be mapped to a memory location for easy reading. */
-class CTex2DPost
-{
-	U8 yOffset;		// Offset from start of column or previous post
-					// This is 255 if signaling end of column
-	U8 length;		// Length in pixels/bytes
-	U8 pad;
-	U8 pixels[256];	// Variable size, maximum length of a column is 255
-	// Technically there is a pad byte here but pixels is variable size
-}
 
 class CTex2D
 {
@@ -45,20 +12,20 @@ class CTex2D
 	I64 l;				// Left offset if applicable (for use with sprite textures)
 	I64 t;				// Top offset if applicable (for use with sprite textures)
 	I64 mipmaps;		// Mipmaps, not currently being used
-
-	/* Buffers */
-
 	CBGR24 *rawBuf;		// Raw color buffer. Size: w * h
-	U8 *wadBuf;			// WAD buffer. Size: w * h, pixels point to paletteBuf
-	U8 *maskBuf;		// Mask buffer. Size: w * h, pixels are TRUE/FALSE
 	F64 *depthBuf;		// Depth buffer. Size: w * h, pixels are depth.
-	CBGR24 *paletteBuf;	// Palette if compressed format like WAD/Patch/DXT is used
-	U8 *patchBuf;		// Buffer of posts (see CTex2DPost).
-	I64 *columnOffsets;	// Testing: Pointer to column wherever in memory that may be
-						// Offset in patchBuf to start of each column. Size: w
 };
 
-// Initialize texture, see TEX2D_ definitions for type options
+/**
+	Initialize texture.
+
+	@param [IN/OUT] tex	Uninitialized texture to initialize.
+	@param [IN] type	Type of texture. See TEX2D_ macros for options.
+	@param [IN] w		Width
+	@param [IN] h		Height
+	@param [IN] l		(Optional) left offset for use with sprite textures.
+	@param [IN] t		(Optional) top offset for use with sprite textures.
+*/
 U0 Tex2DInit(CTex2D *tex, I64 type, I64 w, I64 h, I64 l = 0, I64 t = 0)
 {
 	tex->w = w;
@@ -74,28 +41,16 @@ U0 Tex2DInit(CTex2D *tex, I64 type, I64 w, I64 h, I64 l = 0, I64 t = 0)
 		break;
 
 		case (TEX2D_DEPTH):
-			tex->depthBuf = MAlloc(sizeof(F64) * tex->w * tex->h);
-		break;
-
-		case (TEX2D_WAD):
-			tex->wadBuf = MAlloc(tex->w * tex->h);
-			tex->paletteBuf = MAlloc(4 * 256);
-		break;
-
-		case (TEX2D_PATCH):
-			tex->columnOffsets = MAlloc(tex->w * sizeof(I64));
-			// Let the loader handle this for now.
-			// tex->patchBuf = CAlloc(tex->w * tex->h);
-			// paletteBuf pointer may be changed on the fly for lighting
-		break;
-
-		case (TEX2D_MASK):
-			tex->wadBuf = CAlloc((tex->w * tex->h) / 8);
+			tex->depthBuf = MAlloc(sizeof(F64) * tex->w * tex->h);
 		break;
 	}
 }
 
-// Free texture from memory
+/**
+	Free texture.
+	
+	@param [IN/OUT] tex	Texture to free.
+*/
 U0 Tex2DFree(CTex2D *tex)
 {
 	switch (tex->type)
@@ -107,26 +62,25 @@ U0 Tex2DFree(CTex2D *tex)
 		case TEX2D_DEPTH:
 			Free(tex->depthBuf);
 		break;
-
-		case TEX2D_WAD:
-			Free(tex->wadBuf);
-			Free(tex->paletteBuf);
-		break;
-
-		case TEX2D_PATCH:
-			Free(tex->columnOffsets);
-			// Do not free palette buffer as this may be shared
-		break;
 	}
 }
 
-// Fill texture with color, only works with raw textures
+/**
+	Fill texture with color. Only works with raw textures.
+
+	@param [IN/OUT] tex	Texture to color fill.
+	@param [IN] color	Color to fill texture with.
+*/
 U0 Tex2DColorFill(CTex2D *tex, CBGR24 color)
 {
 	MemSetU32(tex->rawBuf, color, tex->w * tex->h);
 }
 
-// Fill depth texture with far depth
+/**
+	Reset depth texture. Set all pixels to far depth.
+
+	@param [IN/OUT] tex	Depth texture to reset.
+*/
 U0 Tex2DDepthReset(CTex2D *tex)
 {
 	F64 depth = 2.0;
@@ -134,7 +88,19 @@ U0 Tex2DDepthReset(CTex2D *tex)
 	MemSetI64(tex->depthBuf, *iDepth, tex->w * tex->h);
 } 
 
-// Renders directly to display buffer. Only for debugging.
+/**
+	Draw texture directly to display buffer. Maps non-visible textures like
+	depth to a visible palette when drawing for visual debugging.
+
+	This may cause fighting with the operating system and flashing/text or
+	other visual updates might show through. If using this for an application,
+	be sure to disable the operating system from drawing to the display buffer
+	in GrWinUpdate32.
+
+	@param [IN] tex	Texture to draw to display buffer.
+	@param [IN] x	X position on screen to draw texture.
+	@param [IN] y	Y position on screen to draw texture. 
+*/
 U0 Tex2DDebugDisp(CTex2D *tex, I64 x, I64 y)
 {
 	// i, j = sampling x, y position on texture
@@ -144,84 +110,42 @@ U0 Tex2DDebugDisp(CTex2D *tex, I64 x, I64 y)
 	F64 scaled;
 	CBGR24 color;
 
-	// For patch textures
-	U8 *position;	// Current position in memory reading pixels from
-	CTex2DPost *post;	// Mapped to memory to read post pixels easier
-
-	if (tex->type < TEX2D_COLUMN_MAJOR_TYPES)
+	for (j = 0; j < tex->h; j++)
 	{
-		// Iterate through x then y for row major types
-		for (j = 0; j < tex->h; j++)
-		{
-			for (i = 0; i < tex->w; i++)
-			{
-				switch (tex->type)
-				{
-					case TEX2D_RAW:
-						text.fb_alias[(x + i) + (y + j) * GR_WIDTH] 
-							= tex->rawBuf[i + j * tex->w];
-					break;
-
-					case TEX2D_DEPTH:
-						// Scaled to display 0-1024 depth
-						scaled = tex->depthBuf[i + j * tex->w] / 4;
-						color.r = scaled;
-						color.g = scaled;
-						color.b = scaled;
-						text.fb_alias[(x + i) + (y + j) * GR_WIDTH] = color;
-					break;
-
-					case TEX2D_WAD:
-						text.fb_alias[(x + i) + (y + j) * GR_WIDTH]
-							= tex->paletteBuf[tex->wadBuf[i + j * tex->w]];
-					break;
-				}
-
-			}
-		}
-	
-	}
-	else
-	{
-		// Only one column-major type: CTEX2D_PATCH
-
 		for (i = 0; i < tex->w; i++)
 		{
-			// Get start of column position from columnOffsets pointer array
-			position = tex->columnOffsets[i];
-		
-			// Map post to start of column for easy post reading
-			post = position;
-
-			// Starting column offset. Each post is offset from the previous
-			I64 columnOffset = 0;
-
-			// Post with offset 255 is last post in column and is empty.
-			while (post->yOffset != 255)
+			switch (tex->type)
 			{
-				columnOffset = post->yOffset;
+				case TEX2D_RAW:
+					text.fb_alias[(x + i) + (y + j) * GR_WIDTH] 
+						= tex->rawBuf[i + j * tex->w];
+				break;
 
-				// Draw each pixel in post to framebuffer
-				for (j = 0; j < post->length; j++)
-				{
-					text.fb_alias[(x + i) +
-						// Here j is current y in this post, offset is added 
-						(y + j + columnOffset) * GR_WIDTH]
-						= tex->paletteBuf[post->pixels[j]];
-				}
-
-				//columnOffset += post->length;
-
-				// Next post starts 1 pad byte after end of previous buffer
-				position += post->length + 4; // 3 starting bytes + last pad
-				post = position;
+				case TEX2D_DEPTH:
+					// Scaled to display 0-1024 depth
+					scaled = tex->depthBuf[i + j * tex->w] / 4;
+					color.r = scaled;
+					color.g = scaled;
+					color.b = scaled;
+					text.fb_alias[(x + i) + (y + j) * GR_WIDTH] = color;
+				break;
 			}
 		}
 	}
 }
 
-// Normalized UV coordinate sampling (0-1)
-// This is not filtered (for now)
+/**
+	Sample color from color textures at normalized UV coordinate (0.0-1.0).
+	Coordinates over 1.0 loop causing a repeating texture effect. 
+
+	Does not handle filtering or mip maps (yet). The MemCopy's are dumb
+	I will replace with simply returning the color soon.
+
+	@param [IN/OUT] col	Sets color at this address to sampled color.
+	@param [IN] tex		Texture to sample from.
+	@param [IN] u		Normalized (0.0-1.0) x coordinate to sample from.
+	@param [IN] v		Normalized (0.0-1.0) y coordinate to sample from.
+*/
 U0 Tex2DSampleNorm(CBGR24 *col, CTex2D *tex, F64 u, F64 v)
 {
 	I64 x = u * tex->w;
@@ -229,58 +153,21 @@ U0 Tex2DSampleNorm(CBGR24 *col, CTex2D *tex, F64 u, F64 v)
 	x %= tex->w;
 	y %= tex->h;
 
-	switch (tex->type)
-	{
-		case TEX2D_RAW:
-			MemCopy(col, &tex->rawBuf[x + y * tex->w], sizeof(CBGR24));
-		break;
-
-		case TEX2D_WAD:
-			MemCopy(col, &tex->paletteBuf[tex->wadBuf[x + y * tex->w]], sizeof(CBGR24));
-		break;
-
-		case TEX2D_PATCH:
-			MemCopy(col, &tex->paletteBuf[tex->patchBuf[x * tex->h + y]], sizeof(CBGR24));
-		break;
-	}
+	MemCopy(col, &tex->rawBuf[x + y * tex->w], sizeof(CBGR24));
 }
 
-// Straight pixel UV coordinate sampling, this saves
-// steps for rendering BSP which use this method.
+/**
+	Sample color from color textures at UV coordinate. Coordinates over texture
+	dimensions loop causing a repeating texture effect.
+
+	@param [IN/OUT] col	Sets color at this address to sampled color.
+	@param [IN] u		X coordinate to sample from.
+	@param [IN] v		Y coordinate to sample from.
+*/
 U0 Tex2DSampleCoord(CBGR24 *col, CTex2D *tex, I64 u, I64 v)
 {
 	u %= tex->w;
 	v %= tex->h;
 
-	switch (tex->type)
-	{
-		case TEX2D_RAW:
-			MemCopy(col, &tex->rawBuf[u + v * tex->w], sizeof(CBGR24));
-		break;
-
-		case TEX2D_WAD:
-			MemCopy(col, &tex->paletteBuf[tex->wadBuf[u + v * tex->w]], sizeof(CBGR24));
-		break;
-
-		case TEX2D_PATCH:
-			MemCopy(col, &tex->paletteBuf[tex->patchBuf[u * tex->h + v]], sizeof(CBGR24));
-		break;
-	}
+	MemCopy(col, &tex->rawBuf[u + v * tex->w], sizeof(CBGR24));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

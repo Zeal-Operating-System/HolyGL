@@ -21,7 +21,7 @@ U0 DrawRectFill(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2, CBGR24 color)
 U0 DrawRectSoftOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2, 
 	CBGR24 color, CBGR24 shadeColor = 0x7FFFFFFF)
 {
-	/** shadeColor can be set to have a different bottom right color. **/
+	/* shadeColor can be set to have a different bottom right color. */
 
 	if (shadeColor == 0x7FFFFFFF)
 		shadeColor = color;
@@ -50,10 +50,10 @@ U0 DrawRectSoftOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 }
 
 /* Draw 1px rectangle outline. */
-U0 DrawRectOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
+U0 DrawRectOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	CBGR24 color, CBGR24 shadeColor = 0x7FFFFFFF)
 {
-	/** shadeColor can be set to have a different bottom right color. **/
+	/* shadeColor can be set to have a different bottom right color. */
 
 	if (shadeColor == 0x7FFFFFFF)
 		shadeColor = color;
@@ -63,7 +63,7 @@ U0 DrawRectOutline(CTex2D *tex, I64 x1, I64 y1, I64 x2, I64 y2,
 	I64 xMin = Clamp(Min(x1, x2), 0, xMaxIndex);
 	I64 xMax = Clamp(Max(x1, x2), 0, xMaxIndex);
 	I64 yMin = Clamp(Min(y1, y2), 0, yMaxIndex);
-	I64 yMax = Clamp(Max(y1, y2), 0, yMaxIndex);
+	I64 yMax = Clamp(Max(y1, y2), 0, yMaxIndex);
 	I64 xLen = xMax - xMin + 1;
 
 	// Top border

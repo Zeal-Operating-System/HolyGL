@@ -48,7 +48,7 @@ class CShader
 		U8 *mdlPtr: 	
 			The pointer to the model it needs to
 			calculate the triangle coords from.
-		U8 *uniforms:
+		U8 *uniforms:
 			The pointer to variables unchanged throughout
 			entire model render (ie: perspective matrix/lighting/Tex2D)
 		I64 iTri:
@@ -72,7 +72,7 @@ class CShader
 
 	Arguments:
 		U8 *vertBuf:
-			Interpolated per-vertex values for that frag, eg pos, uv, normal, etc.
+			Interpolated per-vertex values for that frag, eg pos, uv, normal, etc.
 		U8 *uniforms
 			unchanging variables throughout the render process 
 			(ie: perspective matrix/lighting/Tex2D)

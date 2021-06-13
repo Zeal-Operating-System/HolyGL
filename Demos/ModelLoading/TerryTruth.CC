@@ -47,7 +47,7 @@ CTex2D TexKingTerrySkin;
 Tex2DLoadWAD(&TexKingTerrySkin, &wad, "KingTerry_Skin");
 
 CTex2D TexKingTerryBody;
-Tex2DLoadWAD(&TexKingTerryBody, &wad, "KingTerry_Body");
+Tex2DLoadWAD(&TexKingTerryBody, &wad, "KingTerry_Body");
 
 CTex2D TexNebula;
 Tex2DLoadWAD(&TexNebula, &wad, "Nebula");
@@ -175,7 +175,7 @@ U0 vShaderTex(CTri *tri, F64 *vertOutBuf, U8 *mdlPtr, U8 *uniforms, I64 iTri, I6
 
 	// Copy model directly into the triangle, I won't even transform for this demo.
 	MemCopy(&tri->p[0], &mdl->vert[mdl->tri[t].iV1 - 1], sizeof(CVec3));
-	MemCopy(&tri->p[1], &mdl->vert[mdl->tri[t].iV2 - 1], sizeof(CVec3));
+	MemCopy(&tri->p[1], &mdl->vert[mdl->tri[t].iV2 - 1], sizeof(CVec3));
 	MemCopy(&tri->p[2], &mdl->vert[mdl->tri[t].iV3 - 1], sizeof(CVec3));
 
 	tri->p[0].z = -1 * tri->p[0].z;

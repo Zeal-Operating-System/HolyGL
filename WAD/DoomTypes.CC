@@ -12,7 +12,30 @@ class CDoomBBox
 	I64 y2;
 };
 
-class CDoomSidedef
+/**
+	A sector is a 2D section of the map.
+*/
+class CDoomSector
+{
+	I64 floorH;		// Floor height
+	I64 ceilingH;	// Ceiling height
+
+	CTex2D *floorTex;
+	CTex2D *ceilingTex;
+
+	I64 lightLevel;
+	I64 special;
+	I16 tag;
+
+	I64 nLines;				// Total lines associated with sector
+	//CDoomLine **lines;		// Array of line pointers
+	CDoomBBox blockBox[4];	// Bounding box for height changes
+};
+
+/**
+	A side contains the textures applied to a line (wall).
+*/
+class CDoomSide
 {
 	I64 xOffset;
 	I64 yOffset;
@@ -21,48 +44,56 @@ class CDoomSidedef
 	CTex2D *lowerTex;
 	CTex2D *middleTex;
 
-	// CDoomSector *sectorFacing;
+	CDoomSector *sectorFacing;
 };
 
-class CDoomLinedef
+
+/**
+	Lines make up the shape of the map. A one sided wall is a solid wall,
+	while a two sided wall is a boundary between sectors.
+*/
+class CDoomLine
 {
-	CDoomVertex *startVertex;
-	CDoomVertex *endVertex;
-	I16	flags;
-	I16 type;
-	I16 sectorTag;
-	CDoomSidedef *frontSidedef;
-	CDoomSidedef *backSidedef;
+	CDoomVertex *v1;
+	CDoomVertex *v2;
+	CDoomSide *frontSide;
+	CDoomSide *backSide;
+};
+
+/**
+	Clipped line that is used to make up subsectors.
+*/
+class CDoomSeg
+{
+
 }
 
-class CDoomSector
+/**
+	List of segs indicating some or all visible walls that define a convex
+	BSP leaf.
+*/
+class CDoomSubSector
 {
-	I64 floorHeight;
-	I64 ceilingHeight;
+	CDoomSector *sector;
+	I64 nLines;
+	I64 firstLine;
+};
 
-	CTex2D *floorTex;
-	CTex2D *ceilingTex;
+#define NF_SUBSECTOR 0x8000
 
-	I64 lightLevel;
-	I16 type;
-	I16 tag;
-
-	// Generated:
-	I64 nLinedefs;	// Total linedefs associated with sector
-	I64 *lines;		// List of linedef associated with sector
-	I64 blockbox;	// Coordinates of rectangular box around sector,
-					// box enlarged to align with blockmap.
-}
-
+/**
+	Splits level down a line. On either side of the line is either another
+	child node or a BSP leaf (subsector). 
+*/
 class CDoomNode
 {
 	I64 x;			// Partition start coordinates
 	I64 y;
 	I64 xChange;	// Change from start to end of partition line
 	I64 yChange;
-	CDoomBBox *rightBox;
-	CDoomBBox *leftBox;
+	CDoomBBox rightBox;
+	CDoomBBox leftBox;
 	CDoomNode *rightChild;
 	CDoomNode *leftChild;
-}
+};
 

@@ -32,21 +32,27 @@ WADLoad(&doom1, "DOOM1.WAD");
 CDoomMap map;
 DoomMapLoad(&map, &doom1, "E1M1");
 
+// Sprite loading
+CTex2D sprite;
+Tex2DLoadWADSprite(&sprite, &doom1, "POSSF2F8");
+
+WADFree(&doom1);
+
 CBGR24 cRed;
 cRed.r = 255; cRed.b = cRed.g = 0;
 
 I64 i, a, b, c, d;
-for (i = 0; i < map.nLinedefs; i++)
+for (i = 0; i < map.nLines; i++)
 {
-	a = map.linedefs[i].startVertex->x >> 32;
-	b = map.linedefs[i].startVertex->y >> 32;
-	c = map.linedefs[i].endVertex->x >> 32;
-	d = map.linedefs[i].endVertex->y >> 32;
+	a = map.lines[i].v1->x >> 32;
+	b = map.lines[i].v1->y >> 32;
+	c = map.lines[i].v2->x >> 32;
+	d = map.lines[i].v2->y >> 32;
 
-	a /= 10;
-	b /= 10;
-	c /= 10;
-	d /= 10;
+	a /= 8;
+	b /= 8;
+	c /= 8;
+	d /= 8;
 
 	a += 200;
 	b += 650;
@@ -60,24 +66,20 @@ for (i = 0; i < map.nLinedefs; i++)
 	}
 	else
 	{
-		//DrawPoint(&frameBuf, a, b, cRed);
 		DrawLine(&frameBuf, a, b, c, d, cRed);
 	}
 }
 
-// Attempt texture loading
-CTex2D patch;
-Tex2DLoadWAD(&patch, &doom1, "POSSF2F8");	// As of right now the tex points to the wad
+DrawTexture(&frameBuf, &sprite, 200, 200, TRUE);
 
 while (CharScan() == 0)
 {
 	Tex2DDebugDisp(&frameBuf, wX, wY);
-	Tex2DDebugDisp(&patch, 200, 200);
 	Sleep(1);
 }
 
-WADFree(&doom1);
-Tex2DFree(&patch);
+DoomMapFree(&doom1);
+Tex2DFree(&sprite);
 Tex2DFree(&framebuf);
 SettingsPop;
 Exit;

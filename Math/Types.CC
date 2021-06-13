@@ -25,5 +25,5 @@ class CVec4
 
 class CIVec4
 {
-	I64 x, y, z, w;
+	I64 x, y, z, w;
 };

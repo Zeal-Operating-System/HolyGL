@@ -24,7 +24,8 @@ CTex2D frameBuf;
 Tex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
 Tex2DColorFill(&frameBuf, palette[C_BCKGND]);
 
-// DrawTextButton(&frameBuf, 1, row, "Vertex", 6, NULL, &row);
+I64 row = 1;
+DrawTextButton(&frameBuf, 1, row, "Vertex", 6, NULL, &row);
 
 while (CharScan() == 0)
 {
@@ -34,4 +35,4 @@ while (CharScan() == 0)
 
 Tex2DFree(&frameBuf);
 SettingsPop;
-Exit;
+Exit;
