@@ -1,7 +1,7 @@
 /* This demo shows how to initialize, import, and render textures. */
 
 Cd(__DIR__);;
-#include "../../Gr2.CC"
+#include "../../Gr2/Gr2.CC"
 Cd(__DIR__);;
 
 I64 wWC = 32;	// Window width in columns (256px)
@@ -17,7 +17,7 @@ SettingsPush;
 WinHorz(wXC, wXC + wWC - 1);
 WinVert(wYC, wYC + wHC - 1);
 DocClear;
-sys_winmgr_task = NULL;
+sys_winmgr_task = NULL;
 CTex2D texture;
 Tex2DLoadBMP(&texture, "SaintTerry.bmp");
 
@@ -27,6 +27,6 @@ while (CharScan() == 0)
 	Sleep(1);
 }
 
-Tex2DFree(&texture);
+Tex2DFree(&texture);
 SettingsPop;
 Exit;

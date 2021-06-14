@@ -5,14 +5,14 @@ is rendered directly, so scaling the window will also scale the resulting
 render. */
 
 Cd(__DIR__);;
-#include "../../Gr2.CC"
+#include "../../Gr2/Gr2.CC"
 Cd(__DIR__);;
 
-I64 wWC = 80;  		// Window width in columns (Drop to under 80 for 640x480 displays)
-I64 wHC = 60; 		// Window height in rows (Drop to under 60 for 640x480 displays)
+I64 wWC = 160;  		// Window width in columns (Drop to under 80 for 640x480 displays)
+I64 wHC = 90; 		// Window height in rows (Drop to under 60 for 640x480 displays)
 I64 wW = wWC * 8;
 I64 wH = wHC * 8; 
-I64 wXC = 1;       		// Window x in columns
+I64 wXC = 0;       		// Window x in columns
 I64 wYC = 2;       		// Window y in rows
 I64 wX = wXC * 8;
 I64 wY = (wYC + 0) * 8;
@@ -34,6 +34,9 @@ CBGR24 cBlack;
 cBlack.r = 0; cBlack.g = 0; cBlack.b = 0;
 CBGR24 cRed;
 cRed.r = 255; cRed.g = 20; cRed.b = 20;
+CBGR24 cWhite;
+cWhite.r = 255; cWhite.g = 255; cWhite.b = 255;
+
 Tex2DColorFill(&frameBuf, cBlack);
 
 // Texture Intitalization
@@ -53,6 +56,14 @@ CTex2D TexNebula;
 Tex2DLoadWAD(&TexNebula, &wad, "Nebula");
 
 WADFree(&wad);
+
+// Generate our own page texture
+CTex2D TexPages;
+Tex2DInit(&TexPages, TEX2D_RAW, 256, 256);
+Tex2DColorFill(&TexPages, cWhite);
+DrawString(&TexPages, 16, 20, "I should fix", cBlack);
+DrawString(&TexPages, 16, 35, "the UVs on this", cBlack);
+DrawString(&TexPages, 16, 50, "book model.", cBlack);
 
 class CMat
 {
@@ -143,7 +154,7 @@ UniHat.mat = 3;
 
 // Pages uses WAD texture
 UniformTex UniPages;
-UniPages.tex = &TexRevelation;
+UniPages.tex = &TexPages;	// Set this to &TexRevelation for original.
 UniPages.mat = 4;
 
 // Nebula uses WAD texture
@@ -175,7 +186,7 @@ U0 vShaderTex(CTri *tri, F64 *vertOutBuf, U8 *mdlPtr, U8 *uniforms, I64 iTri, I6
 
 	// Copy model directly into the triangle, I won't even transform for this demo.
 	MemCopy(&tri->p[0], &mdl->vert[mdl->tri[t].iV1 - 1], sizeof(CVec3));
-	MemCopy(&tri->p[1], &mdl->vert[mdl->tri[t].iV2 - 1], sizeof(CVec3));
+	MemCopy(&tri->p[1], &mdl->vert[mdl->tri[t].iV2 - 1], sizeof(CVec3));
 	MemCopy(&tri->p[2], &mdl->vert[mdl->tri[t].iV3 - 1], sizeof(CVec3));
 
 	tri->p[0].z = -1 * tri->p[0].z;
@@ -228,6 +239,8 @@ while (CharScan() == 0)
 
 Tex2DFree(&frameBuf);
 Tex2DFree(&depthBuf);
+Tex2DFree(&TexPages);
+Tex2DFree(&TexRevelation);
 Tex2DFree(&TexKingTerrySkin);
 Tex2DFree(&TexKingTerryBody);
 Tex2DFree(&TexNebula);

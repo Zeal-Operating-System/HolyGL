@@ -2,7 +2,7 @@
 program a shader to render a triangle. */
 
 Cd(__DIR__);;
-#include "../../Gr2.CC"
+#include "../../Gr2/Gr2.CC"
 Cd(__DIR__);;
 
 I64 wWC = 32;  		// Window width in columns (512px)
@@ -86,7 +86,7 @@ shd.nVertValues = 1;
 U0 vShader(CTri *tri, F64 *vertOutBuf, U8 *mdlPtr, U8 *uniforms, I64 iTri, I64 nTris)
 {
 	MDL *mdl = mdlPtr;
-	MemCopy(tri, &mdl->tri[iTri], sizeof(CTri));
+	MemCopy(tri, &mdl->tri[iTri], sizeof(CTri));
 	MemCopy(vertOutBuf, &mdl->uv[iTri*3], sizeof(CVec2)*3);
 }
 
@@ -97,7 +97,7 @@ U0 fShader(CBGR24 *color, F64 *fragInBuf, U8 *uniforms)
 {
 	// We will pass in the texture pointer through the uniform later
 	// when we render.
-	Tex2DSampleNorm(color, uniforms, fragInBuf[0], fragInBuf[1]);
+	Tex2DSampleNorm(color, uniforms, fragInBuf[0], fragInBuf[1]);
 }
 
 // Attach vertex and fragment shader

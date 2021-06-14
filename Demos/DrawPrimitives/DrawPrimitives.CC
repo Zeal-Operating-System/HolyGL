@@ -1,7 +1,7 @@
 /* This demo shows how to draw primitives to textures. */
 
 Cd(__DIR__);;
-#include "../../Gr2.CC"
+#include "../../Gr2/Gr2.CC"
 Cd(__DIR__);;
 
 I64 wWC = 64;	// Window width in columns (512px)
@@ -33,7 +33,7 @@ DrawRectVertGradient(&frameBuf, 64, 128, 96, 256, gr_palette[CYAN],
 DrawRectVertGradient(&frameBuf, 160, 32, 224, 96, gr_palette[BLACK],
 	gr_palette[WHITE], 0.65, 0.7);
 
-DrawRectOutline(&frameBuf, 55, 300, 75, 310, gr_palette[LTGRAY]);
+DrawRectOutline(&frameBuf, 55, 300, 75, 310, gr_palette[LTGRAY]);
 
 // You can also define a second color for adding button-like shading
 DrawRectSoftOutline(&frameBuf, 100, 200, 130, 210, gr_palette[LTGRAY],
@@ -41,7 +41,7 @@ DrawRectSoftOutline(&frameBuf, 100, 200, 130, 210, gr_palette[LTGRAY],
 
 // Drawing text
 DrawChar(&frameBuf, 48, 48, '!', gr_palette[WHITE]);
-DrawString(&frameBuf, 16, 104, "When I wrote this, God said: 
+DrawString(&frameBuf, 16, 104, "When I wrote this, God said:
 calls singing moist days excellence.", gr_palette[GREEN]);
 
 while (CharScan() == 0)
@@ -50,6 +50,6 @@ while (CharScan() == 0)
 	Sleep(1);
 }
 
-Tex2DFree(&frameBuf);
+Tex2DFree(&frameBuf);
 SettingsPop;
 Exit;

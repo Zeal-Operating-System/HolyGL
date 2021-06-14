@@ -1,13 +1,13 @@
-/* This demo renders a BSP. */
+/* This demo renders a BSP. Put DOOM1.WAD in the directory to try this. */
 
 Cd(__DIR__);;
-#include "../../Gr2.CC"
+#include "../../Gr2/Gr2.CC"
 Cd(__DIR__);;
 
 "\n\n\n\n";		// Seperate from annoying warnings
 
 I64 wWC = 90;	// Window width in columns
-I64 wHC = 90;	// Window height in rows
+I64 wHC = 90;	// Window height in rows
 I64 wW = wWC * 8;
 I64 wH = wHC * 8;
 I64 wXC = 1;	// Window x in columns
@@ -42,7 +42,7 @@ CBGR24 cRed;
 cRed.r = 255; cRed.b = cRed.g = 0;
 
 I64 i, a, b, c, d;
-for (i = 0; i < map.nLines; i++)
+for (i = 0; i < map.nLines; i++)
 {
 	a = map.lines[i].v1->x >> 32;
 	b = map.lines[i].v1->y >> 32;
