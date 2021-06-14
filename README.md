@@ -7,4 +7,4 @@ To start using Gr2, simply include the `Gr2.CC` from the root of the `Gr2` repos
 
 	#include "Gr2"
 
-HTML documentation is available in `Docs/html`. Zenith documentation with diagrams is available in `Docs/Gr2.DD`
+HTML documentation is available in `Docs/`. Zenith documentation with diagrams is available in `Gr2/Gr2.DD`
