@@ -1,0 +1,90 @@
+/* This is formatted like a demo but I won't copy it to the Home/CosmicGLDemos
+folder until I have the pipeline down. */
+
+Cd(__DIR__);;
+#include "../Math/Types"
+#include "../Math/Vec4"
+#include "../Math/Vec3"
+
+#include "../Render/Types"
+#include "../Render/Renderer"
+#include "../Render/Rasterize"
+
+#define W_WIDTH 640
+#define W_HEIGHT 480
+
+//-----------------------------------------------------------------------------
+// Prepare single triangle mesh in NDC coordinates
+
+class CTestMesh
+{
+	CVec4 *verts;
+	I64 nTris;
+	I64 nVec4Attrs;		// Number of Vec4 attributes included after vertex 
+} mesh;
+
+mesh.nTris;
+mesh.nVec4Attrs = 0;
+mesh.verts = MAllocAligned(	mesh.nTris * 
+							3 * sizeof(CVec4) +	// Base Vec4 position
+							3 * sizeof(CVec4) * mesh.nVec4Attrs,
+							16);				// 16 byte alignment for SSE
+
+// Coordinates below in NDC. They will have to be in clip coords for real thing
+Vec3(&mesh.verts[0], 0.0, 0.0, 0.0);
+Vec3(&mesh.verts[1], 0.5, -0.5, 0.0);
+Vec3(&mesh.verts[2], 0.25, 0.5, 0.0);
+
+//-----------------------------------------------------------------------------
+// Texture config
+
+CGLTex2D colorBuf, depthBuf;
+CBGR24 cBlack = 0;
+
+GLTex2DInit(&colorBuf, TEX2D_RAW, W_WIDTH, W_HEIGHT);
+GLTex2DColorFill(&colorBuf, cBlack);
+
+GLTex2DInit(&depthBuf, TEX2D_DEPTH, W_WIDTH, W_HEIGHT);
+GLTex2DDepthReset(&depthBuf);
+
+//-----------------------------------------------------------------------------
+// Renderer context
+
+CGLRenderer *renderer =
+	GLRendererNew(4, 6, 16, 32, mesh.nVec4Attrs);
+
+//-----------------------------------------------------------------------------
+// Program compilation (generate vertex and fragment shaders)
+
+//CGLProgram program;
+
+//-----------------------------------------------------------------------------
+// Binning
+
+//-----------------------------------------------------------------------------
+// Execute rasterization
+
+renderer->colorTarget = &colorBuf;
+renderer->depthTarget = &depthBuf;
+GLRendererRasterize(renderer);
+
+//-----------------------------------------------------------------------------
+// Display
+
+while (CharScan() == 0)
+{
+	GLTex2DDebugDisp(&colorBuf, 0, 16);
+	Sleep(1);
+}
+
+//-----------------------------------------------------------------------------
+// Free
+
+GLRendererFree(renderer);
+Free(mesh.verts);
+GLTex2DFree(&colorBuf);
+GLTex2DFree(&depthBuf);
+
+//-----------------------------------------------------------------------------
+
+Exit;

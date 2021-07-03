@@ -1,0 +1,39 @@
+
+/**
+	@defgroup renderer Renderer
+	@brief Fast multi-process AVX2-accelerated triangle rendering.
+*/
+
+/**
+	@ingroup renderer
+	@brief Renderer context, manages memory and processes.
+*/
+class CGLRenderer
+{
+	CGLTex2D *colorTarget;	// Color texture to render to
+	CGLTex2D *depthTarget;	// Depth texture to render to
+	I64 nXTiles;			// Number of tiles along X axis
+	I64 nYTiles;			// Number of tiles along Y axis
+	I64 nTiles;				// Total tiles
+	CVec4 *tris;			// Triangle buffer of all clipped triangles in NDC
+	I64 nTris;
+	I64 attrSize;			// Number of Vec4's that make up each vertex's
+							// attributes.
+	U32 **tileTriBins;		// Pointers to index array for triangles within
+							// each screen tile.
+	U64 activeProcesses;	// Bit field, active processes (cores) are indicated
+							// by a 1.
+};
+
+// Help visualize which core is managing which tiles when debugging.
+CBGR24 gCoreColors[8];
+gCoreColors[0] = 0x000000FF;
+gCoreColors[1] = 0x0000FF00;
+gCoreColors[2] = 0x00FF0000;
+gCoreColors[3] = 0x0000FFFF;
+gCoreColors[4] = 0x00FFFF00;
+gCoreColors[5] = 0x00FF00FF;
+gCoreColors[6] = 0x00FFFFFF;
+gCoreColors[7] = 0x00AACCFF;
+
+

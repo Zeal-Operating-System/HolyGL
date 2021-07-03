@@ -1,0 +1,18 @@
+
+#define GL_JOB_QUEUE_LEN	
+#define GL_JOB_DRAW2D	1
+
+class CGLJob
+{
+	I64 type;
+	CGLTex2D *colorTarget;
+	CBBox2I affectedArea;	// Clipped to target texture
+	I64 activeCores;		// Flags of 1 for all active cores
+}
+
+class CGLCoreManager
+{
+
+}
+
+//GLSubmit2DDrawJob

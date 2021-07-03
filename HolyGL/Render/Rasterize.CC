@@ -1,0 +1,89 @@
+
+/**
+	@internal
+	@ingroup renderer
+	@brief Arguments for GLRasterizeTile.
+*/
+class CGLMPRasterizeTileParams
+{
+	I64 tile;
+	CGLRenderer *renderer;
+	Bool lastProcess;		// True if last process in queue.
+};
+
+/**
+	@ingroup renderer
+	@brief Rasterize triangles in a tile. Meant to be queued to a core.
+
+	@param[in] params	See CRasterizeTileParams.
+*/
+U0 GLMPRasterizeTile(CGLMPRasterizeTileParams *params)
+{
+	I64 tileW, tileH,
+		tileCol, tileRow,
+		tileMinX, tileMinY,
+		tileMaxX, tileMaxY;
+	U8 str[3];
+
+	// Calculate bounds of this tile
+	tileW = params->renderer->depthTarget->w / params->renderer->nXTiles;
+	tileH = params->renderer->depthTarget->h / params->renderer->nYTiles;
+	tileCol = params->tile % params->renderer->nXTiles;
+	tileRow = params->tile / params->renderer->nXTiles;
+	tileMinX = tileCol * tileW;
+	tileMinY = tileRow * tileH;
+	tileMaxX = tileMinX + tileW - 1;
+	tileMaxY = tileMinY + tileH - 1;
+
+	// Visualize tile and which core is rasterizing to it
+	StrPrint(&str, "%d", params->tile);
+	GLDrawString(params->renderer->colorTarget, tileMinX, tileMinY, &str,
+		gCoreColors[Gs->num]);
+
+	// Clear bit for this process (core) if it is last tile
+	if (params->lastProcess)
+	{
+		LBtr(&params->renderer->activeProcesses, Gs->num);
+	} 
+}
+
+/**
+	@ingroup renderer
+	@brief Rasterize binned triangles.
+
+	@param[in] renderer	Renderer context.
+*/
+U0 GLRendererRasterize(CGLRenderer *renderer)
+{
+	I64 i, j;
+
+	// Allocate params ahead of time for each tile so that they can be queued
+	CGLMPRasterizeTileParams *params;
+	params = MAlloc(sizeof(CGLMPRasterizeTileParams) * renderer->nTiles);
+
+	renderer->activeProcesses = 1 << mp_count - 1;
+
+	// Uneven allocation, eventually this will have to be reworked to give
+	// each core an even number of triangles.
+	
+	for (i = 0; i < renderer->nTiles / mp_count; i++)
+	{
+		// Assign each process a tile
+		for (j = 0; j < mp_count; j++)
+		{
+			params[mp_count * i + j].tile = mp_count * i + j;
+			params[mp_count * i + j].renderer = renderer;
+
+			if (i == (renderer->nTiles / mp_count) - 1)
+				params[mp_count * i + j].lastProcess = TRUE;
+			else
+				params[mp_count * i + j].lastProcess = FALSE;
+
+			JobQueue(&GLMPRasterizeTile, &params[mp_count * i + j], j);
+		}
+	}
+	while (renderer->activeProcesses)
+	{
+		Yield;
+	}
+}

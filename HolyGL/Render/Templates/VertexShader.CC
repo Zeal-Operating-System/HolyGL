@@ -1,0 +1,27 @@
+/**
+	@ingroup renderer
+	@brief Reads through model data and generates triangles in clip
+	coordinates.
+*/
+asm
+{
+<SHADER_NAME>::
+
+	PUSH		RBP
+	MOV			RBP, RSP
+	PUSH		R15
+
+	MOV			RAX, SF_ARG2[RBP]
+	MOV			R15, SF_ARG
+_triangle_loop:
+
+	<PROGRAM>
+
+	DEC			R15
+	JNZ			_triangle_loop
+
+	POP			R15
+	POP			RBP
+}
+
+_extern U0 <SHADER_NAME>(U0 *model, I64 startTri, I64 nTris);

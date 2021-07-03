@@ -1,0 +1,70 @@
+
+/**
+    @defgroup GLTex2D Texture
+    @brief The core of the library, almost all functions either read from
+    or write to textures.
+*/
+
+/**
+	@ingroup GLTex2D 
+	@brief Raw format is a CBGR24 rawBuf array of size w * h in row-major 
+	order. 
+*/
+#define TEX2D_RAW	1
+
+/** 
+	@ingroup GLTex2D
+	@brief Depth format is a F64 depthBuf array of size w * h in row-major 
+	order. 
+*/
+#define TEX2D_DEPTH	2
+
+/**
+    @ingroup GLTex2D
+    @brief The texture class, just about everything reads from or writes to this.
+*/
+class CGLTex2D
+{
+	I64 type;			// Type, see TEX2D_ macros above
+	I64 w;				// Width
+	I64 h;				// Height
+	I64 l;				// Left offset if applicable (for use with sprite textures)
+	I64 t;				// Top offset if applicable (for use with sprite textures)
+	I64 mipmaps;		// Mipmaps, not currently being used
+	CBGR24 *rawBuf;		// Raw color buffer. Size: w * h
+	I32 *depthBuf;		// Depth buffer. Size: w * h, pixels are depth.
+};
+
+/**
+	@internal
+	@ingroup GLTex2D
+	@brief BMP file header.
+*/
+class CGLBMPHeader
+{
+	U8 szVersion[2];	// Should have 'BM' signature
+	U32 nSize;			// File size in bytes
+	U32 pad;			// Unused
+	U32 nOffset;		// Offset from beginning of file to data;
+
+	/* Info header is right after first header, so it is merged into this class */
+	U32 nInfoSize;		// Size of this info part of the header (=40)
+	U32 nWidth;			// Image width in pixels
+	U32 nHeight;		// Image height in pixels
+	U16 nPlanes;		// Number of planes (=1)
+	U16 nPxBits;		// Number of bits per pixel. This also indicates palette method:
+						// 1-bit:	Monochrome
+						// 4-bit:	16-color palette
+						// 8-bit:	256-color palette
+						// 16-bit:	65565 colors
+						// 24-bit:	16M colors
+	U32 nCompression;	// Type of compression:
+						// 0: BI_RGB	no-compression
+						// 1: BI_RLE8	8-bit RLE encoding
+						// 2: BI_RLE4 	4-bit RLE encoding
+	U32 nImageSize;		// Size of image if compressed, (can =0 if not compressed)
+	U32 nXPxPerM;		// Horizontal resolution, pixels per meter
+	U32 nYPxPerM;		// Vertical resolution, pixels per meter
+	U32 nColors;		// Number of actually used colors (ie. 256 for 8-bit color)
+	U32 nImptColors;	// Number of important colors (=0 for all) 
+};

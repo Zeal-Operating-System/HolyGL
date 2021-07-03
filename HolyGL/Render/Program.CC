@@ -1,0 +1,21 @@
+
+/**
+	@ingroup renderer
+	@brief Manages vertex/fragment shader and data passed between.
+*/
+class CGLProgram
+{
+	I64 attrSize;			// Size of vertex attributes (in Vec4's)
+
+	U0 (*SubmitArrays)(
+}
+
+/**
+	@ingroup renderer
+	@brief Compiles a vertex shader by inserting custom vertex shader assembly
+	into the GLRendererSubmitArrays function. Saves this 
+*/
+U0 GLProgramCompileVertexShader(CGLProgram *program, U8 *fname)
+{
+	
+}
