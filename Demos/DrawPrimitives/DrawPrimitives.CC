@@ -47,10 +47,10 @@ calls singing moist days excellence.", gr_palette[GREEN]);
 
 while (CharScan() == 0)
 {
-	GLTex2DDebugDisp(&frameBuf, wX, wY);
+	GLTex2DDebugDisp(&frameBuf, wX, wY);
 	Sleep(1);
 }
 
-GLTex2DFree(&frameBuf);
+GLTex2DFree(&frameBuf);
 SettingsPop;
 Exit;

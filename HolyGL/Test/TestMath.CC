@@ -26,17 +26,22 @@ if (!Vec4IsEqual(a, dest))
 // Vec4Add
 
 Vec4(1.25, -2.5, 3.75, -5.0, a);
+Vec3Print(a);
 Vec4(-1.0, 2.0, -3.0, 4.0, b);
 Vec4(0.25, -0.5, 0.75, -1.0, trueRes);
 Vec4Add(a, b, dest);
-if (Vec4IsEqual(dest, trueRes))
+if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4Add NOT WORKING CORRECTLY! RESULT VECTOR:\n";
 	Vec4Print(dest);
 }
 //-----------------------------------------------------------------------------
-
+Vec3Print(dest);
+Vec4Add(a, b, dest);
+"NIGGER NIGGER NIGGER NIGGER \n";
+Vec3Print(dest);
 Free(a);
 Free(b);
-Free(dest);
+Free(dest);
 
+

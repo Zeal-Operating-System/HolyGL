@@ -53,7 +53,7 @@ _VEC4_PRINT::
 //	CVTSS2SD	XMM0, 12[RAX]						// (F64) v->w
 	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x0C;
 //	MOVSD		24[RSP], XMM0						// Push v->w
-	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x18;
+	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x18;
 
 //	CVTSS2SD	XMM0, 8[RAX]						// (F64) v->z
 	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x08;
@@ -449,6 +449,38 @@ _extern _VEC4_DOT I32 Vec4Dot(CVec4 *a, CVec4 *b);
 
 
 
+asm
+{
+_VEC4_MAX::
+	PUSH		RBP
+	MOV			RBP, RSP
+	
+	MOV			RAX, SF_ARG1[RBP]
+//	MOVAPS 		XMM0, [RAX]
+	DU8			0x0F, 0x28, 0x00;
+	MOV 		RAX, SF_ARG2[RBP]
+//	MOVAPS		XMM1, [RAX]
+	DU8			0x0F, 0x28, 0x08;
+//  MAXPS 		XMM0, XMM1
+	DU8			0x0F, 0x5F, 0xC1;
+	MOV 		RAX, SF_ARG3[RBP]
+//	MOVAPS		[RAX], XMM0
+	DU8			0x0F, 0x29, 0x00;
+
+	POP			RBP
+	RET1		24		
+
+}
+/**
+	@ingroup gfxmath
+	@brief Max value of two vectors
+
+	@param[in] 		a		Vector 1
+	@param[in] 		b		Vector 2
+	@param[in,out]	dest	Destination 
+*/
+_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
+
 
 
 
