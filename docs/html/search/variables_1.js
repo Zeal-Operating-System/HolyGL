@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_144',['x',['../group__gfxmath.html#ga6f9d45f38de5d897aa161c6238667ee1',1,'Types.CC']]]
+  ['gglc_146',['gGLC',['../group___g_l_context.html#ga5dc394390e1ba551930b1b93480ea927',1,'Types.CC']]]
 ];

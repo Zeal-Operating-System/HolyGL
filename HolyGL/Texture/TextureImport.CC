@@ -27,7 +27,7 @@ U0 GLTex2DLoadWAD(CGLTex2D *tex, CGLWAD *wad, U8 *texName)
 	// Map texture class to WAD file buffer
 	wadTex = wad->fileBuf + lump->filePos;
 
-	GLTex2DInit(tex, TEX2D_RAW, wadTex->w, wadTex->h);
+	GLTex2DInit(tex, GL_TEX2D_RAW, wadTex->w, wadTex->h);
 
 	// Map pixel array
 	pixel = wad->fileBuf + lump->filePos + wadTex->offsets[0];
@@ -48,7 +48,7 @@ U0 GLTex2DLoadWAD(CGLTex2D *tex, CGLWAD *wad, U8 *texName)
 		
 		tex->rawBuf[i] = color;
 
-		// Full blue pixels are transparent
+		// Full blue pixels are transparent
 		if (color == 0xFF0000FF)
 			tex->rawBuf[i].pad = 0;
 	}
@@ -93,7 +93,7 @@ U0 GLTex2DLoadBMP(CGLTex2D *tex, U8 *fname)
 	imgPointer = bmp + info->nOffset;
 
 	// Initialize with RAW format for 24-bit non-compressed color
-	GLTex2DInit(tex, TEX2D_RAW, info->nWidth, info->nHeight);
+	GLTex2DInit(tex, GL_TEX2D_RAW, info->nWidth, info->nHeight);
 	
 	for (yPx = 0; yPx < info->nHeight; yPx++)
 	{
@@ -101,7 +101,7 @@ U0 GLTex2DLoadBMP(CGLTex2D *tex, U8 *fname)
 		{
 			MemCopy(&tex->rawBuf[xPx + info->nWidth * yPx], 
 				imgPointer + (xPx + info->nWidth * (info->nHeight - yPx)) 
-				* 3, 3);
+				* 3, 3);
 		}
 	}
 

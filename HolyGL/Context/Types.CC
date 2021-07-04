@@ -1,0 +1,20 @@
+/**
+	@defgroup GLContext Context
+	@brief State of the graphics library.
+*/
+
+/**
+	@ingroup GLContext
+	@brief State of HolyGL library.
+*/
+class CGLContext
+{
+	CGLTex2D *colorTarget;
+	CGLTex2D *depthTarget;
+};
+
+/**
+    @ingroup GLContext
+    @brief Global context.
+*/
+CGLContext gGLC;	// Global GL context

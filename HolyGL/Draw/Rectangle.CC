@@ -3,22 +3,26 @@
 	@ingroup GLDraw
 	@brief Draw single color rectangle.
 
-	@param[in,out] tex		Texture to draw to.
 	@param[in]     x0		Start corner x.
 	@param[in]     y0		Start corner y.
 	@param[in]     x1		End corner x.
 	@param[in]     y1		End corner y.
 	@param[in]     color	Color of rectangle.
 */
-U0 GLDrawRectFill(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
+U0 GLDrawRectFill(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
 {
 	I64 xMaxIndex, yMaxIndex,
 		xMin, xMax,
 		yMin, yMax,
-		xLen, y;
+		xLen, y,
+		targetW, targetH;
+	
+	CBGR24 *target = gGLC.colorTarget->rawBuf;
+	targetW = gGLC.colorTarget->w;
+	targetH = gGLC.colorTarget->h;
 
-	xMaxIndex = tex->w - 1;
-	yMaxIndex = tex->h - 1;
+	xMaxIndex = targetW - 1;
+	yMaxIndex = targetH - 1;
 	xMin = Clamp(Min(x0, x1), 0, xMaxIndex);
 	xMax = Clamp(Max(x0, x1), 0, xMaxIndex);
 	yMin = Clamp(Min(y0, y1), 0, yMaxIndex);
@@ -27,7 +31,7 @@ U0 GLDrawRectFill(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
 
 	for (y = yMin; y < yMax; y++)
 	{
-		MemSetU32(&tex->rawBuf[xMin + y * tex->w], color, xLen); 
+		MemSetU32(&target[xMin + y * targetW], color, xLen); 
 	}
 }
 
@@ -35,7 +39,6 @@ U0 GLDrawRectFill(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
 	@ingroup GLDraw
 	@brief Draw 1px soft rectangle outline (corners not filled).
 
-	@param[in,out] tex			Texture to draw to.
 	@param[in]     x0			Start corner x.
 	@param[in]     y0			Start corner y.
 	@param[in]     x1			End corner x.
@@ -44,19 +47,24 @@ U0 GLDrawRectFill(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
 	@param[in]     shadeColor	(Optional) color of bottom right corner
 								for shading effect.
 */
-U0 GLDrawRectSoftOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1, 
+U0 GLDrawRectSoftOutline(I64 x0, I64 y0, I64 x1, I64 y1, 
 	CBGR24 color, CBGR24 shadeColor = 0x7FFFFFFF)
 {
 	I64 xMaxIndex, yMaxIndex,
 		xMin, xMax,
 		yMin, yMax,
-		xLen, y;
+		xLen, y,
+		targetW, targetH;
+
+	CBGR24 *target = gGLC.colorTarget->rawBuf;
+	targetW = gGLC.colorTarget->w;
+	targetH = gGLC.colorTarget->h;
 
 	if (shadeColor == 0x7FFFFFFF)
 		shadeColor = color;
 
-	xMaxIndex = tex->w - 1;
-	yMaxIndex = tex->w - 1;
+	xMaxIndex = targetW - 1;
+	yMaxIndex = targetH - 1;
 	xMin = Clamp(Min(x0, x1), 0, xMaxIndex);
 	xMax = Clamp(Max(x0, x1), 0, xMaxIndex);
 	yMin = Clamp(Min(y0, y1), 0, yMaxIndex);
@@ -64,16 +72,16 @@ U0 GLDrawRectSoftOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 	xLen = xMax - xMin - 1;
 
 	// Top border
-	MemSetU32(&tex->rawBuf[xMin + 1 + yMin * tex->w], color, xLen);
+	MemSetU32(&target[xMin + 1 + yMin * targetW], color, xLen);
 
 	// Bottom border
-	MemSetU32(&tex->rawBuf[xMin + 1 + yMax * tex->w], shadeColor, xLen);
+	MemSetU32(&target[xMin + 1 + yMax * targetW], shadeColor, xLen);
 
 	// Left/Right border
 	for (y = yMin + 1; y < yMax; y++)
 	{
-		tex->rawBuf[xMin + y * tex->w] = color;
-		tex->rawBuf[xMax + y * tex->w] = shadeColor;
+		target[xMin + y * targetW] = color;
+		target[xMax + y * targetW] = shadeColor;
 	}
 }
 
@@ -81,7 +89,6 @@ U0 GLDrawRectSoftOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 	@ingroup GLDraw
 	@brief Draw 1px rectangle outline.
 
-	@param[in,out] tex			Texture to draw to.
 	@param[in]     x0			Start corner x.
 	@param[in]     y0			Start corner y.
 	@param[in]     x1			End corner x.
@@ -90,19 +97,25 @@ U0 GLDrawRectSoftOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 	@param[in]     shadeColor	(Optional) color of bottom right corner
 								for shading effect.
 */
-U0 GLDrawRectOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
-	CBGR24 color, CBGR24 shadeColor = 0x7FFFFFFF)
+U0 GLDrawRectOutline(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color,
+	CBGR24 shadeColor = 0x7FFFFFFF)
 {
 	I64 xMaxIndex, yMaxIndex,
 		xMin, xMax,
 		yMin, yMax,
-		xLen, y;
+		xLen, y,
+		targetW, targetH;
+
+	CBGR24 *target = gGLC.colorTarget->rawBuf;
+	targetW = gGLC.colorTarget->w;
+	targetH = gGLC.colorTarget->h;
+
 
 	if (shadeColor == 0x7FFFFFFF)
 		shadeColor = color;
 
-	xMaxIndex = tex->w - 1;
-	yMaxIndex = tex->w - 1;
+	xMaxIndex = targetW - 1;
+	yMaxIndex = targetH - 1;
 	xMin = Clamp(Min(x0, x1), 0, xMaxIndex);
 	xMax = Clamp(Max(x0, x1), 0, xMaxIndex);
 	yMin = Clamp(Min(y0, y1), 0, yMaxIndex);
@@ -110,16 +123,16 @@ U0 GLDrawRectOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 	xLen = xMax - xMin + 1;
 
 	// Top border
-	MemSetU32(&tex->rawBuf[xMin + yMin * tex->w], color, xLen);
+	MemSetU32(&target[xMin + yMin * targetW], color, xLen);
 
 	// Bottom border
-	MemSetU32(&tex->rawBuf[xMin + yMax * tex->w], shadeColor, xLen);
+	MemSetU32(&target[xMin + yMax * targetW], shadeColor, xLen);
 
 	// Left/Right border
-	for (y = yMin + 1; y < yMax; y++)
+	for (y = yMin + 1; y < yMax; y++)
 	{
-		tex->rawBuf[xMin + y * tex->w] = color;
-		tex->rawBuf[xMax + y * tex->w] = shadeColor;
+		target[xMin + y * targetW] = color;
+		target[xMax + y * targetW] = shadeColor;
 	}
 }
 
@@ -129,7 +142,6 @@ U0 GLDrawRectOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 
 	Should be optimized to avoid such heavy use of F64's.
 
-	@param[in,out] tex			Texture to draw to.
 	@param[in]     x0			Start corner x.
 	@param[in]     y0			Start corner y.
 	@param[in]     x1			End corner x.
@@ -141,21 +153,26 @@ U0 GLDrawRectOutline(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 	@param[in]     tStart		(Optional) start of gradient.
 	@param[in]     tEnd			(Optional) end of gradient.
 */
-U0 GLDrawRectVertGradient(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
-	CBGR24 colorTop, CBGR24 colorBottom, F64 tStart = 0.0, F64 tEnd = 1.0)
+U0 GLDrawRectVertGradient(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 colorTop,
+	CBGR24 colorBottom, F64 tStart = 0.0, F64 tEnd = 1.0)
 {
-	CBGR24 color;
-	I64 xMaxIndex, yMaxIndex,
+	CBGR24 color, *target;
+	I64 xMaxIndex, yMaxIndex,
 		xMin, xMax,
 		yMin, yMax,
 		yMinReal, yMaxReal,
-		xLen, y;
+		xLen, y,
+		targetW, targetH;
 	F64 yHeight, t,
 		rDiff, gDiff, bDiff,
 		r, g, b;
 
-	xMaxIndex = tex->w - 1;
-	yMaxIndex = tex->h - 1;
+	target = gGLC.colorTarget->rawBuf;
+	targetW = gGLC.colorTarget->w;
+	targetH = gGLC.colorTarget->h;
+
+	xMaxIndex = targetW - 1;
+	yMaxIndex = targetH - 1;
 	xMin = Clamp(Min(x0, x1), 0, xMaxIndex);
 	xMax = Clamp(Max(x0, x1), 0, xMaxIndex);
 	yMinReal = Min(y0, y1);
@@ -179,6 +196,6 @@ U0 GLDrawRectVertGradient(CGLTex2D *tex, I64 x0, I64 y0, I64 x1, I64 y1,
 		color.r = colorTop.r + r;
 		color.g = colorTop.g + g;
 		color.b = colorTop.b + b;
-		MemSetU32(&tex->rawBuf[xMin + y * tex->w], color, xLen);
+		MemSetU32(&target[xMin + y * targetW], color, xLen);
 	}
 }

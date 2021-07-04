@@ -6,43 +6,44 @@
 	Does not yet check if texture being drawn is entirely inside the texture
 	being drawn to.
 
-	@param[in,out] dst			Destination texture to draw to.
-	@param[in]     src			Source texture to draw.
+	@param[in]     tex			Texture to draw.
 	@param[in]     x			X location to draw texture.
 	@param[in]     y			Y location to draw texture.
 	@param[in]     transparent	(optional) use alpha as mask. False by default.
 */
-U0 GLDrawTexture(CGLTex2D *dst, CGLTex2D *src, I64 x, I64 y, 
-	Bool transparent = FALSE)
+U0 GLDrawTexture(CGLTex2D *tex, I64 x, I64 y, Bool transparent = FALSE)
 {
 	I64 xC, yC, 			// Current width/height position being copied from
-		srcW, srcH, dstW;
+		texW, texH,
+		targetW;
 
-	srcW = src->w;
-	srcH = src->h;
-	dstW = dst->w;
+	CBGR24 *target = gGLC.colorTarget->rawBuf;
+	targetW = gGLC.colorTarget->w;
+
+	texW = tex->w;
+	texH = tex->h;
 
 	if (transparent)
 	{
-		for (yC = 0; yC < srcH; yC++)
+		for (yC = 0; yC < texH; yC++)
 		{
-			for (xC = 0; xC < srcW; xC++)
+			for (xC = 0; xC < texW; xC++)
 			{
-				if (src->rawBuf[xC + yC * srcW].pad == 255)
+				if (target[xC + yC * texW].pad == 255)
 				{
 					// Assume target doesn't care about alpha byte being copied
-					dst->rawBuf[x + xC + (y + yC) * dstW] =
-						src->rawBuf[xC + yC * srcW];
+					target[x + xC + (y + yC) * targetW] =
+						tex->rawBuf[xC + yC * texW];
 				}
 			} 
 		}
 	}
 	else
 	{
-		for (yC = 0; yC < srcH; yC++)
+		for (yC = 0; yC < texH; yC++)
 		{
-			MemCopy(&dst->rawBuf[x + (y + yC) * dstW],
-				&src->rawBuf[yC * srcW], sizeof(CBGR24) * srcW);
+			MemCopy(&target[x + (y + yC) * targetW], &tex->rawBuf[yC * texW],
+				sizeof(CBGR24) * texW);
 		}
 	}
 }

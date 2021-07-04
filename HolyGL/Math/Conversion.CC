@@ -16,4 +16,4 @@ _DOUBLE_TO_SINGLE::
 	@param[in] d	Double-precision scalar.
 	@return			Single-precision scalar.
 */
-_extern _DOUBLE_TO_SINGLE I32 DoubleToSingle(F64 d);
+_extern _DOUBLE_TO_SINGLE I32 DoubleToSingle(F64 d);

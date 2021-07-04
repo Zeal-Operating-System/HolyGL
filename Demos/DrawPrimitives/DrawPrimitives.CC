@@ -18,33 +18,36 @@ DocClear;
 
 // Prepare framebuffer
 CGLTex2D frameBuf;
-GLTex2DInit(&frameBuf, TEX2D_RAW, wW, wH);
+GLTex2DInit(&frameBuf, GL_TEX2D_RAW, wW, wH);
 GLTex2DColorFill(&frameBuf, gr_palette[WHITE]);
 
-// Draw Rectangles
-GLDrawRectFill(&frameBuf, 32, 32, 128, 96, gr_palette[CYAN]);
+// Bind framebuffer
+GLBindColorTarget(&frameBuf);
 
-GLDrawRectVertGradient(&frameBuf, 64, 128, 96, 256, gr_palette[CYAN],
+// Draw Rectangles
+GLDrawRectFill(32, 32, 128, 96, gr_palette[CYAN]);
+
+GLDrawRectVertGradient(64, 128, 96, 256, gr_palette[CYAN],
 	gr_palette[BLUE]);
 
 // Gradient's starting transition points can also be modified:
-GLDrawRectVertGradient(&frameBuf, 160, 32, 224, 96, gr_palette[BLACK],
+GLDrawRectVertGradient(160, 32, 224, 96, gr_palette[BLACK],
 	gr_palette[WHITE], 0.65, 0.7);
 
-GLDrawRectOutline(&frameBuf, 55, 300, 75, 310, gr_palette[LTGRAY]);
+GLDrawRectOutline(55, 300, 75, 310, gr_palette[LTGRAY]);
 
 // You can also define a second color for adding button-like shading
-GLDrawRectSoftOutline(&frameBuf, 100, 200, 130, 210, gr_palette[LTGRAY],
+GLDrawRectSoftOutline(100, 200, 130, 210, gr_palette[LTGRAY],
 	gr_palette[DKGRAY]);
 
 // Drawing text
-GLDrawChar(&frameBuf, 48, 48, '!', gr_palette[WHITE]);
-GLDrawString(&frameBuf, 16, 104, "When I wrote this, God said:
+GLDrawChar(48, 48, '!', gr_palette[WHITE]);
+GLDrawString(16, 104, "When I wrote this, God said:
 calls singing moist days excellence.", gr_palette[GREEN]);
 
 while (CharScan() == 0)
 {
-	GLTex2DDebugDisp(&frameBuf, wX, wY);
+	GLTex2DDebugDisp(&frameBuf, wX, wY);
 	Sleep(1);
 }
 

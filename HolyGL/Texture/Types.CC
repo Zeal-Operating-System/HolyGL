@@ -10,14 +10,14 @@
 	@brief Raw format is a CBGR24 rawBuf array of size w * h in row-major 
 	order. 
 */
-#define TEX2D_RAW	1
+#define GL_TEX2D_RAW	1
 
 /** 
 	@ingroup GLTex2D
 	@brief Depth format is a F64 depthBuf array of size w * h in row-major 
 	order. 
 */
-#define TEX2D_DEPTH	2
+#define GL_TEX2D_DEPTH	2
 
 /**
     @ingroup GLTex2D
@@ -58,13 +58,13 @@ class CGLBMPHeader
 						// 8-bit:	256-color palette
 						// 16-bit:	65565 colors
 						// 24-bit:	16M colors
-	U32 nCompression;	// Type of compression:
+	U32 nCompression;	// Type of compression:
 						// 0: BI_RGB	no-compression
 						// 1: BI_RLE8	8-bit RLE encoding
 						// 2: BI_RLE4 	4-bit RLE encoding
 	U32 nImageSize;		// Size of image if compressed, (can =0 if not compressed)
 	U32 nXPxPerM;		// Horizontal resolution, pixels per meter
-	U32 nYPxPerM;		// Vertical resolution, pixels per meter
+	U32 nYPxPerM;		// Vertical resolution, pixels per meter
 	U32 nColors;		// Number of actually used colors (ie. 256 for 8-bit color)
 	U32 nImptColors;	// Number of important colors (=0 for all) 
 };

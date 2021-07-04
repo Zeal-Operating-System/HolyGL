@@ -1,0 +1,36 @@
+
+/**
+	@ingroup GLContext
+	@brief Bind color target texture.
+
+	@param[in] colorTarget	Target color texture to draw to.
+*/
+U0 GLBindColorTarget(CGLTex2D *colorTarget)
+{
+	if (colorTarget->type == GL_TEX2D_RAW)
+	{
+		gGLC.colorTarget = colorTarget;
+	}
+	else
+	{
+		"[ERROR] CAN ONLY BIND GL_TEX2D_RAW TEXTURES TO COLOR TARGET\n";
+	}
+}
+
+/**
+	@ingroup GLContext
+	@brief Bind depth target texture.
+
+	@param[in] depthTarget	Target depth texture to draw to.
+*/
+U0 GLBindDepthTarget(CGLTex2D *depthTarget)
+{
+	if (depthTarget->type == GL_TEX2D_DEPTH)
+	{
+		gGLC.depthTarget = depthTarget;
+	}
+	else
+	{
+		"[ERROR] CAN ONLY BIND GL_TEX2D_DEPTH TEXTURES TO DEPTH TARGET\n";
+	}
+}

@@ -34,9 +34,9 @@ if (Vec4IsEqual(dest, trueRes))
 	"[WARNING] Vec4Add NOT WORKING CORRECTLY! RESULT VECTOR:\n";
 	Vec4Print(dest);
 }
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 Free(a);
 Free(b);
-Free(dest);
+Free(dest);
 

@@ -20,11 +20,11 @@ U0 GLTex2DInit(CGLTex2D *tex, I64 type, I64 w, I64 h, I64 l = 0, I64 t = 0)
 
 	switch (type)
 	{
-		case TEX2D_RAW:
+		case GL_TEX2D_RAW:
 			tex->rawBuf = MAlloc(sizeof(CBGR24) * tex->w * tex->h);
 		break;
 
-		case TEX2D_DEPTH:
+		case GL_TEX2D_DEPTH:
 			tex->depthBuf = MAlloc(sizeof(I32) * tex->w * tex->h);
 		break;
 	}
@@ -40,11 +40,11 @@ U0 GLTex2DFree(CGLTex2D *tex)
 {
 	switch (tex->type)
 	{
-		case TEX2D_RAW:
+		case GL_TEX2D_RAW:
 			Free(tex->rawBuf);
 		break;
 
-		case TEX2D_DEPTH:
+		case GL_TEX2D_DEPTH:
 			Free(tex->depthBuf);
 		break;
 	}
@@ -52,7 +52,7 @@ U0 GLTex2DFree(CGLTex2D *tex)
 
 /**
 	@ingroup GLTex2D
-	@brief Fill texture with color. Only works with raw textures.
+	@brief Fill texture with color. Only works with raw textures.
 
 	@param[in,out] tex		Texture to color fill.
 	@param[in]     color	Color to fill texture with.
@@ -68,7 +68,7 @@ U0 GLTex2DColorFill(CGLTex2D *tex, CBGR24 color)
 
 	@param[in,out] tex	Depth texture to reset.
 */
-U0 GLTex2DDepthReset(CGLTex2D *tex)
+U0 GLTex2DDepthReset(CGLTex2D *tex)
 {
 	// Clear with 1.0f
 	MemSetU32(tex->depthBuf, 0x3F800000, tex->w * tex->h);
@@ -103,12 +103,12 @@ U0 GLTex2DDebugDisp(CGLTex2D *tex, I64 x, I64 y)
 		{
 			switch (tex->type)
 			{
-				case TEX2D_RAW:
+				case GL_TEX2D_RAW:
 					text.fb_alias[x + i + (y + j) * GR_WIDTH] 
 						= tex->rawBuf[i + j * tex->w];
 				break;
 
-				case TEX2D_DEPTH:
+				case GL_TEX2D_DEPTH:
 					// Scaled to display 0-1024 depth
 					scaled = tex->depthBuf[i + j * tex->w] / 4;
 					color.r = scaled;
