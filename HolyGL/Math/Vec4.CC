@@ -406,55 +406,10 @@ _extern _VEC4_DIVS U0 Vec4DivS(CVec4 *v, I32 *s, CVec4 *dest);
 
 asm
 {
-_VEC4_DOT::
-	PUSH		RBP
-	MOV			RBP, RSP
-
-	MOV			RAX, SF_ARG1[RBP]
-//	MOVAPS		XMM0, [RAX]
-	DU8			0x0F, 0x28, 0x00;
-	MOV			RAX, SF_ARG2[RBP]
-//	MOVAPS		XMM1, [RAX]
-	DU8			0x0F, 0x29, 0x08;
-//	MULPS		XMM0, XMM1
-	DU8			0x0F, 0x59, 0xC1;
-
-//	MOVHLPS		XMM1, XMM0
-	DU8			0x0F, 0x12, 0xC8;
-//	ADDPS		XMM0, XMM1
-	DU8			0x0F, 0x58, 0xC1;
-//	MOVSS		XMM1, XMM0
-	DU8			0xF3, 0x0F, 0x10, 0xC8;
-//	SHUFPS		XMM1, XMM1, 0
-	DU8			0x0F, 0xC6, 0xC9, 0x00;
-//	ADDSS		XMM0, XMM1
-	DU8			0xF3, 0x0F, 0x58, 0xC1;
-
-//	MOVQ		RAX, XMM0
-	DU8			0x66, 0x48, 0x0F, 0x7E, 0xC0;
-
-	POP			RBP
-	RET1		16
-}
-/**
-	@ingroup gfxmath
-	@brief Dot product of two vectors.
-
-	@param[in] a	Vector 1
-	@param[in] b	Vector 2
-	@return			Dot product.
-*/
-_extern _VEC4_DOT I32 Vec4Dot(CVec4 *a, CVec4 *b);
-
-
-
-
-asm
-{
 _VEC4_MAX::
 	PUSH		RBP
 	MOV			RBP, RSP
-	
+
 	MOV			RAX, SF_ARG1[RBP]
 //	MOVAPS 		XMM0, [RAX]
 	DU8			0x0F, 0x28, 0x00;
@@ -473,14 +428,14 @@ _VEC4_MAX::
 }
 /**
 	@ingroup gfxmath
-	@brief Max value of two vectors
+	@brief Max of two vectors (element-wise).
 
 	@param[in] 		a		Vector 1
 	@param[in] 		b		Vector 2
 	@param[in,out]	dest	Destination 
 */
-_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
-
+_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
+
 
 
 

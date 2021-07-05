@@ -60,7 +60,7 @@ _VEC3_PRINT::
 //	MOVSD		[RSP], XMM0							// Push v->x
 	DU8			0xF2, 0x0F, 0x11, 0x04, 0x24;
 
-	PUSH		3									// # of varargs
+	PUSH		3									// # of varargs
 	PUSH		"X: %n | Y: %n | Z: %n\n"
 	CALL		&Print
 	ADD			RSP, 40
@@ -181,7 +181,7 @@ _extern _VEC4_MUL U0 Vec3Mul(CVec3 *a, CVec3 *b, CVec3 *dest);
 	@param[in]     s	Scalar
 	@param[in,out] dest	Destination
 */
-_extern _VEC4_MULS U0 Vec3MulS(CVec3 *v, I32 *s, CVec3 *dest);
+_extern _VEC4_MULS U0 Vec3MulS(CVec3 *v, I32 *s, CVec3 *dest);
 
 /**
 	@ingroup gfxmath

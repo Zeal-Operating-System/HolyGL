@@ -5,7 +5,7 @@
 
 /**
 	@ingroup gfxmath
-	@brief Integer 2D bounding box.
+	@brief Integer 2D bounding box.
 */
 class CBBox2I
 {
@@ -57,4 +57,4 @@ class CMat4
 };
 
 #define SSE_SIZE	4
-#define AVX_SIZE	8
+#define AVX_SIZE	8
