@@ -51,9 +51,10 @@ class CVec4
 
 	Must be kept on 16 byte alignment in memory.
 */
-class CMat4
+union CMat4
 {
-	U32 e[16];
+	I32 e[16];
+	CVec4 vec[4];
 };
 
 #define SSE_SIZE	4

@@ -25,9 +25,9 @@ Vec4Copy(a, dest);
 if (!Vec4IsEqual(a, dest))
 {
 	"[WARNING] Vec4Copy NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // Vec4Add
 
 Vec4(1.25, -2.5, 3.75, -5.0, a);
@@ -37,7 +37,7 @@ Vec4Add(a, b, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4Add NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 
 //-----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ Vec4AddS(a, s, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4AddS NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 //-----------------------------------------------------------------------------
 // Vec4Sub
@@ -62,7 +62,7 @@ Vec4Sub(a, b, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4Sub NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 
 //-----------------------------------------------------------------------------
@@ -75,7 +75,7 @@ Vec4SubS(a, s, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4SubS NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 //-----------------------------------------------------------------------------
 // Vec4Mul
@@ -87,7 +87,7 @@ Vec4Mul(a, b, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4Mul NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 
 //-----------------------------------------------------------------------------
@@ -100,7 +100,7 @@ Vec4MulS(a, s, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4MulS NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 //-----------------------------------------------------------------------------
 // Vec4Div
@@ -112,7 +112,7 @@ Vec4Div(a, b, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4Div NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 
 //-----------------------------------------------------------------------------
@@ -125,9 +125,9 @@ Vec4DivS(a, s, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4DivS NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // Vec4Max
 
 Vec4(1.25, -2.5, 3.75, -5.0, a);
@@ -137,7 +137,7 @@ Vec4Max(a, b, dest);
 if (!Vec4IsEqual(dest, trueRes))
 {
 	"[WARNING] Vec4Max NOT WORKING CORRECTLY! RESULT VECTOR:\n";
-	Vec3Print(dest);
+	Vec4Print(dest);
 }
 //-----------------------------------------------------------------------------
 //

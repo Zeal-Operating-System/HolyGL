@@ -36,46 +36,42 @@ _VEC3::
 */
 _extern _VEC3 U0 Vec3(F64 x, F64 y, F64 z, CVec3 *dest);
 
-asm
-{
-_VEC3_PRINT::
-	PUSH		RBP
-	MOV			RBP, RSP
-
-	MOV			RAX, SF_ARG1[RBP]	// = *v
-	SUB			RSP, 24
-
-//	CVTSS2SD	XMM0, 8[RAX]						// (F64) v->z
-	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x08;
-//	MOVSD		16[RSP], XMM0						// Push v->z
-	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x10;
-
-//	CVTSS2SD	XMM0, 4[RAX]						// (F64) v->y
-	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x04;
-//	MOVSD		8[RSP], XMM0						// Push v->y
-	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x08;
-
-//	CVTSS2SD	XMM0, [RAX]							// (F64) v->x
-	DU8			0xF3, 0x0f, 0x5A, 0x00;
-//	MOVSD		[RSP], XMM0							// Push v->x
-	DU8			0xF2, 0x0F, 0x11, 0x04, 0x24;
-
-	PUSH		3									// # of varargs
-	PUSH		"X: %n | Y: %n | Z: %n\n"
-	CALL		&Print
-	ADD			RSP, 40
-
-	POP			RBP
-	RET1		8
-}
 /**
 	@ingroup gfxmath
 	@brief Print members of a vector.
 
 	@param[in] v	Vector
 */
-_extern _VEC3_PRINT U0 Vec3Print(CVec3 *v);
+U0 Vec3Print(CVec3 *v)
+{
+	U8 reg R15 str = "%n\t%n\t%n\n\n";
+asm
+{
+	MOV			RAX, SF_ARG1[RBP]	// = *v
+	SUB			RSP, 24
 
+//	CVTSS2SD	XMM0, 8[RAX]
+	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x08;
+//	MOVSD		16[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x10;
+
+//	CVTSS2SD	XMM0, 4[RAX]
+	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x04;
+//	MOVSD		8[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x08;
+
+//	CVTSS2SD	XMM0, [RAX]
+	DU8			0xF3, 0x0f, 0x5A, 0x00;
+//	MOVSD		[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x04, 0x24;
+
+	PUSH		3					// # of varargs
+	PUSH		R15
+	CALL		&Print
+	ADD			RSP, 40
+}
+}
+
 /**
 	@ingroup gfxmath
 	@brief Copy all members of a vector to destination.
@@ -181,7 +177,7 @@ _extern _VEC4_MUL U0 Vec3Mul(CVec3 *a, CVec3 *b, CVec3 *dest);
 	@param[in]     s	Scalar
 	@param[in,out] dest	Destination
 */
-_extern _VEC4_MULS U0 Vec3MulS(CVec3 *v, I32 *s, CVec3 *dest);
+_extern _VEC4_MULS U0 Vec3MulS(CVec3 *v, I32 *s, CVec3 *dest);
 
 /**
 	@ingroup gfxmath

@@ -15,7 +15,7 @@ var hierarchy =
     [ "CHash", null, [
       [ "CHashGLWADLump", "class_c_hash_g_l_w_a_d_lump.html", null ]
     ] ],
-    [ "CMat4", "class_c_mat4.html", null ],
+    [ "CMat4", "union_c_mat4.html", null ],
     [ "CTestMesh", "class_c_test_mesh.html", null ],
     [ "CVec3", "class_c_vec3.html", null ],
     [ "CVec4", "class_c_vec4.html", null ]

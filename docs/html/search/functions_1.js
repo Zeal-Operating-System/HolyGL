@@ -1,29 +1,4 @@
 var searchData=
 [
-  ['glbindcolortarget_96',['GLBindColorTarget',['../group___g_l_context.html#ga98d0bf070e6c11de9f3cb5e3309e2452',1,'Bind.CC']]],
-  ['glbinddepthtarget_97',['GLBindDepthTarget',['../group___g_l_context.html#ga6275119a853243cfa23d0700440533d7',1,'Bind.CC']]],
-  ['gldrawchar_98',['GLDrawChar',['../group___g_l_draw.html#gad5872c68387b7f76c5c4db9295a6cf9b',1,'Text.CC']]],
-  ['gldrawline_99',['GLDrawLine',['../group___g_l_draw.html#gaa213c0e452c680ee3852e795ed6c3c06',1,'Primitive.CC']]],
-  ['gldrawpixel_100',['GLDrawPixel',['../group___g_l_draw.html#ga3096115c6edc31d4e415687671deed43',1,'Primitive.CC']]],
-  ['gldrawrectfill_101',['GLDrawRectFill',['../group___g_l_draw.html#ga54b16f8ab91103f5b56947c9046d8f26',1,'Rectangle.CC']]],
-  ['gldrawrectoutline_102',['GLDrawRectOutline',['../group___g_l_draw.html#gab031f46290a7368251cb816b79719b22',1,'Rectangle.CC']]],
-  ['gldrawrectsoftoutline_103',['GLDrawRectSoftOutline',['../group___g_l_draw.html#gabaed4c159aa91829693008be0fce55c4',1,'Rectangle.CC']]],
-  ['gldrawrectvertgradient_104',['GLDrawRectVertGradient',['../group___g_l_draw.html#gac31a1b1e46c548093fb9f4a3e4292459',1,'Rectangle.CC']]],
-  ['gldrawtexture_105',['GLDrawTexture',['../group___g_l_draw.html#ga2030adde70eb393bff302a46ce61f768',1,'Texture.CC']]],
-  ['glmprasterizetile_106',['GLMPRasterizeTile',['../group__renderer.html#ga8ac0db08eabe8056349cb3cbf1b42279',1,'Rasterize.CC']]],
-  ['glrendererfree_107',['GLRendererFree',['../group__renderer.html#ga24ff16ee3afd930b453d8f3276ca3999',1,'Renderer.CC']]],
-  ['glrenderernew_108',['GLRendererNew',['../group__renderer.html#gabb5f09c9b2344581ae1f1247e91d175e',1,'Renderer.CC']]],
-  ['glrendererrasterize_109',['GLRendererRasterize',['../group__renderer.html#ga96aaa49f5cc0dda7071dff63b1abffab',1,'Rasterize.CC']]],
-  ['gltex2dcolorfill_110',['GLTex2DColorFill',['../group___g_l_tex2_d.html#ga586746f09a8bda1401cdd6b52ca13bdb',1,'Texture.CC']]],
-  ['gltex2ddebugdisp_111',['GLTex2DDebugDisp',['../group___g_l_tex2_d.html#ga7899b95fb59f8b0786966a7d488df2f6',1,'Texture.CC']]],
-  ['gltex2ddepthreset_112',['GLTex2DDepthReset',['../group___g_l_tex2_d.html#ga78870bfca992743ca7da098598d410ae',1,'Texture.CC']]],
-  ['gltex2dfree_113',['GLTex2DFree',['../group___g_l_tex2_d.html#ga8ae45a0a32baacd751d4eee7b4ee2e81',1,'Texture.CC']]],
-  ['gltex2dinit_114',['GLTex2DInit',['../group___g_l_tex2_d.html#ga30532c697541ea6bb8bad7f4d858233d',1,'Texture.CC']]],
-  ['gltex2dloadbmp_115',['GLTex2DLoadBMP',['../group___g_l_tex2_d.html#ga4567052854e2dae3dca56673dad281e1',1,'TextureImport.CC']]],
-  ['gltex2dloadwad_116',['GLTex2DLoadWAD',['../group___g_l_tex2_d.html#ga6031fd8b0bf21b9a1b3134d5d23cbbda',1,'TextureImport.CC']]],
-  ['gltex2dsamplecoord_117',['GLTex2DSampleCoord',['../group___g_l_tex2_d.html#gaaba586cd32716381f341b790c80305c3',1,'Texture.CC']]],
-  ['gltex2dsamplenorm_118',['GLTex2DSampleNorm',['../group___g_l_tex2_d.html#gaae9eed310386c4760e10675946738470',1,'Texture.CC']]],
-  ['glwadfindlump_119',['GLWADFindLump',['../group___g_l_w_a_d.html#ga65dde200047dd9d475fdb54d957b9b95',1,'WAD.CC']]],
-  ['glwadfree_120',['GLWADFree',['../group___g_l_w_a_d.html#ga9762cb9fe39d69d63f86c3b377572a90',1,'WAD.CC']]],
-  ['glwadload_121',['GLWADLoad',['../group___g_l_w_a_d.html#ga6ae5ec02f5c53ec964ecf54605f20a36',1,'WAD.CC']]]
+  ['er_100',['er',['../group__renderer.html#gac6f166c86fd81d2ef74f721d5ecf5d49',1,'Program.CC']]]
 ];

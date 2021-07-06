@@ -13,7 +13,7 @@ var searchData=
   ['cglwadinfo_11',['CGLWADInfo',['../class_c_g_l_w_a_d_info.html',1,'']]],
   ['cglwadtex_12',['CGLWADTex',['../class_c_g_l_w_a_d_tex.html',1,'']]],
   ['chashglwadlump_13',['CHashGLWADLump',['../class_c_hash_g_l_w_a_d_lump.html',1,'']]],
-  ['cmat4_14',['CMat4',['../class_c_mat4.html',1,'']]],
+  ['cmat4_14',['CMat4',['../union_c_mat4.html',1,'']]],
   ['context_15',['Context',['../group___g_l_context.html',1,'']]],
   ['ctestmesh_16',['CTestMesh',['../class_c_test_mesh.html',1,'']]],
   ['cvec3_17',['CVec3',['../class_c_vec3.html',1,'']]],

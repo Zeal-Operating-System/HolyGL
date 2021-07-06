@@ -41,50 +41,48 @@ _VEC4::
 */
 _extern _VEC4 U0 Vec4(F64 x, F64 y, F64 z, F64 w, CVec4 *dest);
 
-asm
-{
-_VEC4_PRINT::
-	PUSH		RBP
-	MOV			RBP, RSP
+#define VEC4_STR "%n\t%n\t%n\t%n\n\n"
 
-	MOV			RAX, SF_ARG1[RBP]	// = *v
-	SUB			RSP, 32
-
-//	CVTSS2SD	XMM0, 12[RAX]						// (F64) v->w
-	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x0C;
-//	MOVSD		24[RSP], XMM0						// Push v->w
-	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x18;
-
-//	CVTSS2SD	XMM0, 8[RAX]						// (F64) v->z
-	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x08;
-//	MOVSD		16[RSP], XMM0						// Push v->z
-	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x10;
-
-//	CVTSS2SD	XMM0, 4[RAX]						// (F64) v->y
-	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x04;
-//	MOVSD		8[RSP], XMM0						// Push v->y
-	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x08;
-
-//	CVTSS2SD	XMM0, [RAX]							// (F64) v->x
-	DU8			0xF3, 0x0F, 0x5A, 0x00;
-//	MOVSD		[RSP], XMM0							// Push v->x
-	DU8			0xF2, 0x0F, 0x11, 0x04, 0x24;
-
-	PUSH		4									// # of varargs
-	PUSH		"X: %n | Y: %n | Z: %n | W: %n\n"
-	CALL		&Print
-	ADD			RSP, 48
-
-	POP			RBP
-	RET1		8
-}
 /**
 	@ingroup gfxmath
 	@brief Print members of a vector.
 
 	@param[in] v	Vector
 */
-_extern _VEC4_PRINT I64 Vec4Print(CVec4 *v);
+U0 Vec4Print(CVec4 *v)
+{
+	U8 reg R15 str = "%n\t%n\t%n\t%n\n\n";
+asm
+{
+	MOV			RAX, SF_ARG1[RBP]	// = *v
+	SUB			RSP, 32
+
+//	CVTSS2SD	XMM0, 12[RAX]
+	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x0C;
+//	MOVSD		24[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x18;
+
+//	CVTSS2SD	XMM0, 8[RAX]
+	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x08;
+//	MOVSD		16[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x10;
+
+//	CVTSS2SD	XMM0, 4[RAX]
+	DU8			0xF3, 0x0F, 0x5A, 0x40, 0x04;
+//	MOVSD		8[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x44, 0x24, 0x08;
+
+//	CVTSS2SD	XMM0, [RAX]
+	DU8			0xF3, 0x0f, 0x5A, 0x00;
+//	MOVSD		[RSP], XMM0
+	DU8			0xF2, 0x0F, 0x11, 0x04, 0x24;
+
+	PUSH		4					// # of varargs
+	PUSH		R15
+	CALL		&Print
+	ADD			RSP, 48
+}
+}
 
 asm
 {
@@ -185,7 +183,7 @@ _extern _VEC4_ADD U0 Vec4Add(CVec4 *a, CVec4 *b, CVec4 *dest);
 asm
 {
 _VEC4_ADDS::
-	PUSH		RBP
+	PUSH		RBP
 	MOV			RBP, RSP
 
 	MOV			RAX, SF_ARG1[RBP]
@@ -434,7 +432,7 @@ _VEC4_MAX::
 	@param[in] 		b		Vector 2
 	@param[in,out]	dest	Destination 
 */
-_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
+_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
 
 
 
