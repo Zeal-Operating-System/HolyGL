@@ -27,7 +27,7 @@ if (!Vec4IsEqual(a, dest))
 	"[WARNING] Vec4Copy NOT WORKING CORRECTLY! RESULT VECTOR:\n";
 	Vec4Print(dest);
 }
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // Vec4Add
 
 Vec4(1.25, -2.5, 3.75, -5.0, a);
@@ -139,12 +139,36 @@ if (!Vec4IsEqual(dest, trueRes))
 	"[WARNING] Vec4Max NOT WORKING CORRECTLY! RESULT VECTOR:\n";
 	Vec4Print(dest);
 }
+
+//-----------------------------------------------------------------------------
+// Vec4Min
+Vec4(1.25, -2.5, 3.75, -5.0, a);
+Vec4(-1.0, 2.0, -3.0, 4.0, b);
+Vec4(-1.0,-2.5,-3.0,-5.0, trueRes);
+Vec4Min(a, b, dest);
+if(!Vec4IsEqual(dest, trueRes))
+{
+	"[WARNING] Vec4Min NOT WORKING CORRECTLY! RESULT VECTOR:\n";
+	Vec4Print(dest);
+}
+Vec4Print(dest);
+
 //-----------------------------------------------------------------------------
 //
+Vec4(1979.1, 1980.2, 1988.3, 0, a);
+Vec4(1991.1, 1996.2, 2004.3, 0, b);
+Vec4(-129.75, -7806.0, 7903.25, 0, trueRes);
+Vec4Cross(a,b, dest);
+if(!Vec4IsEqual(dest, trueRes))
+{
+	"[WARNING] Vec4Cross IS A BIOLUMINESCENT GORILLA; \n";
+	Vec4Print(dest);
+} 
+Vec4Print(dest);
 
 //-----------------------------------------------------------------------------
 
 Free(a);
 Free(b);
 Free(dest);
-
+

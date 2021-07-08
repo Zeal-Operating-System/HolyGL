@@ -183,7 +183,7 @@ _extern _VEC4_ADD U0 Vec4Add(CVec4 *a, CVec4 *b, CVec4 *dest);
 asm
 {
 _VEC4_ADDS::
-	PUSH		RBP
+	PUSH		RBP
 	MOV			RBP, RSP
 
 	MOV			RAX, SF_ARG1[RBP]
@@ -435,6 +435,75 @@ _VEC4_MAX::
 _extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
 
 
+asm
+{
+_VEC4_MIN::
+	PUSH		RBP
+	MOV			RBP, RSP
+
+	MOV			RAX, SF_ARG1[RBP]
+//	MOVAPS 		XMM0, [RAX]
+	DU8			0x0F, 0x28, 0x00;
+	MOV 		RAX, SF_ARG2[RBP]
+//	MOVAPS		XMM1, [RAX]
+	DU8			0x0F, 0x28, 0x08;
+//  MINPS 		XMM0, XMM1
+	DU8			0x0F, 0x5D, 0xC1;
+	MOV 		RAX, SF_ARG3[RBP]
+//	MOVAPS		[RAX], XMM0
+	DU8			0x0F, 0x29, 0x00;
+
+	POP			RBP
+	RET1		24	
+}
+
+_extern _VEC4_MIN U0 Vec4Min(CVec4 *a, Cvec4 *b, CVec4 *dest);
+
+
+asm
+{
+_VEC4_CROSS::
+	PUSH	RBP
+	MOV		RBP, RSP
+
+	MOV		RAX, SF_ARG1[RBP]
+//	MOVAPS	XMM0, [RAX]
+	DU8		0x0F, 0x28, 0x00;
+	MOV		RAX, SF_ARG2[RBP]
+//	MOVAPS	XMM1, SF_ARG2[RBP]
+	DU8		0x0F, 0x28, 0x08;			
+//	MOVAPS	XMM1, XMM0
+	DU8		0x0F, 0x28, 0xC8;
+//  SHUFPS	XMM1, XMM0, 0xC9
+	DU8		0x0F, 0xC6, 0xC8, 0xC9; // (3, 0, 2,1)
+//	MOVAPS 	XMM2, XMM0
+	DU8		0x0F, 0x28, 0xD0;
+//	SHUFPS  XMM2, XMM0, 0xD2
+	DU8		0x0F, 0xC6, 0xD0, 0xD2;	// (3, 1, 0, 2)
+//	MOVAPS	XMM3, XMM0
+	DU8		0x0F, 0x28, 0xD8;
+//	SHUFPS  XMM3, XMM0, 0xC9
+	DU8		0x0F, 0xC6, 0xD8, 0xC9; // (3, 0, 2, 1)
+//	MOVAPS 	XMM4, XMM0
+	DU8		0x0F, 0x28, 0xE0;	
+//	SHUFPS	XMM4, XMM0, 0xD2 
+	DU8		0x0F, 0xC6, 0xE0, 0xD2; // (3, 1, 0, 2)
+
+//	MULPS		XMM5, XMM1
+	DU8		0x0F, 0x59, 0xE9;
+//	MULPS		XMM6, XMM2
+	DU8		0x0F, 0x59, 0xF2;
+//	MULPS		XMM7, XMM3
+	DU8		0x0F, 0x59, 0xFB;
 
 
+	MOV		RAX, SF_ARG3[RBP]
+//	MOVAPS	[RAX], XMM5
+	DU8		0x0F, 0x29, 0x28;
+
+	POP 	RBP
+	RET1	24
+}
+
+_extern _VEC4_CROSS U0 Vec4Cross(CMat4 *m, CVec4 *v, CVec4 *dest);
 
