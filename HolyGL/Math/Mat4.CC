@@ -68,8 +68,7 @@ Bool Mat4IsEqual(CMat4 *a, CMat4 *b)
 
 	for (i = 0; i < 4; i++)
 	{
-		//total += a.vec
-		//Vec4IsEqual(a->vec[i], b->vec[i]);
+		total += Vec4IsEqual(&a->vec[i], &b->vec[i]);
 	}
 	
 	if (total == 4)
@@ -121,7 +120,7 @@ _MAT4_MUL_VEC4::
 //	MOVAPS		XMM6, 32[RAX]
 	DU8			0x0F, 0x28, 0x70, 0x20;
 //	MOVAPS		XMM7, 48[RAX]
-	DU8			0x0F, 0x28, 0x78, 0x30;
+	DU8			0x0F, 0x28, 0x78, 0x30;
 
 //	MULPS		XMM4, XMM0
 	DU8			0x0F, 0x59, 0xE0;
@@ -155,3 +154,107 @@ _MAT4_MUL_VEC4::
 	@param[in,out] dest	Destination 4D vector.
 */
 _extern _MAT4_MUL_VEC4 U0 Mat4MulVec4(CMat4 *m, CVec4 *v, CVec4 *dest);
+
+asm
+{
+_MAT4_MUL::
+	PUSH		RBP
+	MOV			RBP, RSP
+	PUSH		R14
+	PUSH		R15
+
+	MOV			RAX, SF_ARG1[RBP]
+	MOV			R14, SF_ARG2[RBP]
+	MOV			R15, SF_ARG3[RBP]
+
+//	MOVAPS		XMM4, [RAX]
+	DU8			0x0F, 0x28, 0x20;
+//	MOVAPS		XMM5, 16[RAX]
+	DU8			0x0F, 0x28, 0x68, 0x10;
+//	MOVAPS		XMM6, 32[RAX]
+	DU8			0x0F, 0x28, 0x70, 0x20;
+//	MOVAPS		XMM7, 48[RAX]
+	DU8			0x0F, 0x28, 0x78, 0x30;
+
+	MOV			RAX, 4	// = i = 4
+@@05:
+//	MOVAPS		XMM0, [R14]
+	DU8			0x41, 0x0F, 0x28, 0x06;
+//	MOVAPS		XMM1, XMM0
+	DU8			0x0F, 0x28, 0xC8;
+//	MOVAPS		XMM2, XMM0
+	DU8			0x0F, 0x28, 0xD0;
+//	MOVAPS		XMM3, XMM0
+	DU8			0x0F, 0x28, 0xD8;
+//	SHUFPS		XMM0, XMM0, 0x00 (0, 0, 0, 0)
+	DU8			0x0F, 0xC6, 0xC0, 0x00;
+//	SHUFPS		XMM1, XMM1, 0x55 (1, 1, 1, 1)
+	DU8			0x0F, 0xC6, 0xC9, 0x55;
+//	SHUFPS		XMM2, XMM2, 0xAA (2, 2, 2, 2)
+	DU8			0x0F, 0xC6, 0xD2, 0xAA;
+//	SHUFPS		XMM3, XMM3, 0xFF (3, 3, 3, 3)
+	DU8			0x0F, 0xC6, 0xDB, 0xFF;
+
+//	MULPS		XMM0, XMM4
+	DU8			0x0F, 0x59, 0xC4;
+//	MULPS		XMM1, XMM5
+	DU8			0x0F, 0x59, 0xCD;
+//	MULPS		XMM2, XMM6
+	DU8			0x0F, 0x59, 0xD6;
+//	MULPS		XMM3, XMM7
+	DU8			0x0F, 0x59, 0xDF;
+
+//	ADDPS		XMM0, XMM1
+	DU8			0x0F, 0x58, 0xC1;
+//	ADDPS		XMM2, XMM3
+	DU8			0x0F, 0x58, 0xD3;
+//	ADDPS		XMM0, XMM2
+	DU8			0x0F, 0x58, 0xC2;
+
+//	MOVAPS		[R15], XMM0
+	DU8			0x41, 0x0F, 0x29, 0x07;
+
+	ADD			R14, 16
+	ADD			R15, 16
+
+	DEC			RAX
+	JNZ			@@05
+
+	POP			R15
+	POP			R14
+	POP			RBP
+	RET1		24
+}
+/**
+	@ingroup gfxmath
+	@brief Multiply 4x4 matrix by 4x4 matrix.
+
+	@param[in]     a	4x4 matrix.
+	@param[in]     b	4x4 matrix.
+	@param[in,out] dest	Destination 4x4 matrix.
+*/
+_extern _MAT4_MUL U0 Mat4Mul(CMat4 *a, CMat4 *b, CMat4 *dest);
+
+asm
+{
+_MAT4_SET_TRANSLATION::
+	PUSH		RBP
+	MOV			RBP, RSP
+
+
+
+	POP			RBP
+}
+/**
+	@ingroup gfxmath
+	@brief Clear 4x4 matrix and set it to translation transformation.
+
+	@param[in]     x	X translation.
+	@param[in]     y	Y translation.
+	@param[in]     z	Z translation.
+	@param[in,out] dest	Destination 4x4 matrix. 
+*/
+_extern _MAT4_SET_TRANSLATION U0 Mat4SetTranslation(I32 x, I32 y, I32 z,
+	CMat4 *dest);
+
+

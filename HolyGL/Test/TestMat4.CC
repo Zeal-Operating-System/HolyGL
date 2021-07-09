@@ -33,5 +33,17 @@ if (!Vec4IsEqual(destVec, trueVecRes))
 	"[WARNING] Mat4MulVec4 NOT WORKING CORRECTLY! RESULT VECTOR:\n";
 	Vec4Print(destVec);
 }
-//-----------------------------------------------------------------------------
-// Mat4Projection
+//-----------------------------------------------------------------------------
+// Mat4Mul
+Vec4(90.0,	100.0,	110.0,	120.0, &trueMatRes->vec[0]);
+Vec4(202.0,	228.0,	254.0,	280.0, &trueMatRes->vec[1]);
+Vec4(314.0, 356.0,	398.0,	440.0, &trueMatRes->vec[2]);
+Vec4(426.0,	484.0,	542.0,	600.0, &trueMatRes->vec[3]);
+Mat4Mul(countMat, countMat, destMat);
+if (!Mat4IsEqual(destMat, trueMatRes))
+{
+	"[WARNING] Mat4Mul NOT WORKING CORRECTLY! RESULT VECTOR: \n";
+	Mat4Print(destMat);
+}
+//-----------------------------------------------------------------------------
+

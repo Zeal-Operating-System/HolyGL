@@ -418,7 +418,7 @@ _VEC4_MAX::
 	DU8			0x0F, 0x5F, 0xC1;
 	MOV 		RAX, SF_ARG3[RBP]
 //	MOVAPS		[RAX], XMM0
-	DU8			0x0F, 0x29, 0x00;
+	DU8			0x0F, 0x29, 0x00;
 
 	POP			RBP
 	RET1		24		
