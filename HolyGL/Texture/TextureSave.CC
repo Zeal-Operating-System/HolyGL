@@ -1,0 +1,63 @@
+
+/**
+	@ingroup GLTex2D
+	@brief Saves BMP image.
+
+	Creates standard uncompressed 24-bit color BMP images.
+
+	@param[in] tex		Texture to load from.
+	@param[in] fname	File name of BMP to save to.
+*/
+U0 GLTex2DSaveBMP(CGLTex2D *tex, U8 *fname)
+{
+	I64 bmpSize,
+		xPx, yPx,
+		w, h,
+		bmpBufOffset, texBufIndex;
+	U8	*bmp, *bmpPixels;
+
+	w = tex->w;
+	h = tex->h;
+	bmpSize = sizeof(CGLBMPHeader) + w * h * 3;		// 24 bit color
+	bmp = MAlloc(bmpSize);
+
+	// Map locations in buffer;
+	CGLBMPHeader *info = bmp;
+
+	info->szVersion[0] = 'B';
+	info->szVersion[1] = 'M';
+	info->nSize = bmpSize;
+	info->nOffset = sizeof(CGLBMPHeader);
+	info->nInfoSize = 40;
+	info->nWidth = w;
+	info->nHeight = h;
+	info->nPlanes = 1;
+	info->nPxBits = 24;
+	info->nCompression = 0;
+	info->nImageSize = 0;
+	info->nXPxPerM = 3780;
+	info->nYPxPerM = 3780;
+	info->nColors = 0;
+	info->nImptColors = 0;
+
+	// Each pixel is 3 bytes in 24-bit BMP, however CTex2D uses CBGR24
+	// which contains a final padding bit (32-bits per pixel). The rows
+	// also increment in the opposite direction.
+	bmpPixels = bmp + sizeof(CGLBMPHeader);
+
+	for (yPx = 0; yPx < h; yPx++)
+	{
+		for (xPx = 0; xPx < w; xPx++)
+		{
+			bmpBufOffset = (xPx + w * yPx) * 3;
+			texBufIndex = xPx + w * (h - yPx - 1);
+
+			bmpPixels[bmpBufOffset] = tex->rawBuf[texBufIndex].r;
+			bmpPixels[bmpBufOffset + 1] = tex->rawBuf[texBufIndex].g;
+			bmpPixels[bmpBufOffset + 2] = tex->rawBuf[texBufIndex].b;
+		}
+	}
+
+	FileWrite(fname, bmp, bmpSize);
+	Free(bmp);
+}

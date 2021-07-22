@@ -29,7 +29,7 @@ U0 GLDrawTexture(CGLTex2D *tex, I64 x, I64 y, Bool transparent = FALSE)
 		{
 			for (xC = 0; xC < texW; xC++)
 			{
-				if (target[xC + yC * texW].pad == 255)
+				if (tex->rawBuf[xC + yC * texW].pad == 255)
 				{
 					// Assume target doesn't care about alpha byte being copied
 					target[x + xC + (y + yC) * targetW] =
@@ -43,7 +43,44 @@ U0 GLDrawTexture(CGLTex2D *tex, I64 x, I64 y, Bool transparent = FALSE)
 		for (yC = 0; yC < texH; yC++)
 		{
 			MemCopy(&target[x + (y + yC) * targetW], &tex->rawBuf[yC * texW],
-				sizeof(CBGR24) * texW);
+				sizeof(CBGR24) * texW);
 		}
 	}
 }
+
+/**
+	@ingroup GLDraw
+	@brief Draw non-transformed monochrome texture with blit operation.
+
+	Uses pad (alpha) byte to determine transparency. Does not yet check if
+	texture being drawn is entirely inside the texture being drawn to.
+
+	@param[in]     tex			Texture to draw.
+	@param[in]     x			X location to draw texture.
+	@param[in]     y			Y location to draw texture.
+	@param[in]     color		Color of mask.
+*/
+U0 GLDrawTextureMonochrome(CGLTex2D *tex, I64 x, I64 y, CBGR24 color)
+{
+	I64 xC, yC, 			// Current width/height position being copied from
+		texW, texH,
+		targetW;
+
+	CBGR24 *target = gGLC.colorTarget->rawBuf;
+	targetW = gGLC.colorTarget->w;
+
+	texW = tex->w;
+	texH = tex->h;
+
+	for (yC = 0; yC < texH; yC++)
+	{
+		for (xC = 0; xC < texW; xC++)
+		{
+			if (tex->rawBuf[xC + yC * texW].pad > 0)
+			{
+				target[x + xC + (y + yC) * targetW] = color;
+			}
+		} 
+	}
+}
+

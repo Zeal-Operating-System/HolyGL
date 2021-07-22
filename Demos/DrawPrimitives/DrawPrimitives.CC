@@ -51,6 +51,6 @@ while (CharScan() == 0)
 	Sleep(1);
 }
 
-GLTex2DFree(&frameBuf);
-SettingsPop;
+GLTex2DFree(&frameBuf);
+SettingsPop;
 Exit;

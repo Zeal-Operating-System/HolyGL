@@ -26,7 +26,7 @@ _VEC3::
 	RET1		32
 }
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Initialize members of a vector with double-precision floats.
 
 	@param[in]     x	X component.
@@ -37,7 +37,7 @@ _VEC3::
 _extern _VEC3 U0 Vec3(F64 x, F64 y, F64 z, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Print members of a vector.
 
 	@param[in] v	Vector
@@ -71,9 +71,9 @@ asm
 	ADD			RSP, 40
 }
 }
-
+
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Copy all members of a vector to destination.
 
 	@param[in]     src	Source
@@ -111,7 +111,7 @@ _return:
 	RET1	16
 }
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Checks if two vectors are equal.
 
 	@param[in] a	Vector 1
@@ -120,7 +120,7 @@ _return:
 _extern _VEC3_IS_EQUAL Bool Vec3IsEqual(CVec3 *a, CVec3 *b);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Sum of two vectors.
 
 	@param[in]     a	Vector 1
@@ -130,7 +130,7 @@ _extern _VEC3_IS_EQUAL Bool Vec3IsEqual(CVec3 *a, CVec3 *b);
 _extern _VEC4_ADD U0 Vec3Add(CVec3 *a, CVec3 *b, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Add a scalar to a vector.
 
 	@param[in]     v	Vector
@@ -140,7 +140,7 @@ _extern _VEC4_ADD U0 Vec3Add(CVec3 *a, CVec3 *b, CVec3 *dest);
 _extern _VEC4_ADDS U0 Vec3AddS(CVec3 *v, I32 *s, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Difference of two vectors.
 
 	@param[in]     a	Vector 1
@@ -150,7 +150,7 @@ _extern _VEC4_ADDS U0 Vec3AddS(CVec3 *v, I32 *s, CVec3 *dest);
 _extern _VEC4_SUB U0 Vec3Sub(CVec3 *a, CVec3 *b, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Subtract a scalar from a vector.
 
 	@param[in]     v	Vector
@@ -160,7 +160,7 @@ _extern _VEC4_SUB U0 Vec3Sub(CVec3 *a, CVec3 *b, CVec3 *dest);
 _extern _VEC4_SUBS U0 Vec3SubS(CVec3 *v, I32 *s, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Product  of two vectors (element multiplication).
 
 	@param[in]     a	Vector 1
@@ -170,7 +170,7 @@ _extern _VEC4_SUBS U0 Vec3SubS(CVec3 *v, I32 *s, CVec3 *dest);
 _extern _VEC4_MUL U0 Vec3Mul(CVec3 *a, CVec3 *b, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Scale a vector by a scalar.
 
 	@param[in]     v	Vector
@@ -180,7 +180,7 @@ _extern _VEC4_MUL U0 Vec3Mul(CVec3 *a, CVec3 *b, CVec3 *dest);
 _extern _VEC4_MULS U0 Vec3MulS(CVec3 *v, I32 *s, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Quotient of two vectors.
 
 	@param[in]     a	Vector 1
@@ -190,7 +190,7 @@ _extern _VEC4_MULS U0 Vec3MulS(CVec3 *v, I32 *s, CVec3 *dest);
 _extern _VEC4_DIV U0 Vec3Div(CVec3 *a, CVec3 *b, CVec3 *dest);
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Divide a vector by a scalar.
 
 	@param[in]     v	Vector
@@ -198,6 +198,169 @@ _extern _VEC4_DIV U0 Vec3Div(CVec3 *a, CVec3 *b, CVec3 *dest);
 	@param[in,out] dest	Destination
 */
 _extern _VEC4_DIVS U0 Vec3DivS(CVec3 *v, I32 *s, CVec3 *dest);
+
+/**
+	@ingroup Math
+	@brief Min of two vectors (element-wise).
+
+	@param[in]     a	Vector 1
+	@param[in]     b	Vector 2
+	@param[in,out] dest	Destination
+*/
+_extern _VEC4_MIN U0 Vec3Min(CVec3 *a, CVec3 *b, CVec3 *dest);
+
+/**
+	@ingroup Math
+	@brief Max of two vectors (element-wise).
+
+	@param[in]     a	Vector 1
+	@param[in]     b	Vector 2
+	@param[in,out] dest	Destination
+*/
+_extern _VEC4_MAX U0 Vec3Max(CVec3 *a, CVec3 *b, CVec3 *dest);
+
+/**
+	@ingroup Math
+	@brief Negate a vector (elements = -elements).
+
+	@param[in]     v	Vector
+	@param[in,out] dest	Destination
+*/
+_extern _VEC4_NEGATE U0 Vec3Negate(CVec3 *v, CVec3 *dest);
+
+asm
+{
+_VEC3_NORMALIZE::
+	PUSH		RBP
+	MOV			RBP, RSP
+
+	MOV			RAX, SF_ARG1[RBP]
+//	MOVAPS		XMM0, [RAX]
+	DU8			0x0F, 0x28, 0x00;
+//	MOVAPS		XMM2, XMM0
+	DU8			0x0F, 0x28, 0xD0;
+//	MULPS		XMM0, XMM2
+	DU8			0x0F, 0x59, 0xC2;
+
+//	MOVHLPS		XMM1, XMM0
+	DU8			0x0F, 0x12, 0xC8;
+//	ADDSS		XMM1, XMM0
+	DU8			0xF3, 0x0F, 0x58, 0xC8;
+//	SHUFPS		XMM0, XMM0, 0x55 (1, 1, 1, 1)
+	DU8			0x0F, 0xC6, 0xC0, 0x55;
+//	ADDSS		XMM0, XMM1
+	DU8			0xF3, 0x0F, 0x58, 0xC1;
+//	SQRTSS		XMM0, XMM0
+	DU8			0xF3, 0x0F, 0x51, 0xC0;
+//	SHUFPS		XMM0, XMM0, 0x00 (0, 0, 0, 0)
+	DU8			0x0F, 0xC6, 0xC0, 0x00;
+//	DIVPS		XMM2, XMM0
+	DU8			0x0F, 0x5E, 0xD0;
+
+	MOV			RAX, SF_ARG2[RBP]
+//	MOVAPS		[RAX], XMM2
+	DU8			0x0F, 0x29, 0x10;
+
+	POP			RBP
+	RET1		16
+}
+/**
+	@ingroup Math
+	@brief Normalize a vector (length = 1.0).
+
+	@param[in]     v	Vector
+	@param[in,out] dest	Destination
+*/
+_extern _VEC3_NORMALIZE U0 Vec3Normalize(CVec3 *v, CVec3 *dest);
+
+asm
+{
+_VEC3_DOT::
+	PUSH		RBP
+	MOV			RBP, RSP
+
+	MOV			RAX, SF_ARG1[RBP]
+//	MOVAPS		XMM0, [RAX]
+	DU8			0x0F, 0x28, 0x00;
+	MOV			RAX, SF_ARG2[RBP]
+//	MOVAPS		XMM1, [RAX]
+	DU8			0x0F, 0x28, 0x08;
+//	MULPS		XMM0, XMM1
+	DU8			0x0F, 0x59, 0xC1;
+
+//	MOVHLPS		XMM1, XMM0
+	DU8			0x0F, 0x12, 0xC8;
+//	ADDSS		XMM1, XMM0
+	DU8			0xF3, 0x0F, 0x58, 0xC8;
+//	SHUFPS		XMM0, XMM0, 0x55 (1, 1, 1, 1)
+	DU8			0x0F, 0xC6, 0xC0, 0x55;
+//	ADDSS		XMM0, XMM1
+	DU8			0xF3, 0x0F, 0x58, 0xC1;
+//	MOVQ		RAX, XMM0
+	DU8			0x66, 0x48, 0x0F, 0x7E, 0xC0;
+
+	POP			RBP
+	RET1		16
+}
+/**
+	@ingroup Math
+	@brief Dot product of two vectors.
+
+	@param[in]     a	Vector 1
+	@param[in]     b	Vector 2
+	@return				Dot product.
+*/
+_extern _VEC3_DOT I32 Vec3Dot(CVec3 *a, CVec3 *b);
+
+asm
+{
+_VEC3_CROSS::
+	PUSH		RBP
+	MOV			RBP, RSP
+
+	MOV			RAX, SF_ARG1[RBP]
+//	MOVAPS		XMM0, [RAX]
+	DU8			0x0F, 0x28, 0x00;
+//	MOVAPS		XMM1, XMM0
+	DU8			0x0F, 0x28, 0xC8;
+	MOV			RAX, SF_ARG2[RBP]
+//	MOVAPS		XMM2, [RAX]
+	DU8			0x0F, 0x28, 0x10;
+//	MOVAPS		XMM3, XMM2
+	DU8			0x0F, 0x28, 0xDA;
+
+//	SHUFPS		XMM0, XMM0, 0xC9 (1, 2, 0, 3) [Ay Az Ax]
+	DU8			0x0F, 0xC6, 0xC0, 0xC9;
+//	SHUFPS		XMM1, XMM1, 0xD2 (2, 0, 1, 3) [Az Ax Ay]
+	DU8			0x0F, 0xC6, 0xC9, 0xD2;
+//	SHUFPS		XMM2, XMM2, 0xD2 (2, 0, 1, 3) [Bz Bx By]
+	DU8			0x0F, 0xC6, 0xD2, 0xD2;
+//	SHUFPS		XMM3, XMM3, 0xC9 (1, 2, 0, 3) [By Bz Bx]
+	DU8			0x0F, 0xC6, 0xDB, 0xC9;
+
+//	MULPS		XMM0, XMM2
+	DU8			0x0F, 0x59, 0xC2;
+//	MULPS		XMM1, XMM3
+	DU8			0x0F, 0x59, 0xCB;
+//	SUBPS		XMM0, XMM1
+	DU8			0x0F, 0x5C, 0xC1;
+
+	MOV			RAX, SF_ARG3[RBP]
+//	MOVAPS		[RAX], XMM0
+	DU8			0x0F, 0x29, 0x00;
+
+	POP			RBP
+	RET1		24
+}
+/**
+	@ingroup Math
+	@brief Cross product of two vectors.
+
+	@param[in]     a	Vector 1
+	@param[in]     b	Vector 2
+	@param[in,out] dest	Destination
+*/
+_extern _VEC3_CROSS U0 Vec3Cross(CVec3 *a, CVec3 *b, CVec3 *dest);
 
 
 

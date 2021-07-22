@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('group___g_l_draw.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga3096115c6edc31d4e415687671deed43"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#ga3096115c6edc31d4e415687671deed43">GLDrawPixel</a> (I64 <a class="el" href="group__gfxmath.html#ga6f9d45f38de5d897aa161c6238667ee1">x</a>, I64 y, CBGR24 color)</td></tr>
+<tr class="memitem:ga3096115c6edc31d4e415687671deed43"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#ga3096115c6edc31d4e415687671deed43">GLDrawPixel</a> (I64 x, I64 y, CBGR24 color)</td></tr>
 <tr class="memdesc:ga3096115c6edc31d4e415687671deed43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw pixel on color texture. Does not check boundaries, point must be fully inside texture.  <a href="group___g_l_draw.html#ga3096115c6edc31d4e415687671deed43">More...</a><br /></td></tr>
 <tr class="separator:ga3096115c6edc31d4e415687671deed43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa213c0e452c680ee3852e795ed6c3c06"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#gaa213c0e452c680ee3852e795ed6c3c06">GLDrawLine</a> (I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)</td></tr>
@@ -113,12 +113,18 @@ Functions</h2></td></tr>
 <tr class="memitem:gac31a1b1e46c548093fb9f4a3e4292459"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#gac31a1b1e46c548093fb9f4a3e4292459">GLDrawRectVertGradient</a> (I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 colorTop, CBGR24 colorBottom, F64 tStart=0.0, F64 tEnd=1.0)</td></tr>
 <tr class="memdesc:gac31a1b1e46c548093fb9f4a3e4292459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw two color vertical gradient rectangle.  <a href="group___g_l_draw.html#gac31a1b1e46c548093fb9f4a3e4292459">More...</a><br /></td></tr>
 <tr class="separator:gac31a1b1e46c548093fb9f4a3e4292459"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad5872c68387b7f76c5c4db9295a6cf9b"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#gad5872c68387b7f76c5c4db9295a6cf9b">GLDrawChar</a> (I64 <a class="el" href="group__gfxmath.html#ga6f9d45f38de5d897aa161c6238667ee1">x</a>, I64 y, U8 char, CBGR24 color, U64 *font=text.font)</td></tr>
+<tr class="memitem:gad5872c68387b7f76c5c4db9295a6cf9b"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#gad5872c68387b7f76c5c4db9295a6cf9b">GLDrawChar</a> (I64 x, I64 y, U8 char, CBGR24 color, U64 *font=text.font)</td></tr>
 <tr class="memdesc:gad5872c68387b7f76c5c4db9295a6cf9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a single color character to color texture.  <a href="group___g_l_draw.html#gad5872c68387b7f76c5c4db9295a6cf9b">More...</a><br /></td></tr>
 <tr class="separator:gad5872c68387b7f76c5c4db9295a6cf9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2030adde70eb393bff302a46ce61f768"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#ga2030adde70eb393bff302a46ce61f768">GLDrawTexture</a> (<a class="el" href="class_c_g_l_tex2_d.html">CGLTex2D</a> *tex, I64 <a class="el" href="group__gfxmath.html#ga6f9d45f38de5d897aa161c6238667ee1">x</a>, I64 y, Bool transparent=FALSE)</td></tr>
+<tr class="memitem:gab52d190f4f0c7e0c4a45c5c1055bf057"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#gab52d190f4f0c7e0c4a45c5c1055bf057">GLDrawString</a> (I64 x, I64 y, U8 *str, CBGR24 color, U64 *font=text.font)</td></tr>
+<tr class="memdesc:gab52d190f4f0c7e0c4a45c5c1055bf057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a single color string to color texture.  <a href="group___g_l_draw.html#gab52d190f4f0c7e0c4a45c5c1055bf057">More...</a><br /></td></tr>
+<tr class="separator:gab52d190f4f0c7e0c4a45c5c1055bf057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2030adde70eb393bff302a46ce61f768"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#ga2030adde70eb393bff302a46ce61f768">GLDrawTexture</a> (<a class="el" href="class_c_g_l_tex2_d.html">CGLTex2D</a> *tex, I64 x, I64 y, Bool transparent=FALSE)</td></tr>
 <tr class="memdesc:ga2030adde70eb393bff302a46ce61f768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw non-transformed color texture with blit operation.  <a href="group___g_l_draw.html#ga2030adde70eb393bff302a46ce61f768">More...</a><br /></td></tr>
 <tr class="separator:ga2030adde70eb393bff302a46ce61f768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5176d387aba27f17e51cacd95d540eed"><td class="memItemLeft" align="right" valign="top">U0&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___g_l_draw.html#ga5176d387aba27f17e51cacd95d540eed">GLDrawTextureMonochrome</a> (<a class="el" href="class_c_g_l_tex2_d.html">CGLTex2D</a> *tex, I64 x, I64 y, CBGR24 color)</td></tr>
+<tr class="memdesc:ga5176d387aba27f17e51cacd95d540eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw non-transformed monochrome texture with blit operation.  <a href="group___g_l_draw.html#ga5176d387aba27f17e51cacd95d540eed">More...</a><br /></td></tr>
+<tr class="separator:ga5176d387aba27f17e51cacd95d540eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Functions for drawing to textures. </p>
@@ -539,11 +545,65 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">y0</td><td>Start corner y. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">x1</td><td>End corner x. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">y1</td><td>End corner y. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">colorTop</td><td>Top color of gradient. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">colorBottom</td><td>Bottom color of gradient. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">shadeColor</td><td>(Optional) color of bottom right corner for shading effect. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tStart</td><td>(Optional) start of gradient. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tEnd</td><td>(Optional) end of gradient. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname"></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gab52d190f4f0c7e0c4a45c5c1055bf057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab52d190f4f0c7e0c4a45c5c1055bf057">&#9670;&nbsp;</a></span>GLDrawString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">U0 GLDrawString </td>
+          <td>(</td>
+          <td class="paramtype">I64&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">I64&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">U8 *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CBGR24&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"> U64 *&#160;</td>
+          <td class="paramname"><em>font</em> = <code>text.font</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Draw a single color string to color texture. </p>
+<p>Escape sequences are not working correctly.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>X position to draw text at. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>Y position to draw text at. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">color</td><td>Color of text. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">font</td><td>Pointer to font buffer. System font by default. </td></tr>
   </table>
   </dd>
 </dl>
@@ -596,6 +656,58 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>X location to draw texture. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>Y location to draw texture. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">transparent</td><td>(optional) use alpha as mask. False by default. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga5176d387aba27f17e51cacd95d540eed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5176d387aba27f17e51cacd95d540eed">&#9670;&nbsp;</a></span>GLDrawTextureMonochrome()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">U0 GLDrawTextureMonochrome </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_c_g_l_tex2_d.html">CGLTex2D</a> *&#160;</td>
+          <td class="paramname"><em>tex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">I64&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">I64&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CBGR24&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Draw non-transformed monochrome texture with blit operation. </p>
+<p>Uses pad (alpha) byte to determine transparency. Does not yet check if texture being drawn is entirely inside the texture being drawn to.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tex</td><td>Textur&#x2405;e to draw. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>X location to draw texture. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>Y location to draw texture. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">color</td><td>Color of mask. </td></tr>
   </table>
   </dd>
 </dl>

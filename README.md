@@ -11,14 +11,14 @@ It aims to stay true to Terry's objectives by being simple, easy to understand, 
 
 # Features Implemented
 * Half-Life WAD texture loading.
-* BMP texture loading.
+* BMP texture loading and saving.
 * Draw library for 2D primitives.
 * Software rasterizer with custom shader support.
     * currently being rewritten, you can use an older commit if you would like to experiment with this (the new renderer will have the same user interface).
 
 # Installation
 This library can be compiled by your project or by the operating system on boot. Compiling the
-library at boot is useful because it provides syntax highlighting for the library.
+library at boot is useful because it provides syntax highlighting for the library.
 
 The library can be compiled by including `MakeHolyGL.CC`, found in the root of the library. To compile on boot, append `#include "Path/To/MakeHolyGL"` to the end of `Zenith/MakeZenith.CC` If you are a developer though, it is recommended that you comment out #includes in the makefile for math files
 that use assembly, as the OS will not let you compile an assembly "function" if it was already compiled

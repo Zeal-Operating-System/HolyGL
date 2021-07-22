@@ -58,7 +58,7 @@ class CGLBMPHeader
 						// 8-bit:	256-color palette
 						// 16-bit:	65565 colors
 						// 24-bit:	16M colors
-	U32 nCompression;	// Type of compression:
+	U32 nCompression;	// Type of compression:
 						// 0: BI_RGB	no-compression
 						// 1: BI_RLE8	8-bit RLE encoding
 						// 2: BI_RLE4 	4-bit RLE encoding
@@ -66,5 +66,5 @@ class CGLBMPHeader
 	U32 nXPxPerM;		// Horizontal resolution, pixels per meter
 	U32 nYPxPerM;		// Vertical resolution, pixels per meter
 	U32 nColors;		// Number of actually used colors (ie. 256 for 8-bit color)
-	U32 nImptColors;	// Number of important colors (=0 for all) 
+	U32 nImptColors;	// Number of important colors (=0 for all) 
 };

@@ -9,16 +9,24 @@ Cd(__DIR__);;
 #include "WAD/Types"
 #include "Texture/Types"
 #include "Context/Types"	// Global context
+#include "Plot/Types"
 
-//#include "Math/Vec4"
-//#include "Math/Vec3"
-//#include "Math/Conversion"
+//#include "Math/MakeMath"
 
 #include "Texture/Texture"
+#include "Texture/TextureLoad"
+#include "Texture/TextureSave"
+
 #include "Draw/Primitive"
 #include "Draw/Texture"
 #include "Draw/Rectangle"
 #include "Draw/Text"
+
 #include "WAD/WAD"
-#include "Texture/TextureImport"
+
 #include "Context/Bind"
+
+#define HOLYGL_COMPILED
+
+Option(OPTf_WARN_PAREN, OFF);
+Option(OPTf_WARN_DUP_TYPES, OFF);

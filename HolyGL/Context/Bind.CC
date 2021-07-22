@@ -5,7 +5,7 @@
 
 	@param[in] colorTarget	Target color texture to draw to.
 */
-U0 GLBindColorTarget(CGLTex2D *colorTarget)
+U0 GLBindColorTarget(CGLTex2D *colorTarget)
 {
 	if (colorTarget->type == GL_TEX2D_RAW)
 	{
@@ -31,6 +31,6 @@ U0 GLBindDepthTarget(CGLTex2D *depthTarget)
 	}
 	else
 	{
-		"[ERROR] CAN ONLY BIND GL_TEX2D_DEPTH TEXTURES TO DEPTH TARGET\n";
+		"[ERROR] CAN ONLY BIND GL_TEX2D_DEPTH TEXTURES TO DEPTH TARGET\n";
 	}
 }

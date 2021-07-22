@@ -81,7 +81,7 @@ Tex2DLoadBMP(&tex, "SaintTerry.bmp");$HL,0$	$FG,2$The loader will initialize the
 $FG,5$Loading and Reading WAD Files$FG$
 $HL,1$#include "WAD/WADTypes"
 #include "WAD/WAD"$HL,0$
-$FG,2$WAD files are a general purpose format for storing a flat hierarchy of
+$FG,2$WAD files are a general purpose format for storing a flat hierarchy of
 directories called "lumps." They were first used by the DOOM engine to hold
 game assets, however they have been used by subsequent engines such as Quake
 and GldSrc to hold textures. The general purpose WAD manipulation functions
@@ -199,7 +199,7 @@ $FG,2$The fragment shader returns the CBGR24 color for a particular fragment (pi
 It takes uniforms as well as interpolated values from the vertex shader to 
 calculate each frag's color. 
 
-For example, each vertex of a triangle may have a UV coordinate pointing to the 
+For example, each vertex of a triangle may have a UV coordinate pointing to the 
 part of the texture it maps to. The three UV coordinate attributes from the 
 vertex shader will be interpolated into one UV coordinate sent to the fragment 
 shader. The fragment shader can then sample that pixel color from the texture

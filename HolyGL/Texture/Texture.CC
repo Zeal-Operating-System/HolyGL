@@ -68,10 +68,9 @@ U0 GLTex2DColorFill(CGLTex2D *tex, CBGR24 color)
 
 	@param[in,out] tex	Depth texture to reset.
 */
-U0 GLTex2DDepthReset(CGLTex2D *tex)
+U0 GLTex2DDepthReset(CGLTex2D *tex)
 {
-	// Clear with 1.0f
-	MemSetU32(tex->depthBuf, 0x3F800000, tex->w * tex->h);
+	MemSetU32(tex->depthBuf, F32_ONE, tex->w * tex->h);
 } 
 
 /**
@@ -123,7 +122,7 @@ U0 GLTex2DDebugDisp(CGLTex2D *tex, I64 x, I64 y)
 
 /**
 	@ingroup GLTex2D
-	@brief Sample color from color textures at normalized UV coordinate 
+	@brief Sample color from color textures at normalized UV coordinate 
 	(0.0-1.0). Coordinates over 1.0 loop causing a repeating texture effect. 
 
 	Does not handle filtering or mip maps (yet).

@@ -31,7 +31,7 @@ U0 GLDrawChar(I64 x, I64 y, U8 char, CBGR24 color,
 }
 
 /**
-	@ingroup GLDraw
+	@ingroup GLDraw
 	@brief Draw a single color string to color texture.
 
 	Escape sequences are not working correctly.
@@ -41,7 +41,7 @@ U0 GLDrawChar(I64 x, I64 y, U8 char, CBGR24 color,
 	@param[in]     color	Color of text.
 	@param[in]     font		Pointer to font buffer. System font by default.
 */
-U0 GLDrawString(I64 x, I64 y, U8 *str, CBGR24 color,
+U0 GLDrawString(I64 x, I64 y, U8 *str, CBGR24 color,
 	U64 *font = text.font)
 {
 	I64 cur = 0,	// String cursor

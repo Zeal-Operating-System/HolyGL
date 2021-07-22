@@ -1,6 +1,6 @@
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Print 4x4 matrix.
 	
 	@param[in] m	4x4 matrix.
@@ -55,7 +55,7 @@ asm
 }
 
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Check if two 4x4 matrices are equal.
 
 	@param[in] a	Matrix 1
@@ -84,16 +84,6 @@ _MAT4_MUL_VEC4::
 	MOV			RBP, RSP
 
 	MOV			RAX, SF_ARG2[RBP]
-#if ARCH_SUPPORTS_AVX
-//	VBROADCASTSS	XMM0, [RAX]
-	DU8				0xC4, 0xE2, 0x79, 0x18, 0x00;
-//	VBROADCASTSS	XMM1, 4[RAX]
-	DU8				0xC4, 0xE2, 0x79, 0x18, 0x48, 0x04;
-//	VBROADCASTSS	XMM2, 8[RAX]
-	DU8				0xC4, 0xE2, 0x79, 0x18, 0x50, 0x08;
-//	VBROADCASTSS	XMM3, 12[RAX]
-	DU8				0xC4, 0xE2, 0x79, 0x18, 0x58, 0x0C;
-#else
 //	MOVAPS		XMM0, [RAX]
 	DU8			0x0F, 0x28, 0x00;
 //	MOVAPS		XMM1, XMM0
@@ -110,7 +100,6 @@ _MAT4_MUL_VEC4::
 	DU8			0x0F, 0xC6, 0xD2, 0xAA;
 //	SHUFPS		XMM3, XMM3, 0xFF (3, 3, 3, 3)
 	DU8			0x0F, 0xC6, 0xDB, 0xFF;
-#endif
 
 	MOV			RAX, SF_ARG1[RBP]
 //	MOVAPS		XMM4, [RAX]
@@ -146,7 +135,7 @@ _MAT4_MUL_VEC4::
 	RET1		24
 }
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Multiply 4x4 matrix by 4D vector.
 
 	@param[in] m		4x4 matrix.
@@ -212,7 +201,7 @@ _MAT4_MUL::
 	DU8			0x0F, 0x58, 0xC2;
 
 //	MOVAPS		[R15], XMM0
-	DU8			0x41, 0x0F, 0x29, 0x07;
+	DU8			0x41, 0x0F, 0x29, 0x07;
 
 	ADD			R14, 16
 	ADD			R15, 16
@@ -226,7 +215,7 @@ _MAT4_MUL::
 	RET1		24
 }
 /**
-	@ingroup gfxmath
+	@ingroup Math
 	@brief Multiply 4x4 matrix by 4x4 matrix.
 
 	@param[in]     a	4x4 matrix.
@@ -237,16 +226,72 @@ _extern _MAT4_MUL U0 Mat4Mul(CMat4 *a, CMat4 *b, CMat4 *dest);
 
 asm
 {
-_MAT4_SET_TRANSLATION::
+_MAT4_TRANSPOSE::
 	PUSH		RBP
 	MOV			RBP, RSP
 
+	MOV			RAX, SF_ARG1[RBP]
+//	MOVAPS		XMM0, [RAX]
+	DU8			0x0F, 0x28, 0x00;
+//	MOVAPS		XMM1, XMM0
+	DU8			0x0F, 0x28, 0xC8;
+//	MOVAPS		XMM2, 16[RAX]
+	DU8			0x0F, 0x28, 0x50, 0x10;
 
+//	MOVAPS		XMM3, 32[RAX]
+	DU8			0x0F, 0x28, 0x58, 0x20;
+//	MOVAPS		XMM4, XMM3
+	DU8			0x0F, 0x28, 0xE3;
+//	MOVAPS		XMM5, 48[RAX]
+	DU8			0x0F, 0x28, 0x68, 0x30;
+
+//	SHUFPS		XMM0, XMM2, 0x44 (0, 1, 0, 1)	// TMP 0
+	DU8			0x0F, 0xC6, 0xC2, 0x44;
+//	SHUFPS		XMM1, XMM2, 0xEE (2, 3, 2, 3)	// TMP 2
+	DU8			0x0F, 0xC6, 0xCA, 0xEE;
+//	SHUFPS		XMM3, XMM5, 0x44 (0, 1, 0, 1)	// TMP 1
+	DU8			0x0F, 0xC6, 0xDD, 0x44; 
+//	SHUFPS		XMM4, XMM5, 0xEE (2, 3, 2, 3)   // TMP 3
+	DU8			0x0F, 0xC6, 0xE5, 0xEE;
+
+//	MOVAPS		XMM2, XMM0						// XMM2 = TMP 0
+	DU8			0x0F, 0x28, 0xD0;
+//	MOVAPS		XMM5, XMM1						// XMM5 = TMP 2
+	DU8			0x0F, 0x28, 0xE9;
+
+//	SHUFPS		XMM0, XMM3, 0x88 (0, 2, 0, 2)
+	DU8			0x0F, 0xC6, 0xC3, 0x88;
+//	SHUFPS		XMM2, XMM3, 0xDD (1, 3, 1, 3)
+	DU8			0x0F, 0xC6, 0xD3, 0xDD;
+//	SHUFPS		XMM1, XMM4, 0x88 (0, 2, 0, 2)
+	DU8			0x0F, 0xC6, 0xCC, 0x88;
+//	SHUFPS		XMM5, XMM4, 0xDD (1, 3, 1, 3)
+	DU8			0x0F, 0xC6, 0xEC, 0xDD;
+
+	MOV			RAX, SF_ARG2[RBP]
+//	MOVAPS		[RAX], XMM0
+	DU8			0x0F, 0x29, 0x00;
+//	MOVAPS		16[RAX], XMM2
+	DU8			0x0F, 0x29, 0x50, 0x10;
+//	MOVAPS		32[RAX], XMM1
+	DU8			0x0F, 0x29, 0x48, 0x20;
+//	MOVAPS		48[RAX], XMM5
+	DU8			0x0F, 0x29, 0x68, 0x30;
 
 	POP			RBP
+	RET1		16
 }
 /**
-	@ingroup gfxmath
+	@ingroup Math
+	@brief Transpose 4x4 matrix.
+
+	@param[in]     m	4x4 matrix.
+	@param[in,out] dest	Destination 4x4 matrix.
+*/
+_extern _MAT4_TRANSPOSE U0 Mat4Transpose(CMat4 *m, CMat4 *dest);
+
+/**
+	@ingroup Math
 	@brief Clear 4x4 matrix and set it to translation transformation.
 
 	@param[in]     x	X translation.
@@ -254,7 +299,120 @@ _MAT4_SET_TRANSLATION::
 	@param[in]     z	Z translation.
 	@param[in,out] dest	Destination 4x4 matrix. 
 */
-_extern _MAT4_SET_TRANSLATION U0 Mat4SetTranslation(I32 x, I32 y, I32 z,
-	CMat4 *dest);
+U0 Mat4SetTranslation(F32 x, F32 y, F32 z, CMat4 *dest)
+{
+	dest->e[MAT4_00] = F32_ONE;
+	dest->e[MAT4_10] = F32_ZERO;
+	dest->e[MAT4_20] = F32_ZERO;
+	dest->e[MAT4_30] = F32_ZERO;
 
-
+	dest->e[MAT4_01] = F32_ZERO;
+	dest->e[MAT4_11] = F32_ONE;
+	dest->e[MAT4_21] = F32_ZERO;
+	dest->e[MAT4_31] = F32_ZERO;
+
+	dest->e[MAT4_02] = F32_ZERO;
+	dest->e[MAT4_12] = F32_ZERO;
+	dest->e[MAT4_22] = F32_ONE;
+	dest->e[MAT4_32] = F32_ZERO;
+
+	dest->e[MAT4_03] = x;
+	dest->e[MAT4_13] = y;
+	dest->e[MAT4_23] = z;
+	dest->e[MAT4_33] = F32_ONE;
+}
+
+/**
+	@ingroup Math
+	@brief Clear 4x4 matrix and set it to scale transformation.
+
+	@param[in]     x	X scale.
+	@param[in]     y	Y scale.
+	@param[in]     z	Z scale.
+	@param[in,out] dest	Destination 4x4 matrix.
+*/
+U0 Mat4SetScale(F32 x, F32 y, F32 z, CMat4 *dest)
+{
+	dest->e[MAT4_00] = x;
+	dest->e[MAT4_10] = F32_ZERO;
+	dest->e[MAT4_20] = F32_ZERO;
+	dest->e[MAT4_30] = F32_ZERO;
+
+	dest->e[MAT4_01] = F32_ZERO;
+	dest->e[MAT4_11] = y;
+	dest->e[MAT4_21] = F32_ZERO;
+	dest->e[MAT4_31] = F32_ZERO;
+
+	dest->e[MAT4_02] = F32_ZERO;
+	dest->e[MAT4_12] = F32_ZERO;
+	dest->e[MAT4_22] = z;
+	dest->e[MAT4_32] = F32_ZERO;
+
+	dest->e[MAT4_03] = F32_ZERO;
+	dest->e[MAT4_13] = F32_ZERO;
+	dest->e[MAT4_23] = F32_ZERO;
+	dest->e[MAT4_33] = F32_ONE;
+}
+
+/**
+	@ingroup Math
+	@brief Clear 4x4 matrix and set it to a look-at transform.
+
+			 Ú                ¿   Ú            ¿   Ú                    ¿
+			 ³Rx   Ry   Rz   0³   ³1  0  0  -Ex³   ³Rx  Ry  Rz  -(R ù E)³ 
+	LookAt = ³Ux   Uy   Uz   0³ * ³0  1  0  -Ey³ = ³Ux  Uy  Ut  -(U ù E)³
+			 ³-Fx  -Fy  -Fz  0³   ³0  0  1  -Ez³   ³Fx  Fy  Fz  F ù E   ³
+			 ³0    0    0    1³   ³0  0  0  1  ³   ³0   0   0   1       ³
+             À                Ù   À            Ù   À                    Ù
+	Where:
+	ùR is the eye right direction.
+	ùU is the eye up direction.
+	ùF is the eye forward direction (away from target towards viewer).
+	ùE is the position of the eye.
+
+	@param[in]     eye		Position of eye.
+	@param[in]     center	Position to look at.
+	@param[in]     up		Up direction vector. Can be general like an axis,
+							does not need to be orthographic in relation
+							to camera angle.
+	@param[in,out] dest		Destination 4x4 matrix.
+*/
+U0 Mat4SetLookAt(CVec3 *eye, CVec3 *center, CVec3 *up, CMat4 *dest)
+{
+	Vec3Sub(center, eye, gVec4Temp0);				// Forward vector
+	Vec3Normalize(gVec4Temp0, gVec4Temp0);
+
+	Vec3Cross(gVec4Temp0, up, gVec4Temp1);			// Right vector
+	Vec3Normalize(gVec4Temp1, gVec4Temp1);
+
+	Vec3Cross(gVec4Temp1, gVec4Temp0, gVec4Temp2);	// Correct Up vector
+
+	// Use dot products to apply eye translation matrix without a 4x4 multiply.
+	dest->e[MAT4_03] = Vec3Dot(gVec4Temp1, eye) ^ F32_NEGATE_MASK;
+	dest->e[MAT4_13] = Vec3Dot(gVec4Temp2, eye) ^ F32_NEGATE_MASK;
+	dest->e[MAT4_23] = Vec3Dot(gVec4Temp0, eye);
+	dest->e[MAT4_33] = F32_ONE;
+
+	Vec3Negate(gVec4Temp0, gVec4Temp0);				// Forward = -Forward
+
+	dest->e[MAT4_00] = gVec4Temp1->x;				// Right
+	dest->e[MAT4_10] = gVec4Temp2->x;				// Up
+	dest->e[MAT4_20] = gVec4Temp0->x;				// Forward
+	dest->e[MAT4_30] = F32_ZERO;
+
+	dest->e[MAT4_01] = gVec4Temp1->y;
+	dest->e[MAT4_11] = gVec4Temp2->y;
+	dest->e[MAT4_21] = gVec4Temp0->y;
+	dest->e[MAT4_31] = F32_ZERO;
+
+	dest->e[MAT4_02] = gVec4Temp1->z;
+	dest->e[MAT4_12] = gVec4Temp2->z;
+	dest->e[MAT4_22] = gVec4Temp0->z;
+	dest->e[MAT4_32] = F32_ZERO;
+}
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+
+Cd(__DIR__);;
+#include "../Math/MakeMath"
+
+/**
+	@defgroup GLPlot Plot
+	@brief Tools for generating plots.
+*/
+
+CBGR24 gGLPlotBackgroundColor = 0xFFFFFFFF;
+CBGR24 gGLPlotTextColor = 0x00000000;
+
+/**
+	@ingroup GLPlot
+	@brief Generate a line graph from single precision floating point datasets.
+
+*/
+U0 GLPlotLineGraph(CGLTex2D *plot, U64 w, U64 h, U8 *title, U8 *xTitle,
+	U8 *yTitle, ...)
+{
+	I64 i, centerX, titleLen, titleX;
+
+	GLTex2DInit(plot, GL_TEX2D_RAW, w, h);
+	GLTex2DColorFill(plot, gGLPlotBackgroundColor);
+	GLBindColorTarget(plot);
+
+	centerX = w / 2;
+	titleLen = StrLen(title) * FONT_WIDTH;
+	titleX = centerX - titleLen / 2;
+
+	GLDrawString(titleX, 8, title, gGLPlotTextColor, text.aux_font);
+
+	for (i = 0; i < argc; i++)
+	{
+		
+	}
+}
+
+CGLPlotDatasetLine ds;
+ds.name = "Software Cosine";
+ds.color = 0xFF0000FF;
+ds.len = 4;
+ds.xF32Array = CAllocAligned(4, 16);
+Vec4(1.0, 2.0, 3.0, 4.0, &ds.xF32Array);
+ds.yF32Array = CAllocAligned(4, 16);
+Vec4(2.0, 4.0, 5.0, 4.0, &ds.yF32Array);
+
+
+CGLTex2D plot;
+GLPlotLineGraph(&plot, 480, 280,
+	"Comparison of x87 FPU Cosine to Software Cosine",
+	"Theta",
+	"Cos(Theta)",
+	&ds
+	);
+
+while (CharScan() == 0)
+{
+	GLTex2DDebugDisp(&plot, 8, 16);
+	Sleep(1);
+}
+
+GLTex2DFree(&plot);
+

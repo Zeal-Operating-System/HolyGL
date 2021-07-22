@@ -7,5 +7,7 @@ var group___g_l_draw =
     [ "GLDrawRectOutline", "group___g_l_draw.html#gab031f46290a7368251cb816b79719b22", null ],
     [ "GLDrawRectSoftOutline", "group___g_l_draw.html#gabaed4c159aa91829693008be0fce55c4", null ],
     [ "GLDrawRectVertGradient", "group___g_l_draw.html#gac31a1b1e46c548093fb9f4a3e4292459", null ],
-    [ "GLDrawTexture", "group___g_l_draw.html#ga2030adde70eb393bff302a46ce61f768", null ]
+    [ "GLDrawString", "group___g_l_draw.html#gab52d190f4f0c7e0c4a45c5c1055bf057", null ],
+    [ "GLDrawTexture", "group___g_l_draw.html#ga2030adde70eb393bff302a46ce61f768", null ],
+    [ "GLDrawTextureMonochrome", "group___g_l_draw.html#ga5176d387aba27f17e51cacd95d540eed", null ]
 ];

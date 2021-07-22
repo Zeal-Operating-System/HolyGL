@@ -60,14 +60,16 @@ U0 GLTex2DLoadWAD(CGLTex2D *tex, CGLWAD *wad, U8 *texName)
 
 	Supports standard uncompressed 24-bit color BMP images.
 
-	@param[in,out] tex		Uninitialized texture to load into.
-	@param[in]     fname	File name of BMP.
+	@param[in,out] tex			Uninitialized texture to load into.
+	@param[in]     fname		File name of BMP.
+	@param[in]     monochrome	(Optional) Loads red channel as alpha to make
+								a mask texture.
 */
-U0 GLTex2DLoadBMP(CGLTex2D *tex, U8 *fname)
+U0 GLTex2DLoadBMP(CGLTex2D *tex, U8 *fname, Bool monochrome = FALSE)
 {
 	I64 imgPointer,
 		xPx, yPx;
-	U8	*bmp; 
+	U8	*bmp, alpha, *bmpBuf; 
 
 	bmp = FileRead(fname);
 
@@ -86,24 +88,44 @@ U0 GLTex2DLoadBMP(CGLTex2D *tex, U8 *fname)
 		"[ERROR] %s IS NOT A 24-BIT UNCOMPRESSED BMP!\n", fname;
 		return;
 	}
-	
+
 	// Each pixel is 3 bytes in 24-bit BMP, however CTex2D uses CBGR24
 	// which contains a final padding bit (32-bits per pixel). The rows
 	// also increment in the opposite direction.
 	imgPointer = bmp + info->nOffset;
+	bmpBuf = bmp + info->nOffset;
 
 	// Initialize with RAW format for 24-bit non-compressed color
 	GLTex2DInit(tex, GL_TEX2D_RAW, info->nWidth, info->nHeight);
-	
-	for (yPx = 0; yPx < info->nHeight; yPx++)
+
+	if (!monochrome)
 	{
-		for (xPx = 0; xPx < info->nWidth; xPx++)
+		for (yPx = 0; yPx < info->nHeight; yPx++)
 		{
-			MemCopy(&tex->rawBuf[xPx + info->nWidth * yPx], 
-				imgPointer + (xPx + info->nWidth * (info->nHeight - yPx)) 
-				* 3, 3);
+			for (xPx = 0; xPx < info->nWidth; xPx++)
+			{
+				tex->rawBuf[xPx + info->nWidth * yPx] =
+					*(imgPointer + 
+					(xPx + info->nWidth * (info->nHeight - yPx - 1)) * 3);
+			}
 		}
 	}
+	else
+	{
+		for (yPx = 0; yPx < info->nHeight; yPx++)
+		{
+			for (xPx = 0; xPx < info->nWidth; xPx++)
+			{
+				// We only need an alpha byte, which is an inverted color byte
+				// on the BMP (black = TRUE, white = FALSE).
+				alpha = bmpBuf[(xPx + info->nWidth *
+					(info->nHeight - yPx - 1)) * 3];
+				alpha = 255 - alpha;	// Invert
+				tex->rawBuf[xPx + info->nWidth * yPx].pad = alpha;
+			}
+		}
+	}
+	
 
 	Free(bmp);
 }

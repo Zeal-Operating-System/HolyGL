@@ -69,16 +69,16 @@ U0 GLDrawRectSoftOutline(I64 x0, I64 y0, I64 x1, I64 y1,
 	xMax = Clamp(Max(x0, x1), 0, xMaxIndex);
 	yMin = Clamp(Min(y0, y1), 0, yMaxIndex);
 	yMax = Clamp(Max(y0, y1), 0, yMaxIndex);
-	xLen = xMax - xMin - 1;
+	xLen = xMax - xMin;
 
 	// Top border
-	MemSetU32(&target[xMin + 1 + yMin * targetW], color, xLen);
+	MemSetU32(&target[xMin + yMin * targetW], color, xLen);
 
 	// Bottom border
-	MemSetU32(&target[xMin + 1 + yMax * targetW], shadeColor, xLen);
+	MemSetU32(&target[xMin + yMax * targetW], shadeColor, xLen);
 
 	// Left/Right border
-	for (y = yMin + 1; y < yMax; y++)
+	for (y = yMin; y < yMax; y++)
 	{
 		target[xMin + y * targetW] = color;
 		target[xMax + y * targetW] = shadeColor;
@@ -120,7 +120,7 @@ U0 GLDrawRectOutline(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color,
 	xMax = Clamp(Max(x0, x1), 0, xMaxIndex);
 	yMin = Clamp(Min(y0, y1), 0, yMaxIndex);
 	yMax = Clamp(Max(y0, y1), 0, yMaxIndex);
-	xLen = xMax - xMin + 1;
+	xLen = xMax - xMin;
 
 	// Top border
 	MemSetU32(&target[xMin + yMin * targetW], color, xLen);
@@ -129,7 +129,7 @@ U0 GLDrawRectOutline(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color,
 	MemSetU32(&target[xMin + yMax * targetW], shadeColor, xLen);
 
 	// Left/Right border
-	for (y = yMin + 1; y < yMax; y++)
+	for (y = yMin; y < yMax; y++)
 	{
 		target[xMin + y * targetW] = color;
 		target[xMax + y * targetW] = shadeColor;
@@ -146,7 +146,7 @@ U0 GLDrawRectOutline(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color,
 	@param[in]     y0			Start corner y.
 	@param[in]     x1			End corner x.
 	@param[in]     y1			End corner y.
-	@param[in]     colorTop		Top color of gradient.
+	@param[in]     colorTop		Top color of gradient.
 	@param[in]     colorBottom	Bottom color of gradient.
 	@param[in]     shadeColor	(Optional) color of bottom right corner
 								for shading effect.
@@ -157,7 +157,7 @@ U0 GLDrawRectVertGradient(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 colorTop,
 	CBGR24 colorBottom, F64 tStart = 0.0, F64 tEnd = 1.0)
 {
 	CBGR24 color, *target;
-	I64 xMaxIndex, yMaxIndex,
+	I64 xMaxIndex, yMaxIndex,
 		xMin, xMax,
 		yMin, yMax,
 		yMinReal, yMaxReal,

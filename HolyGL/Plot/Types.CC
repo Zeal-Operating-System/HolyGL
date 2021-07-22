@@ -1,0 +1,16 @@
+
+#define GL_PLOT_DATASET_TYPE_F32 0
+#define GL_PLOT_DATASET_TYPE_F64 1
+#define GL_PLOT_DATASET_TYPE_I64 2
+
+class CGLPlotDatasetLine
+{
+	U8 *name;
+	CBGR24 color;
+	I64 type;
+	I64 len;
+	F32 *xF32Array;
+	F32 *yF32Array;
+	F64 *xF64Array;
+	F64 *yF64Array;
+};

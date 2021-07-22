@@ -40,7 +40,7 @@ Vec3(&mesh.verts[2], 0.25, 0.5, 0.0);
 CGLTex2D colorBuf, depthBuf;
 CBGR24 cBlack = 0;
 
-GLTex2DInit(&colorBuf, TEX2D_RAW, W_WIDTH, W_HEIGHT);
+GLTex2DInit(&colorBuf, TEX2D_RAW, W_WIDTH, W_HEIGHT);
 GLTex2DColorFill(&colorBuf, cBlack);
 
 GLTex2DInit(&depthBuf, TEX2D_DEPTH, W_WIDTH, W_HEIGHT);
@@ -65,7 +65,7 @@ CGLRenderer *renderer =
 
 renderer->colorTarget = &colorBuf;
 renderer->depthTarget = &depthBuf;
-GLRendererRasterize(renderer);
+GLRendererRasterize(renderer);
 
 //-----------------------------------------------------------------------------
 // Display

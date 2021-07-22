@@ -26,5 +26,5 @@ while (CharScan() == 0)
 }
 
 GLTex2DFree(&texture);
-SettingsPop;
-Exit;
+SettingsPop;
+Exit;
