@@ -13,6 +13,7 @@ Cd(__DIR__);;
 
 //#include "Math/MakeMath"
 
+#include "WAD/WAD"
 #include "Texture/Texture"
 #include "Texture/TextureLoad"
 #include "Texture/TextureSave"
@@ -29,4 +30,4 @@ Cd(__DIR__);;
 #define HOLYGL_COMPILED
 
 Option(OPTf_WARN_PAREN, OFF);
-Option(OPTf_WARN_DUP_TYPES, OFF);
+Option(OPTf_WARN_DUP_TYPES, OFF);
