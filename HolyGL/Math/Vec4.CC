@@ -463,7 +463,7 @@ _VEC4_MAX::
 	@param[in]     b	Vector 2
 	@param[in,out] dest	Destination 
 */
-_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
+_extern _VEC4_MAX U0 Vec4Max(CVec4 *a, CVec4 *b, CVec4 *dest);
 
 asm
 {

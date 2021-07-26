@@ -19,7 +19,7 @@ _F64_2_F32::
 	@param[in] d	Double-precision scalar.
 	@return			Single-precision scalar.
 */
-_extern _F64_2_F32 I32 F642F32(F64 d);
+_extern _F64_2_F32 F32 F642F32(F64 d);
 
 asm
 {
@@ -67,7 +67,7 @@ _F32_RAD_2_DEG::
 	@ingroup Math
 	@brief Convert single-precision radians to single-precision degrees.
 
-	@param[in] rad	Single-precision angle in radians.
+	@param[in] rad	Single-precision angle in radians.
 	@return			Single-precision angle in degrees.
 */
 _extern _F32_RAD_2_DEG F32 F32Rad2Deg(F32 rad);
@@ -84,7 +84,7 @@ _F32_DEG_2_RAD::
 //	MOVQ		XMM1, RAX
 	DU8			0x66, 0x48, 0x0F, 0x6E, 0xC8;
 //	MULSS		XMM0, XMM1
-	DU8			0xF3, 0x0F, 0x59, 0xC1;
+	DU8			0xF3, 0x0F, 0x59, 0xC1;
 //	MOVQ		RAX, XMM0
 	DU8			0x66, 0x48, 0x0F, 0x7E, 0xC0;
 

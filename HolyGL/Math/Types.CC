@@ -96,7 +96,7 @@ union CMat4
 #define AVX_SIZE		8
 
 #define NDARRAY_I32		0
-#define NDARRAY_I64		1
+#define NDARRAY_I64		1
 #define NDARRAY_F32		2
 #define NDARRAY_F64		3
 
@@ -108,7 +108,7 @@ union CMat4
 */
 class CNDArray
 {
-	U16 dims;		// Dimensions
+	U16 dims;		// Dimensions
 	U16 type;		// See NDARRAY_ macros
 	U64 *dimLens;	// Dimension lengths
 	U64 size;		// Total elements

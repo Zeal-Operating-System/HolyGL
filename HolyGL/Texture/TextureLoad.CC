@@ -93,7 +93,7 @@ U0 GLTex2DLoadBMP(CGLTex2D *tex, U8 *fname, Bool monochrome = FALSE)
 	// which contains a final padding bit (32-bits per pixel). The rows
 	// also increment in the opposite direction.
 	imgPointer = bmp + info->nOffset;
-	bmpBuf = bmp + info->nOffset;
+	bmpBuf = bmp + info->nOffset;
 
 	// Initialize with RAW format for 24-bit non-compressed color
 	GLTex2DInit(tex, GL_TEX2D_RAW, info->nWidth, info->nHeight);

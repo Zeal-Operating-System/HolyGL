@@ -13,7 +13,12 @@ Cd(__DIR__);;
 
 //#include "Math/MakeMath"
 
+<<<<<<< Updated upstream
 #include "WAD/WAD"
+=======
+#include "WAD/WAD"
+
+>>>>>>> Stashed changes
 #include "Texture/Texture"
 #include "Texture/TextureLoad"
 #include "Texture/TextureSave"
@@ -22,8 +27,6 @@ Cd(__DIR__);;
 #include "Draw/Texture"
 #include "Draw/Rectangle"
 #include "Draw/Text"
-
-#include "WAD/WAD"
 
 #include "Context/Bind"
 

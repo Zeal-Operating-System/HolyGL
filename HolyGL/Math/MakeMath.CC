@@ -16,4 +16,5 @@ Cd(__DIR__);;
 
 Option(OPTf_WARN_PAREN, OFF);
 Option(OPTf_WARN_DUP_TYPES, OFF);
-Option(OPTf_WARN_UNUSED_VAR, ON);
+Option(OPTf_WARN_UNUSED_VAR, ON);
+
