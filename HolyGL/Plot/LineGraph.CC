@@ -32,7 +32,7 @@ U0 GLPlotLineGraph(CGLTex2D *plot, U64 w, U64 h, U8 *title, U8 *xTitle,
 
 	for (i = 0; i < argc; i++)
 	{
-		
+		
 	}
 }
 
@@ -60,5 +60,5 @@ while (CharScan() == 0)
 	Sleep(1);
 }
 
-GLTex2DFree(&plot);
+GLTex2DFree(&plot);
 

@@ -8,7 +8,7 @@
 	@param[in] tex		Texture to load from.
 	@param[in] fname	File name of BMP to save to.
 */
-U0 GLTex2DSaveBMP(CGLTex2D *tex, U8 *fname)
+U0 GLTex2DSaveBMP(CGLTex2D *tex, U8 *fname)
 {
 	I64 bmpSize,
 		xPx, yPx,
@@ -54,7 +54,7 @@ U0 GLTex2DSaveBMP(CGLTex2D *tex, U8 *fname)
 
 			bmpPixels[bmpBufOffset] = tex->rawBuf[texBufIndex].r;
 			bmpPixels[bmpBufOffset + 1] = tex->rawBuf[texBufIndex].g;
-			bmpPixels[bmpBufOffset + 2] = tex->rawBuf[texBufIndex].b;
+			bmpPixels[bmpBufOffset + 2] = tex->rawBuf[texBufIndex].b;
 		}
 	}
 

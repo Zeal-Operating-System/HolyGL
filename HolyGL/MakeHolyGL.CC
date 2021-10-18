@@ -1,17 +1,20 @@
 /* Include this file to rebuild the HolyGL library. */
 
+#ifndef HOLYMATH_COMPILED
+	"[ERROR] HolyGL depends on HolyMath, which has not yet been compiled.\n";
+#else
+
+SettingsPush;
+
 Option(OPTf_WARN_PAREN, ON);
 Option(OPTf_WARN_DUP_TYPES, ON);
+Option(OPTf_WARN_UNUSED_VAR, ON);
 
 Cd(__DIR__);;
 
-#include "Math/Types"
 #include "WAD/Types"
 #include "Texture/Types"
-#include "Context/Types"	// Global context
-#include "Plot/Types"
-
-//#include "Math/MakeMath"
+#include "Context/Types"	// Global context
 
 #include "WAD/WAD"
 #include "Texture/Texture"
@@ -27,5 +30,6 @@ Cd(__DIR__);;
 
 #define HOLYGL_COMPILED
 
-Option(OPTf_WARN_PAREN, OFF);
-Option(OPTf_WARN_DUP_TYPES, OFF);
+SettingsPop;
+
+#endif
