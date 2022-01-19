@@ -21,7 +21,7 @@ GLTex2DLoadBMP(&texture, "SaintTerry.bmp");
 
 while (CharScan() == 0)
 {
-	GLTex2DDebugDisp(&texture, wX, wY);
+	GLTex2DDebugDisp(&texture, wX, wY);
 	Sleep(1);
 }
 

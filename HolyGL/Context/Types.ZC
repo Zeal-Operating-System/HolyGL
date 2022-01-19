@@ -17,4 +17,4 @@ class CGLContext
     @ingroup GLContext
     @brief Global context.
 */
-CGLContext gGLC;	// Global GL context
+CGLContext gGLC;	// Global GL context

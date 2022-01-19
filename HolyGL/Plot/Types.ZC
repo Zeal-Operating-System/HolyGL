@@ -13,4 +13,4 @@ class CGLPlotDatasetLine
 	F32 *yF32Array;
 	F64 *xF64Array;
 	F64 *yF64Array;
-};
+};

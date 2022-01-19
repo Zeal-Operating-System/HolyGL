@@ -55,7 +55,7 @@ U0 GLDrawTexture(CGLTex2D *tex, I64 x, I64 y, Bool transparent = FALSE)
 	Uses pad (alpha) byte to determine transparency. Does not yet check if
 	texture being drawn is entirely inside the texture being drawn to.
 
-	@param[in]     tex			Texture to draw.
+	@param[in]     tex			Texture to draw.
 	@param[in]     x			X location to draw texture.
 	@param[in]     y			Y location to draw texture.
 	@param[in]     color		Color of mask.

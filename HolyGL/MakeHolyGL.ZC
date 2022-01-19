@@ -14,7 +14,7 @@ Cd(__DIR__);;
 
 #include "WAD/Types"
 #include "Texture/Types"
-#include "Context/Types"	// Global context
+#include "Context/Types"	// Global context
 
 #include "WAD/WAD"
 #include "Texture/Texture"

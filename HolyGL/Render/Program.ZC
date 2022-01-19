@@ -15,7 +15,7 @@ class CGLProgram
 	@brief Compiles a vertex shader by inserting custom vertex shader assembly
 	into the GLRendererSubmitArrays function. Saves this 
 */
-U0 GLProgramCompileVertexShader(CGLProgram *program, U8 *fname)
+U0 GLProgramCompileVertexShader(CGLProgram *program, U8 *fname)
 {
 	
 }

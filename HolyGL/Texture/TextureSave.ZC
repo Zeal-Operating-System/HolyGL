@@ -8,7 +8,7 @@
 	@param[in] tex		Texture to load from.
 	@param[in] fname	File name of BMP to save to.
 */
-U0 GLTex2DSaveBMP(CGLTex2D *tex, U8 *fname)
+U0 GLTex2DSaveBMP(CGLTex2D *tex, U8 *fname)
 {
 	I64 bmpSize,
 		xPx, yPx,
