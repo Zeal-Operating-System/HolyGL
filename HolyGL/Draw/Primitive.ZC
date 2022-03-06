@@ -78,7 +78,7 @@ U0 GLDrawLine(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color)
 
 	y = y0;
 	
-	for (x = x0; x < x1 + 1; x++)
+	for (x = x0; x < x1 + 1; x++)
 	{
 		if (steep == TRUE)
 		{

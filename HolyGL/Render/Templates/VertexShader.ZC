@@ -24,4 +24,4 @@ _triangle_loop:
 	POP			RBP
 }
 
-_extern U0 <SHADER_NAME>(U0 *model, I64 startTri, I64 nTris);
+_extern U0 <SHADER_NAME>(U0 *model, I64 startTri, I64 nTris);

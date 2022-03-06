@@ -115,7 +115,7 @@ U0 GLWADLoad(CGLWAD *wad, U8 *fname)
 		return;
 	}
 
-	"[ERROR] %s WAD TYPE NOT RECOGNIZED: %4ts\n", fname, type;
+	"[ERROR] %s WAD TYPE NOT RECOGNIZED: %4ts\n", fname, type;
 }
 
 /**

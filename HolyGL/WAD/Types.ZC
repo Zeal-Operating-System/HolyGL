@@ -30,7 +30,7 @@ class CGLWADFileLump
 	I16 pad;
 	U8 name[16];
 };
-
+
 /**
 	@internal
 	@ingroup GLWAD

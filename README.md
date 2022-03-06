@@ -22,12 +22,9 @@ If you need features for a project, message me at Professor#8404 on Discord.
     interface).
 
 # Installation
-This library depends on [HolyMath](https://github.com/TempleProgramming/HolyMath),
-so be sure to compile that first.
-
-The library can be compiled by including `MakeHolyGL.CC`, found in the root
+The library can be compiled by including `MakeHolyGL.ZC`, found in the root
 of the library. To compile on boot, append `#include "Path/To/MakeHolyGL"`
-to the end of `System/MakeSystem.CC`.
+to the end of `System/MakeSystem.ZC`.
 
 If you use other Holy* libraries, make sure that this library is compiled
 before they are, but after HolyMath is.

@@ -2,12 +2,12 @@
 folder until I have the pipeline down. */
 
 Cd(__DIR__);;
-#include "../Math/Vec4"
-#include "../Math/Vec3"
+//#include "../Math/Vec4"
+//#include "../Math/Vector3DInit"
 
-#include "../Render/Types"
-#include "../Render/Renderer"
-#include "../Render/Rasterize"
+#include "../HolyGL/Render/Types"
+#include "../HolyGL/Render/Renderer"
+#include "../HolyGL/Render/Rasterize"
 
 #define W_WIDTH 640
 #define W_HEIGHT 480
@@ -17,7 +17,7 @@ Cd(__DIR__);;
 
 class CTestMesh
 {
-	CVec4 *verts;
+	CVector4D *verts;
 	I64 nTris;
 	I64 nVec4Attrs;		// Number of Vec4 attributes included after vertex 
 } mesh;
@@ -25,14 +25,14 @@ class CTestMesh
 mesh.nTris;
 mesh.nVec4Attrs = 0;
 mesh.verts = MAllocAligned(	mesh.nTris * 
-							3 * sizeof(CVec4) +	// Base Vec4 position
-							3 * sizeof(CVec4) * mesh.nVec4Attrs,
+							3 * sizeof(CVector4D) +	// Base Vec4 position
+							3 * sizeof(CVector4D) * mesh.nVec4Attrs,
 							16);				// 16 byte alignment for SSE
 
 // Coordinates below in NDC. They will have to be in clip coords for real thing
-Vec3(&mesh.verts[0], 0.0, 0.0, 0.0);
-Vec3(&mesh.verts[1], 0.5, -0.5, 0.0);
-Vec3(&mesh.verts[2], 0.25, 0.5, 0.0);
+Vector3DInit(&mesh.verts[0], 0.0, 0.0, 0.0);
+Vector3DInit(&mesh.verts[1], 0.5, -0.5, 0.0);
+Vector3DInit(&mesh.verts[2], 0.25, 0.5, 0.0);
 
 //-----------------------------------------------------------------------------
 // Texture config
@@ -65,7 +65,7 @@ CGLRenderer *renderer =
 
 renderer->colorTarget = &colorBuf;
 renderer->depthTarget = &depthBuf;
-GLRendererRasterize(renderer);
+GLRendererRasterize(renderer);
 
 //-----------------------------------------------------------------------------
 // Display

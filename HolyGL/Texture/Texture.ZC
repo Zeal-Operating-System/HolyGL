@@ -122,7 +122,7 @@ U0 GLTex2DDebugDisp(CGLTex2D *tex, I64 x, I64 y)
 
 /**
 	@ingroup GLTex2D
-	@brief Sample color from color textures at normalized UV coordinate 
+	@brief Sample color from color textures at normalized UV coordinate 
 	(0.0-1.0). Coordinates over 1.0 loop causing a repeating texture effect. 
 
 	Does not handle filtering or mip maps (yet).

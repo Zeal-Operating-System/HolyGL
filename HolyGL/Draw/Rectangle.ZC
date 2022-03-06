@@ -146,7 +146,7 @@ U0 GLDrawRectOutline(I64 x0, I64 y0, I64 x1, I64 y1, CBGR24 color,
 	@param[in]     y0			Start corner y.
 	@param[in]     x1			End corner x.
 	@param[in]     y1			End corner y.
-	@param[in]     colorTop		Top color of gradient.
+	@param[in]     colorTop		Top color of gradient.
 	@param[in]     colorBottom	Bottom color of gradient.
 	@param[in]     shadeColor	(Optional) color of bottom right corner
 								for shading effect.

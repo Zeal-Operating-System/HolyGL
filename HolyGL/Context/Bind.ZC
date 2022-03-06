@@ -5,7 +5,7 @@
 
 	@param[in] colorTarget	Target color texture to draw to.
 */
-U0 GLBindColorTarget(CGLTex2D *colorTarget)
+U0 GLBindColorTarget(CGLTex2D *colorTarget)
 {
 	if (colorTarget->type == GL_TEX2D_RAW)
 	{

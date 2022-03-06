@@ -28,7 +28,7 @@ U0 GLMPRasterizeTile(CGLMPRasterizeTileParams *params)
 	// Calculate bounds of this tile
 	tileW = params->renderer->depthTarget->w / params->renderer->nXTiles;
 	tileH = params->renderer->depthTarget->h / params->renderer->nYTiles;
-	tileCol = params->tile % params->renderer->nXTiles;
+	tileCol = params->tile % params->renderer->nXTiles;
 	tileRow = params->tile / params->renderer->nXTiles;
 	tileMinX = tileCol * tileW;
 	tileMinY = tileRow * tileH;
